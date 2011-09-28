@@ -124,7 +124,7 @@ se ww=<,>,h,l,[,]
 
 " Show non-printing characters.
 se list
-se lcs=tab:Â»\ ,trail:Â·
+se lcs=tab:»\ ,trail:·
 
 " Select Pablo colorscheme.
 "colo pablo
@@ -233,7 +233,7 @@ en
 se wim=list:longest
 
 " Disable autocompletion for files matching...
-se wig=*~,*.swp
+"se wig=*~,*.swp
 
 " Default selection highlighting is nearly invisible. Especially when viewed at
 " an angle.
