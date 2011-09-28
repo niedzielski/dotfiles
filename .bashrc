@@ -14,6 +14,9 @@ HISTCONTROL=ignoredups:ignorespace
 HISTSIZE=5000
 HISTFILESIZE=50000
 
+# Timestamp entries.
+HISTTIMEFORMAT='%F-%H-%M-%S '
+
 # Preserve multi-line commands in one history entry.
 shopt -s cmdhist
 
@@ -62,17 +65,15 @@ shopt -s checkwinsize
 
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
+# Not great support for this... Keep it simple.
 
-update_term_title() { echo -en "\033]0;$PWD\007"; }
+# "\nuser@host:pwd\n" colored blue.
+PS1='\n\[\033[22;34m\]\u@\h:\w\n'
 
-# Set window title to the curret directory.
-# HACK: PS1='\033]2;\w\007' doesn't update when PWD is changed via keybindings.
-#update_term_title
-# No can do :/ ssh sessions like rsync are interactive and source .bashrc.
-# Cannot print.
+# "$ " colored green for zero exit status, red otherwise.
+PS1+='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
 
-# Color green for good, red for error. <color>'$ '<colorless>
-PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
+# Colorless.
 PS1+='\$ \[\033[00m\]'
 
 # ------------------------------------------------------------------------------
@@ -91,6 +92,8 @@ alias  s='sed -r'
 alias  t='touch'
 alias  v='gvim -p'
 alias  x='xargs -d\\n' # Xargs newline delimited.
+
+alias timestamp='date +%F-%H-%M-%S-%N'
 
 # Directory listing.
 alias  ls='command ls -Ap --color=always' # Alphabetically.
@@ -119,19 +122,19 @@ dirs()
   echo # Newline.
 }
 alias d=dirs
-cd() { builtin cd "$@" > /0; update_term_title; }
+cd() { builtin cd "$@" > /0; }
 alias c=cd
-pushd() { builtin pushd "$@" > /0; d; update_term_title; } # Change directory.
+pushd() { builtin pushd "$@" > /0; d; } # Change directory.
 alias p=pushd
-alias prev='pushd +1' # Previous directory.
-alias next='pushd -0' # Next directory.
-popd() { builtin popd > /0; d; update_term_title; }
+alias pb='pushd +1' # Previous directory.
+alias pf='pushd -0' # Next directory.
+popd() { builtin popd > /0; d; }
 alias P=popd
 
 alias abspath='readlink -m'
 
 # Xargs grep.
-alias xg='x grep --color=always'
+alias xg='x egrep --color=always'
 
 # Find with a couple defaults.
 find()
@@ -194,36 +197,6 @@ alias fxchpp="fx '\.c|\.cpp|\.h|\.hpp'"
 alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 
 # ------------------------------------------------------------------------------
-# Directory Navigation Hotkeys
-# Mimic Explorer style directory navigation.
-
-# Set alt up, down, right, and left to unused keys.
-# See also: http://unix.stackexchange.com/questions/9664/how-to-configure-inputrc-so-altup-has-the-effect-of-cd
-case "$OSTYPE" in
-  cygwin)
-    # HACK: I'm not sure what program to use to get key codes on Windows. I
-    # used Zsh and switched to the rudimentary .safe keymap which just prints
-    # control sequences directly on the prompt: bindkey -A .safe main.
-    bind '"\e\e[A":"\201"'
-    bind '"\e\e[B":"\202"'
-    bind '"\e\e[C":"\203"'
-    bind '"\e\e[D":"\204"'
-  ;;
-  linux-gnu|*)
-    bind '"\e[1;3A":"\201"'
-    bind '"\e[1;3B":"\202"'
-    bind '"\e[1;3C":"\203"'
-    bind '"\e[1;3D":"\204"'
-  ;;
-esac
-
-# Map unused keys to push parent, pop, next, and previous directory.
-bind -x '"\201":c ..'
-bind -x '"\202":P'
-bind -x '"\203":next'
-bind -x '"\204":prev'
-
-# ------------------------------------------------------------------------------
 # Misc
 
 # Source private configuration, if present.
@@ -250,3 +223,32 @@ fi
 #ctags, vim
 #eclipse
 #time rsync -azvu --partial-dir=.rsync-partial --partial sn@192.168.1.147:audio .
+
+
+up_file()
+{
+  local f="$1"
+  local pwd="$PWD"
+
+  while [[ ! -e "$f" ]] && [[ "$PWD" != "/" ]] && builtin cd ..
+  do
+    :
+  done
+
+  if [[ -e "$f" ]]
+  then
+    echo "$PWD"
+  fi
+
+  builtin cd "$pwd"
+}
+
+alias updatedb='command updatedb -l0 -oindex.db -U .'
+loc()
+{
+  local index="$(up_file index.db)/index.db"
+  locate -Pd"$index" --regex "$@"
+}
+
+
+
