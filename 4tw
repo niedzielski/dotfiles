@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+#  7---8---9
+#  | X |   |   4           4tw X
+#  4---+---6  the          Moves and sizes the active window to the corner or
+#  |   |   |  win          half of the screen as specified by X: NW, N, NE, E,
+#  1---2---3               SE, S, SW, or W.
+# Copyright 2011 Stephen Niedzielski. 4tw is licensed under GPL v3.
+# ------------------------------------------------------------------------------
+# 4tw is a supplement for Metacity. I shortcut the numpad keys (KP_7, KP_8,
+# KP_9, ...) in gconf-editor.
+
+# ------------------------------------------------------------------------------
+# Process Args
+
+# "X" marks the spot.
+X=$(tr [:upper:] [:lower:] <<< "$1")
+
+# ------------------------------------------------------------------------------
+# Root workspace full and half width and height.
+rltrb=($(xprop -root -f _NET_WORKAREA 32c ' $0 $1 $2 $3' _NET_WORKAREA|sed -r 's_[^ ]* (.*)_\1_'))
+rw=$((${rltrb[2]} - ${rltrb[0]}))
+rh=$((${rltrb[3]} - ${rltrb[1]}))
+rw2=$(($rw/2))
+rh2=$(($rh/2))
+
+# ------------------------------------------------------------------------------
+# Position
+
+if [[ $X == nw || $X == sw || $X == w ]]
+then
+  x=0
+else
+  x=$rw2
+fi
+let x+=${rltrb[0]}
+
+if [[ $X == nw || $X == ne || $X == n ]]
+then
+  y=0
+else
+  y=$rh2
+fi
+let y+=${rltrb[1]}
+
+# ------------------------------------------------------------------------------
+# Width and Height
+
+if [[ $X == n || $X == s ]]
+then
+  w=$rw
+else
+  w=$rw2
+fi
+
+if [[ $X == e || $X == w ]]
+then
+  h=$rh
+else
+  h=$rh2
+fi
+
+# Minus frame thickness.
+id=$(xprop -root -f _NET_ACTIVE_WINDOW 32x ' $0' _NET_ACTIVE_WINDOW|sed -r 's_[^ ]* (.*)_\1_')
+flrtb=($(xprop -id $id -f _NET_FRAME_EXTENTS 32c ' $0 $1 $2 $3' _NET_FRAME_EXTENTS|sed -r 's_[^ ]* (.*)_\1_'))
+let w-=${flrtb[0]}
+let w-=${flrtb[1]}
+let h-=${flrtb[2]}
+let h-=${flrtb[3]}
+
+# ------------------------------------------------------------------------------
+# Move and Resize
+
+# Remove max so we may size and move the window. Not sure why I can't do this in
+# one pass.
+wmctrl -bremove,fullscreen -r:ACTIVE:
+wmctrl -bremove,maximized_vert,maximized_horz -r:ACTIVE:
+
+# Finally, move and resize.
+wmctrl -r:ACTIVE: -e0,$x,$y,$w,$h
