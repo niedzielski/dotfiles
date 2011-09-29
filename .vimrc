@@ -4,7 +4,9 @@
 
 so $VIMRUNTIME/mswin.vim
 
-
+sy enable
+se ru
+" check out windows example files
 
 " TODO: gvim can't paste out to chrome in ubuntu
 
