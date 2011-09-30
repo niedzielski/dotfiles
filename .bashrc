@@ -250,5 +250,4 @@ loc()
   locate -Pd"$index" --regex "$@"
 }
 
-
-
+alias rsync='command rsync -azv --partial-dir=.rsync-partial --partial'
