@@ -251,3 +251,4 @@ loc()
 }
 
 alias rsync='command rsync -azv --partial-dir=.rsync-partial --partial'
+# colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y
