@@ -1,6 +1,6 @@
 " ------------------------------------------------------------------------------
 " .vimrc
-" Stephen Niedzielski
+" Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
 so $VIMRUNTIME/mswin.vim
 

@@ -4,7 +4,7 @@
 #  4---+---6  the          Moves and sizes the active window to the corner or
 #  |   |   |  win          half of the screen as specified by X: NW, N, NE, E,
 #  1---2---3               SE, S, SW, or W.
-# Copyright 2011 Stephen Niedzielski. 4tw is licensed under GPL v3.
+# Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 # ------------------------------------------------------------------------------
 # 4tw is a supplement for Metacity. I shortcut the numpad keys (KP_7, KP_8,
 # KP_9, ...) in gconf-editor.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------------------
 # .bashrc
-# Stephen Niedzielski
+# Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
 # ------------------------------------------------------------------------------
 # History
