@@ -252,3 +252,6 @@ loc()
 
 alias rsync='command rsync -azv --partial-dir=.rsync-partial --partial'
 # colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y
+# dic() { ! wn "$@" -over; } # Dictionary definition.
+# alias gd='aspell dump master|g -i' # Grep mediocre dictionary.
+
