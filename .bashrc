@@ -82,7 +82,7 @@ PS1+='\$ \[\033[00m\]'
 # Miscellaneous.
 alias cp='cp -i'
 alias  e='echo'
-alias  g='egrep --color=always'
+alias  g='egrep --color=auto'
 alias mv='mv -i'
 alias  m='mv'
 alias md='mkdir'
@@ -96,7 +96,7 @@ alias  x='xargs -d\\n' # Xargs newline delimited.
 alias timestamp='date +%F-%H-%M-%S-%N'
 
 # Directory listing.
-alias  ls='command ls -Ap --color=always' # Alphabetically.
+alias  ls='command ls -Ap --color=auto' # Alphabetically.
 alias   l=ls
 alias lex='l -X'                   # By extension.
 alias lsi='l -S'                   # By size.
@@ -134,7 +134,7 @@ alias P=popd
 alias abspath='readlink -m'
 
 # Xargs grep.
-alias xg='x egrep --color=always'
+alias xg='x egrep --color=auto'
 
 # Find with a couple defaults.
 find()
