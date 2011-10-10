@@ -82,7 +82,7 @@ PS1+='\$ \[\033[00m\]'
 # Miscellaneous.
 alias cp='cp -i'
 alias  e='echo'
-alias  g='egrep --color=auto'
+alias  g='grep -E --color=auto'
 alias mv='mv -i'
 alias  m='mv'
 alias md='mkdir'
@@ -105,6 +105,8 @@ alias lmt='l -t'                   # By mod time.
 alias lat='l -u'                   # By access time.
 [[ -x /usr/bin/dircolors ]] && eval "$(dircolors -b)" # Enable color support.
 
+alias rsync='command rsync -azv --partial-dir=.rsync-partial --partial'
+
 # ------------------------------------------------------------------------------
 # Less Simple Shell Supplements
 
@@ -122,19 +124,18 @@ dirs()
   echo # Newline.
 }
 alias d=dirs
-cd() { builtin cd "$@" > /0; }
 alias c=cd
-pushd() { builtin pushd "$@" > /0; d; } # Change directory.
+pushd() { builtin pushd "$@" > /dev/null; d; } # Change directory.
 alias p=pushd
 alias pb='pushd +1' # Previous directory.
 alias pf='pushd -0' # Next directory.
-popd() { builtin popd > /0; d; }
+popd() { builtin popd > /dev/null; d; }
 alias P=popd
 
 alias abspath='readlink -m'
 
 # Xargs grep.
-alias xg='x egrep --color=auto'
+alias xg='x grep -E --color=auto'
 
 # Find with a couple defaults.
 find()
@@ -169,6 +170,12 @@ cb()
 }
 
 gui() { nautilus "${1:-.}"; }
+
+# ssh-keygen -t rsa # no passphrase
+#ssh_auth()
+#{
+#  ssh "$1" '[[ -d .ssh ]] || mkdir .ssh; cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.pub
+#}
 
 # ------------------------------------------------------------------------------
 # Find Files with Extension
@@ -205,25 +212,26 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # Source work configuration, if present.
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
 
-# Generate null shorthand link.
-#[[ -e /0 ]] || case "$OSTYPE" in
-#       cygwin) ln -s /dev/null /0 ;;
-#  linux-gnu|*) sudo ln -s /dev/null /0 ;;
-#esac
+init()
+{
+  # Generate null shorthand link.
+  [[ -e /0 ]] || case "$OSTYPE" in
+         cygwin) ln -s /dev/null /0 ;;
+    linux-gnu|*) sudo ln -s /dev/null /0 ;;
+  esac
 
-# A couple shortcuts.
-#if [[ "$OSTYPE" == "linux-gnu" ]]
-#then
-#  [[ -e /usr/bin/chrome ]]  || sudo ln -s /{usr/bin/google-,usr/bin/}chrome
-#  [[ -e /usr/bin/term ]]    || sudo ln -s /usr/bin/gnome-terminal /usr/bin/term
-#  [[ -e /usr/bin/eclipse ]] || sudo ln -s /{opt/eclipse,usr/bin}/eclipse
-#fi
+  # A couple shortcuts.
+  if [[ "$OSTYPE" == "linux-gnu" ]]
+  then
+    [[ -e /usr/bin/chrome ]]  || sudo ln -s /{usr/bin/google-,usr/bin/}chrome
+    [[ -e /usr/bin/term ]]    || sudo ln -s /usr/bin/gnome-terminal /usr/bin/term
+    [[ -e /usr/bin/eclipse ]] || sudo ln -s /{opt/eclipse,usr/bin}/eclipse
+  fi
+}
 
 #which xclip
 #ctags, vim
 #eclipse
-#time rsync -azvu --partial-dir=.rsync-partial --partial sn@192.168.1.147:audio .
-
 
 up_file()
 {
@@ -250,7 +258,6 @@ loc()
   locate -Pd"$index" --regex "$@"
 }
 
-alias rsync='command rsync -azv --partial-dir=.rsync-partial --partial'
 # colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y
 # dic() { ! wn "$@" -over; } # Dictionary definition.
 # alias gd='aspell dump master|g -i' # Grep mediocre dictionary.
