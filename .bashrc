@@ -206,18 +206,18 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
 
 # Generate null shorthand link.
-[[ -e /0 ]] || case "$OSTYPE" in
-       cygwin) ln -s /dev/null /0 ;;
-  linux-gnu|*) sudo ln -s /dev/null /0 ;;
-esac
+#[[ -e /0 ]] || case "$OSTYPE" in
+#       cygwin) ln -s /dev/null /0 ;;
+#  linux-gnu|*) sudo ln -s /dev/null /0 ;;
+#esac
 
 # A couple shortcuts.
-if [[ "$OSTYPE" == "linux-gnu" ]]
-then
-  [[ -e /usr/bin/chrome ]]  || sudo ln -s /{usr/bin/google-,usr/bin/}chrome
-  [[ -e /usr/bin/term ]]    || sudo ln -s /usr/bin/gnome-terminal /usr/bin/term
-  [[ -e /usr/bin/eclipse ]] || sudo ln -s /{opt/eclipse,usr/bin}/eclipse
-fi
+#if [[ "$OSTYPE" == "linux-gnu" ]]
+#then
+#  [[ -e /usr/bin/chrome ]]  || sudo ln -s /{usr/bin/google-,usr/bin/}chrome
+#  [[ -e /usr/bin/term ]]    || sudo ln -s /usr/bin/gnome-terminal /usr/bin/term
+#  [[ -e /usr/bin/eclipse ]] || sudo ln -s /{opt/eclipse,usr/bin}/eclipse
+#fi
 
 #which xclip
 #ctags, vim
