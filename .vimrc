@@ -2,10 +2,63 @@
 " .vimrc
 " Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
-so $VIMRUNTIME/mswin.vim
+" ------------------------------------------------------------------------------
+" Set swap dir to some place I'll actually see.
+se dir=~/Desktop,~
 
-sy enable
-se ru
+" Tabs occupy four characters.
+se ts=4
+
+" Show typos.
+se spell
+
+" Use Bash style file tab completion.
+se wim=list:longest
+
+" Route middle mouse single, double, triple, and quadruple clicks to left click
+" instead of paste. I frequently click the middle mouse button accidentally.
+map <MiddleMouse>   <LeftMouse>
+im  <MiddleMouse>   <LeftMouse>
+map <2-MiddleMouse> <LeftMouse>
+im  <2-MiddleMouse> <LeftMouse>
+map <3-MiddleMouse> <LeftMouse>
+im  <3-MiddleMouse> <LeftMouse>
+map <4-MiddleMouse> <LeftMouse>
+im  <4-MiddleMouse> <LeftMouse>
+
+" Search.
+se hls  " Highlight matches.
+se is   " As typed.
+se ic   " Ignore case.
+se scs  " Unless capital(s) are used.
+se nows " And don't wrap back to the top of buffer.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"hose this stuff
+
+"so $VIMRUNTIME/mswin.vim
+
+"sy enable
+"se ru
 " check out windows example files
 
 " TODO: gvim can't paste out to chrome in ubuntu
@@ -20,61 +73,61 @@ se ru
 " See: 1:3 Mapping and Modes.
 
 " Indent / unindent. Don't want im.
-vm <tab>   :><cr>gv
-vm <s-tab> :<<cr>gv
+"vm <tab>   :><cr>gv
+"vm <s-tab> :<<cr>gv
 
 " Comment / uncomment.
-vm <c-k> :call rc:slc(1)<cr>
-im <c-k> <c-o>v<c-k>
-vm <c-l> :call rc:slc(0)<cr>
-im <c-l> <c-o>v<c-l>
+"vm <c-k> :call rc:slc(1)<cr>
+"im <c-k> <c-o>v<c-k>
+"vm <c-l> :call rc:slc(0)<cr>
+"im <c-l> <c-o>v<c-l>
 
 " Left word selection.
-vm <c-s-left> b<c-g>
-nm <c-s-left> v<c-s-left>
-im <c-s-left> <c-o><c-s-left>
+"vm <c-s-left> b<c-g>
+"nm <c-s-left> v<c-s-left>
+"im <c-s-left> <c-o><c-s-left>
 " TODO: investigate adding command mode support. I could use setpos for <c-left>
 " behavior, but not sure how to do <c-s-left> selecting. Maybe something like
 " "cmap <c-s-left> <c-\>e".
 
 " Right word selection.
-vm <c-s-right> w<c-g>
-nm <c-s-right> v<c-s-right>
-im <c-s-right> <c-o><c-s-right>
+"vm <c-s-right> w<c-g>
+"nm <c-s-right> v<c-s-right>
+"im <c-s-right> <c-o><c-s-right>
 
 " Page up selection.
-vm <s-pgup> <c-u>
-nm <s-pgup> v<s-pgup>
-im <s-pgup> <c-o><s-pgup>
+"vm <s-pgup> <c-u>
+"nm <s-pgup> v<s-pgup>
+"im <s-pgup> <c-o><s-pgup>
 
 
 
 
 " Backspace in Visual mode deletes selection
-nm <bs> d
+"nm <bs> d
 
 " not sure about backspace here in nm
 
 " Forward word deletion.
-map <c-del> dw
-im <c-del> <c-o>dw
+"map <c-del> dw
+"im <c-del> <c-o>dw
 
 " Backward word deletion.
-map <c-bs> db
-im <c-bs> <c-o>db
+"map <c-bs> db
+"im <c-bs> <c-o>db
 
-cm $f <c-r>=expand('%:p')<cr>
-cm $d <c-r>=expand('%:p:h').'/'<cr>
+"cm $f <c-r>=expand('%:p')<cr>
+"cm $d <c-r>=expand('%:p:h').'/'<cr>
 
 
-set expandtab
+"set expandtab
 
 " Act something like Windows. Word selection and deletion don't behave
 " consistently by default.
 
 " Allow cursor to position one past the last character in a line. This allows
 " for im c-s-left to work properly when positioned one past the last character.
-se ve=onemore
+"se ve=onemore
 
 
 "don't use .vimrc
@@ -88,45 +141,27 @@ se ve=onemore
 
 
 " ------------------------------------------------------------------------------
-" Search
-
-" Match term as typed.
-se is
-
-" Ignore term case.
-se ic
-
-" Override ignorecase when a capital appears in the term.
-se scs
-
-" Highlight matches.
-se hls
-
-" Don't wrap searches. I never catch the wrap warning.
-se nows
-
-" ------------------------------------------------------------------------------
 " Wrapping
 
 " Wrap long lines (display only).
-se wrap
+"se wrap
 
 " Don't modify buffer to wrap long lines.
-se tw=0
+"se tw=0
 
 " Break at chars spec by brk.
 " TODO: brk doesn't seem to be working right. It's breaking mid-word.
-se lbr
+"se lbr
 
 " Wrap cursor movements at EOL & SOL.
-se ww=<,>,h,l,[,]
+"se ww=<,>,h,l,[,]
 
 " ------------------------------------------------------------------------------
 " Display
 
 " Show non-printing characters.
-se list
-se lcs=tab:»\ ,trail:·
+" se list
+" se lcs=tab:»\ ,trail:·
 
 " Select Pablo colorscheme.
 "colo pablo
@@ -135,7 +170,7 @@ se lcs=tab:»\ ,trail:·
 "se cul
 "hi cursorline gui=standout
 
-se nocul " this must be getting picked up from vim file... need to make changes there
+"se nocul " this must be getting picked up from vim file... need to make changes there
 
 " Set selection highlighting color.
 "hi visual guibg=darkblue
@@ -147,165 +182,150 @@ se nocul " this must be getting picked up from vim file... need to make changes 
 "hi statuslinenc ctermbg=lightgrey ctermfg=black
 
 " Do not allow modified buffers to be hidden. Need to explore this more.
-se nohid
+"se nohid
 
 " Show line number gutter.
 "se nu
 
 " Startup width and height.
-se co=80
-se lines=40
+"se co=80
+"se lines=40
 
 " Remove toolbar (icons) and menubar (file, edit, ...).
-se go-=T
-se go-=m
+"se go-=T
+"se go-=m
 
-if has('win32')
+"if has('win32')
   " Set font size.
   " To bring up selector dialog: se gfn=*
-  se gfn=Fixedsys:h10
-en
+"  se gfn=Fixedsys:h10
+"en
 
 " Maximum number of tabs open simultaneously.
-se tpm=100
+"se tpm=100
 
 
 " ------------------------------------------------------------------------------
 " Indentation
 
-" Tabs occupy two characters.
-se ts=2
 
 " Each indent level is two characters.
-se sw=2
+"se sw=2
 
 " Disable indentation rules based on filetype.
-filet indent off
+"filet indent off
 
 " Something like 'just copy the previous line's indent'.
-se ai
-se ci
-se pi
+"se ai
+"se ci
+"se pi
 
 " ------------------------------------------------------------------------------
 " Keys
 
 " Tab navigation.
-map <C-tab> gt
-im  <C-tab> <C-O>gt
-map <C-S-tab> gT
-im  <C-S-tab> <C-O>gT
-map <C-t> :tabe<cr>
-im  <C-t> <C-O>:tabe<cr>
+"map <C-tab> gt
+"im  <C-tab> <C-O>gt
+"map <C-S-tab> gT
+"im  <C-S-tab> <C-O>gT
+"map <C-t> :tabe<cr>
+"im  <C-t> <C-O>:tabe<cr>
 
 "close tab
 
-" Route middle mouse single, double, triple, and quadruple clicks to left click
-" instead of paste. I frequently click the middle mouse button accidentally.
-map <MiddleMouse>   <LeftMouse>
-im  <MiddleMouse>   <LeftMouse>
-map <2-MiddleMouse> <LeftMouse>
-im  <2-MiddleMouse> <LeftMouse>
-map <3-MiddleMouse> <LeftMouse>
-im  <3-MiddleMouse> <LeftMouse>
-map <4-MiddleMouse> <LeftMouse>
-im  <4-MiddleMouse> <LeftMouse>
 
 " ------------------------------------------------------------------------------
 " Miscellaneous
 
 " Use forward slashes in filenames.
-se ssl
+"se ssl
 
 " Disable audible and visual bells.
-se novb
+"se novb
 
 " Configure to use bash.
-se sh=bash
+"se sh=bash
 
 " Argument specifying a command follows is '-c'.
-se shcf=-c
+"se shcf=-c
 
-if has('win32')
+"if has('win32')
   " Wrap commands in double quotes.
-  se sxq=\"
-en
+"  se sxq=\"
+"en
 
-" Use Bash style autocompletion.
-se wim=list:longest
 
 " Disable autocompletion for files matching...
 "se wig=*~,*.swp
 
 " Default selection highlighting is nearly invisible. Especially when viewed at
 " an angle.
-hi Visual guibg=#b0c0f0
+" hi Visual guibg=#b0c0f0
 
 " ------------------------------------------------------------------------------
 " More Miscellaneous
-fu! rc:cc()
+"fu! rc:cc()
   " TODO: route errors somewhere or fork or something.
-  if bufname('') == '' " The current buffer.
-    :w !g++ -x c++ -
-  el
-    :w|!g++ -c %
-  en
-endf
+"  if bufname('') == '' " The current buffer.
+"    :w !g++ -x c++ -
+"  el
+"    :w|!g++ -c %
+"  en
+"endf
 " mak --- map to what key? map other things..., ctrlf
 " cope
 
-se spell
 
 " ------------------------------------------------------------------------------
 " Single line comment.
-fu! rc:slc(b_comment)
-  " TODO: s doesn't support variable interpolation. Use substitute().
-  " TODO: get the comment character from the syntax definition.
-  if    &syntax == 'c'
-    if a:b_comment
-      s_\v^([\t ]*)([^\t ])_\1//\2_e
-    el
-      s_\v^([\t ]*)//_\1_e
-    en
-  elsei &syntax == 'cpp'
-    if a:b_comment
-      s_\v^([\t ]*)([^\t ])_\1//\2_e
-    el
-      s_\v^([\t ]*)//_\1_e
-    en
-  elsei &syntax == 'vim'
-    if a:b_comment
-      s_\v^([\t ]*)([^\t ])_\1"\2_e
-    el
-      s_\v^([\t ]*)"_\1_e
-    en
-  elsei &syntax == 'txt' " TODO: need to set syntax to text on autoload.
-    " Special case.
-    if a:b_comment
-      s_\v^([\t ]*)(-+)? ?(.*[^\t ])_\1-\2 \3_e
-    el
-      s_\v^([\t ]*)((- )|-)_\1_e
-    en
-  el " Default.
-    if a:b_comment
-      s_\v^([\t ]*)([^\t ])_\1#\2_e
-    el
-      s_\v^([\t ]*)#_\1_e
-    en
-  en
-endf
+"fu! rc:slc(b_comment)
+"  " TODO: s doesn't support variable interpolation. Use substitute().
+"  " TODO: get the comment character from the syntax definition.
+"  if    &syntax == 'c'
+"    if a:b_comment
+"      s_\v^([\t ]*)([^\t ])_\1//\2_e
+"    el
+"      s_\v^([\t ]*)//_\1_e
+"    en
+"  elsei &syntax == 'cpp'
+"    if a:b_comment
+"      s_\v^([\t ]*)([^\t ])_\1//\2_e
+"    el
+"      s_\v^([\t ]*)//_\1_e
+"    en
+"  elsei &syntax == 'vim'
+"    if a:b_comment
+"      s_\v^([\t ]*)([^\t ])_\1"\2_e
+"    el
+"      s_\v^([\t ]*)"_\1_e
+"    en
+"  elsei &syntax == 'txt' " TODO: need to set syntax to text on autoload.
+"    " Special case.
+"    if a:b_comment
+"      s_\v^([\t ]*)(-+)? ?(.*[^\t ])_\1-\2 \3_e
+"    el
+"      s_\v^([\t ]*)((- )|-)_\1_e
+"    en
+"  el " Default.
+"    if a:b_comment
+"      s_\v^([\t ]*)([^\t ])_\1#\2_e
+"    el
+"      s_\v^([\t ]*)#_\1_e
+"    en
+"  en
+"endf
 
 " ------------------------------------------------------------------------------
 " Cscope
 
 " Use Cygwin Cscope.
-se csprg=mlcscope
+"se csprg=mlcscope
 
 " Use Cscope, not Ctags.
-se cst
+"se cst
 
 " Notify the user when cs add fails.
-se csverb
+"se csverb
 
 " Notes:
 " cs add cscope.out S:/b/M7630AAAEQMWSA1573_0
@@ -351,31 +371,30 @@ se csverb
 
 " Open files for every nonempty line in a file. This is kind of broken.
 " TODO: str_file_ls arg.
-fu! rc:tabe_ls()
+"fu! rc:tabe_ls()
   " This isn't really what I want, but the following only works on the first
   " line:
   " g_^_tabe `=getline('.')`
 
   " Hose args.
-  sil! argd *
+"  sil! argd *
 
   " Add each nonempty line to args.
-  g_._arga `=getline('.')`
+"  g_._arga `=getline('.')`
 
   " Open each arg in a tab.
-  tab ba
-endf
+"  tab ba
+"endf
 " execute "cd" fnameescape(pathname). `=expr`
 
-se cul
+"se cul
 " :se switchbuf=usetab,newtab
 " map gf :tabe <cfile><CR>
 " ctrl-z, etc. in command mode
 " \<word\>
 
 
-se bdir=~/.swp
+"se bdir=~/.swp
 ",$usernamedesktop
-se dir=~/.swp
 " $bdir
 " TODO: mkdir if not exist
