@@ -18,15 +18,20 @@ X=$(tr [:upper:] [:lower:] <<< "$1")
 # ------------------------------------------------------------------------------
 # Root workspace full and half width and height.
 rltrb=($(xprop -root -f _NET_WORKAREA 32c ' $0 $1 $2 $3' _NET_WORKAREA|sed -r 's_[^ ]* (.*)_\1_'))
-rw=$((${rltrb[2]} - ${rltrb[0]}))
-rh=$((${rltrb[3]} - ${rltrb[1]}))
+
+# HACK: for Oneiric, which doesn't seem to take panels into account for sizing?
+#rw=$((${rltrb[2]} - ${rltrb[0]}))
+#rh=$((${rltrb[3]} - ${rltrb[1]}))
+rw=${rltrb[2]}
+rh=${rltrb[3]}
+
 rw2=$(($rw/2))
 rh2=$(($rh/2))
 
 # ------------------------------------------------------------------------------
 # Position
 
-if [[ $X == nw || $X == sw || $X == w ]]
+if [[ $X == nw || $X == sw || $X == w || $X == n || $X == s ]]
 then
   x=0
 else
@@ -34,7 +39,7 @@ else
 fi
 let x+=${rltrb[0]}
 
-if [[ $X == nw || $X == ne || $X == n ]]
+if [[ $X == nw || $X == ne || $X == n || $X == w || $X == e ]]
 then
   y=0
 else
