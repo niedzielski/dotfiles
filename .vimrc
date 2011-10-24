@@ -26,6 +26,10 @@ im  <3-MiddleMouse> <LeftMouse>
 map <4-MiddleMouse> <LeftMouse>
 im  <4-MiddleMouse> <LeftMouse>
 
+" Some shortcuts for command mode.
+cm $f <c-r>=expand('%:p')<cr>
+cm $d <c-r>=expand('%:p:h').'/'<cr>
+
 " Search.
 se hls  " Highlight matches.
 se is   " As typed.
@@ -33,6 +37,51 @@ se ic   " Ignore case.
 se scs  " Unless capital(s) are used.
 se nows " And don't wrap back to the top of buffer.
 
+" Highlight current line.
+se cul
+
+" Maximum number of tabs open simultaneously (default is few).
+se tpm=100
+
+" ------------------------------------------------------------------------------
+" Behave Like Windows
+
+" Sourcing this file handles the lion's share. But there's some (mostly) subtle
+" supplements needed on the following lines.
+so $VIMRUNTIME/mswin.vim
+
+" Allow cursor to position one past the last character in a line. This allows
+" for im c-s-left to work properly when positioned one past the last character.
+se ve=onemore
+
+" Forward word deletion.
+map <c-del> dw
+im <c-del> <c-o>dw
+
+" Backward word deletion.
+map <c-bs> db
+im <c-bs> <c-o>db
+
+" Backspace in visual mode deletes selection (for consistency with delete).
+nm <bs> d<left>
+
+" Left word selection.
+vm <c-s-left> b<c-g>
+nm <c-s-left> v<c-s-left>
+im <c-s-left> <c-o><c-s-left>
+" TODO: investigate adding command mode support. I could use setpos for <c-left>
+" behavior, but not sure how to do <c-s-left> selecting. Maybe something like
+" "cmap <c-s-left> <c-\>e".
+
+" Right word selection.
+vm <c-s-right> w<c-g>
+nm <c-s-right> v<c-s-right>
+im <c-s-right> <c-o><c-s-right>
+
+" Page up selection.
+vm <s-pgup> <c-u>
+nm <s-pgup> v<s-pgup>
+im <s-pgup> <c-o><s-pgup>
 
 
 
@@ -41,32 +90,9 @@ se nows " And don't wrap back to the top of buffer.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-"hose this stuff
-
-"so $VIMRUNTIME/mswin.vim
 
 "sy enable
 "se ru
-" check out windows example files
-
-" TODO: gvim can't paste out to chrome in ubuntu
-
-
-" TODO: no backup ~ thing
-
-
 
 " ------------------------------------------------------------------------------
 " Keyboard Shortcuts
@@ -82,64 +108,12 @@ se nows " And don't wrap back to the top of buffer.
 "vm <c-l> :call rc:slc(0)<cr>
 "im <c-l> <c-o>v<c-l>
 
-" Left word selection.
-"vm <c-s-left> b<c-g>
-"nm <c-s-left> v<c-s-left>
-"im <c-s-left> <c-o><c-s-left>
-" TODO: investigate adding command mode support. I could use setpos for <c-left>
-" behavior, but not sure how to do <c-s-left> selecting. Maybe something like
-" "cmap <c-s-left> <c-\>e".
-
-" Right word selection.
-"vm <c-s-right> w<c-g>
-"nm <c-s-right> v<c-s-right>
-"im <c-s-right> <c-o><c-s-right>
-
-" Page up selection.
-"vm <s-pgup> <c-u>
-"nm <s-pgup> v<s-pgup>
-"im <s-pgup> <c-o><s-pgup>
-
-
-
-
-" Backspace in Visual mode deletes selection
-"nm <bs> d
-
-" not sure about backspace here in nm
-
-" Forward word deletion.
-"map <c-del> dw
-"im <c-del> <c-o>dw
-
-" Backward word deletion.
-"map <c-bs> db
-"im <c-bs> <c-o>db
-
-"cm $f <c-r>=expand('%:p')<cr>
-"cm $d <c-r>=expand('%:p:h').'/'<cr>
 
 
 "set expandtab
 
-" Act something like Windows. Word selection and deletion don't behave
-" consistently by default.
-
-" Allow cursor to position one past the last character in a line. This allows
-" for im c-s-left to work properly when positioned one past the last character.
-"se ve=onemore
-
 
 "don't use .vimrc
-
-
-
-" For some reason page down is already handled properly.
-
-
-
-
-
 " ------------------------------------------------------------------------------
 " Wrapping
 
@@ -156,24 +130,6 @@ se nows " And don't wrap back to the top of buffer.
 " Wrap cursor movements at EOL & SOL.
 "se ww=<,>,h,l,[,]
 
-" ------------------------------------------------------------------------------
-" Display
-
-" Show non-printing characters.
-" se list
-" se lcs=tab:»\ ,trail:·
-
-" Select Pablo colorscheme.
-"colo pablo
-
-" Highlight current line.
-"se cul
-"hi cursorline gui=standout
-
-"se nocul " this must be getting picked up from vim file... need to make changes there
-
-" Set selection highlighting color.
-"hi visual guibg=darkblue
 
 " Set status bar (multiple windows) colors.
 "hi statusline ctermbg=white ctermfg=black
@@ -181,28 +137,10 @@ se nows " And don't wrap back to the top of buffer.
 " Set status line (single or non-selected window).
 "hi statuslinenc ctermbg=lightgrey ctermfg=black
 
-" Do not allow modified buffers to be hidden. Need to explore this more.
-"se nohid
-
-" Show line number gutter.
-"se nu
-
-" Startup width and height.
-"se co=80
-"se lines=40
-
 " Remove toolbar (icons) and menubar (file, edit, ...).
 "se go-=T
 "se go-=m
 
-"if has('win32')
-  " Set font size.
-  " To bring up selector dialog: se gfn=*
-"  se gfn=Fixedsys:h10
-"en
-
-" Maximum number of tabs open simultaneously.
-"se tpm=100
 
 
 " ------------------------------------------------------------------------------
@@ -237,26 +175,10 @@ se nows " And don't wrap back to the top of buffer.
 " ------------------------------------------------------------------------------
 " Miscellaneous
 
-" Use forward slashes in filenames.
-"se ssl
-
-" Disable audible and visual bells.
-"se novb
-
-" Configure to use bash.
-"se sh=bash
-
-" Argument specifying a command follows is '-c'.
-"se shcf=-c
-
 "if has('win32')
   " Wrap commands in double quotes.
 "  se sxq=\"
 "en
-
-
-" Disable autocompletion for files matching...
-"se wig=*~,*.swp
 
 " Default selection highlighting is nearly invisible. Especially when viewed at
 " an angle.
@@ -356,8 +278,6 @@ se nows " And don't wrap back to the top of buffer.
 "ino ;; <esc>
 "icno ;; <c-c>
 " other meta or special keys... do a search on minimal mappings
-" switch to .vrimc and vim
-" se co=161
 " ctrl w c, :clo to close frame... alias to unsplit? no... not really sure how to well manage these... just need to practice
 " TODO: paste should just affect RBUFFER, not paste before line in insert
 " mode.
@@ -387,14 +307,8 @@ se nows " And don't wrap back to the top of buffer.
 "endf
 " execute "cd" fnameescape(pathname). `=expr`
 
-"se cul
 " :se switchbuf=usetab,newtab
 " map gf :tabe <cfile><CR>
 " ctrl-z, etc. in command mode
 " \<word\>
 
-
-"se bdir=~/.swp
-",$usernamedesktop
-" $bdir
-" TODO: mkdir if not exist
