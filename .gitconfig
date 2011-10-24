@@ -1,0 +1,7 @@
+[color]
+	ui = auto
+#[url "git://codeaurora.org"]
+#	insteadOf = git://android.git.kernel.org
+[user]
+	name = Stephen Niedzielski
+	email = stephen@niedzielski.com
