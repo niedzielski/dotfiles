@@ -237,25 +237,25 @@ up_file()
 {
   local f="$1"
   local pwd="$PWD"
+  local err=1
 
-  while [[ ! -e "$f" ]] && [[ "$PWD" != "/" ]] && builtin cd ..
+  while [[ "$PWD" != "/" ]] && builtin cd ..
   do
-    :
+    if [[ -e "$f" ]]
+    then
+      err=0
+      echo "$PWD/$f"
+      break
+    fi
   done
 
-  if [[ -e "$f" ]]
-  then
-    echo "$PWD"
-  fi
-
-  builtin cd "$pwd"
+  builtin cd "$pwd" && return $err
 }
 
 alias updatedb='command updatedb -l0 -oindex.db -U .'
 loc()
 {
-  local index="$(up_file index.db)/index.db"
-  locate -Pd"$index" --regex "$@"
+  locate -Pd"$(up_file index.db)" --regex "$@"
 }
 
 # colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y
