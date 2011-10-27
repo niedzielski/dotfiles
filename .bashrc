@@ -225,7 +225,7 @@ init()
   then
     [[ -e /usr/bin/chrome ]]  || sudo ln -s /{usr/bin/google-,usr/bin/}chrome
     [[ -e /usr/bin/term ]]    || sudo ln -s /usr/bin/gnome-terminal /usr/bin/term
-    [[ -e /usr/bin/eclipse ]] || sudo ln -s /{opt/eclipse,usr/bin}/eclipse
+    [[ -e /usr/bin/eclipse ]] || sudo ln -s {~/opt/eclipse,/usr/bin}/eclipse
   fi
 }
 
