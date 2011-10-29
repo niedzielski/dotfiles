@@ -17,8 +17,8 @@ if [ -n "$BASH_VERSION" ]; then
 fi
 
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
-[ -d "/opt/android-sdk-linux/tools" ] && PATH="$PATH:/opt/android-sdk-linux/tools"
-[ -d "/opt/android-sdk-linux/platform-tools" ] && PATH="$PATH:/opt/android-sdk-linux/platform-tools"
+[ -d "~/opt/android-sdk-linux/tools" ] && PATH="$PATH:~/opt/android-sdk-linux/tools"
+[ -d "~/opt/android-sdk-linux/platform-tools" ] && PATH="$PATH:~/opt/android-sdk-linux/platform-tools"
 
 export LANGUAGE="en_US:en"
 export LC_MESSAGES="en_US.UTF-8"
