@@ -10,7 +10,8 @@ se dir=~/Desktop,~
 se ts=4
 
 " Show typos.
-se spell
+" se spell
+" Disabled until I get around to customizing the terminal color scheme.
 
 " Use Bash style file tab completion.
 se wim=list:longest
@@ -42,6 +43,9 @@ se cul
 
 " Maximum number of tabs open simultaneously (default is few).
 se tpm=100
+
+" Remove the toolbar.
+se go-=T
 
 " ------------------------------------------------------------------------------
 " Behave Like Windows
@@ -83,6 +87,13 @@ vm <s-pgup> <c-u>
 nm <s-pgup> v<s-pgup>
 im <s-pgup> <c-o><s-pgup>
 
+" Tab navigation.
+map <C-tab> gt
+im  <C-tab> <C-O>gt
+map <C-S-tab> gT
+im  <C-S-tab> <C-O>gT
+map <C-t> :tabe<cr>
+im  <C-t> <C-O>:tabe<cr>
 
 
 
@@ -91,6 +102,7 @@ im <s-pgup> <c-o><s-pgup>
 
 
 
+"<ctrl-n> for omnicompletion
 "sy enable
 "se ru
 
@@ -138,7 +150,6 @@ im <s-pgup> <c-o><s-pgup>
 "hi statuslinenc ctermbg=lightgrey ctermfg=black
 
 " Remove toolbar (icons) and menubar (file, edit, ...).
-"se go-=T
 "se go-=m
 
 
@@ -160,14 +171,6 @@ im <s-pgup> <c-o><s-pgup>
 
 " ------------------------------------------------------------------------------
 " Keys
-
-" Tab navigation.
-"map <C-tab> gt
-"im  <C-tab> <C-O>gt
-"map <C-S-tab> gT
-"im  <C-S-tab> <C-O>gT
-"map <C-t> :tabe<cr>
-"im  <C-t> <C-O>:tabe<cr>
 
 "close tab
 
