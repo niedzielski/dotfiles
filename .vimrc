@@ -4,7 +4,7 @@
 
 " ------------------------------------------------------------------------------
 " Set swap dir to some place I'll actually see.
-se dir=~/Desktop,~
+se dir=~
 
 " Tabs occupy four characters.
 se ts=4
