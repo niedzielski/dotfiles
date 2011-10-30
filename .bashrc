@@ -258,6 +258,17 @@ loc()
   locate -Pd"$(up_file index.db)" --regex "$@"
 }
 
+# Power cycles the embedded webcam on my System76 Gazelle Professional laptop,
+# which malfunctions regularly. Since it's builtin, I can't cycle the cable
+# manually and the bus and port stay the same (2-1.6).
+# TODO: how to unbind /sys/bus/usb/drivers/uvcvideo/*?
+reset_webcam()
+{
+  echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/unbind > /dev/null
+  sleep 1
+  echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/bind  > /dev/null
+}
+
 # colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y
 # dic() { ! wn "$@" -over; } # Dictionary definition.
 # alias gd='aspell dump master|g -i' # Grep mediocre dictionary.
