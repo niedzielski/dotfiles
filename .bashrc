@@ -214,6 +214,8 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 
 init()
 {
+  [[ -d ~/bin ]] || mkdir ~/bin
+
   # Generate null shorthand link.
   [[ -e /0 ]] || case "$OSTYPE" in
          cygwin) ln -s /dev/null /0 ;;
@@ -221,12 +223,20 @@ init()
   esac
 
   # A couple shortcuts.
-  if [[ "$OSTYPE" == "linux-gnu" ]]
-  then
-    [[ -e /usr/bin/chrome ]]  || sudo ln -s /{usr/bin/google-,usr/bin/}chrome
-    [[ -e /usr/bin/term ]]    || sudo ln -s /usr/bin/gnome-terminal /usr/bin/term
-    [[ -e /usr/bin/eclipse ]] || sudo ln -s {~/opt/eclipse,/usr/bin}/eclipse
-  fi
+  ln -fs /usr/bin/google-chrome ~/bin/chrome
+  ln -fs /usr/bin/gnome-terminal ~/bin/term
+  ln -fs {~/opt/eclipse,~/bin}/eclipse
+
+#  ln -fs {"$PWD",~/bin}/4tw
+#  ln -fs {"$PWD",~}/.bashrc
+#  ln -fs {"$PWD",~}/.inputrc
+#ln -fs nsswitch
+#ln -fs {"$PWD",~}/.profile
+#ln -fs {"$PWD",~/bin}/snap
+#ln -fs {"$PWD",~}/.vimrc
+#ln -fs {"$PWD",~}/.Xmodmap
+# what to do about .gitconfig...
+
 }
 
 #which xclip
