@@ -1,6 +1,6 @@
 " ------------------------------------------------------------------------------
 " .vimrc
-" Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
+" Copyright 2010 - 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
 " ------------------------------------------------------------------------------
 " Set swap dir to some place I'll actually see.
@@ -314,4 +314,6 @@ im  <C-t> <C-O>:tabe<cr>
 " map gf :tabe <cfile><CR>
 " ctrl-z, etc. in command mode
 " \<word\>
+
+"se gfn=Bitstream\ Vera\ Sans\ Mono\ 8
 

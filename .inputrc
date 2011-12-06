@@ -1,1 +1,35 @@
+# ------------------------------------------------------------------------------
+# .inputrc
+# Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
+
+# ------------------------------------------------------------------------------
+# Misc
+
+# Silent mode.
+set bell-style none
+
+# I don't quite understand these bits, but it's seems the optimal English
+# configuration is below:
+set input-meta on
+set output-meta on
+set convert-meta off
+set enable-keypad on
+
+# ------------------------------------------------------------------------------
+# Completion
+
+# Be as understanding as possible, case insenstive.
 set completion-ignore-case on
+
+# Work like mark-directory by appending a slash to symlinked dirs too.
+set mark-symlinked-directories on
+
+# Don't wait for another tab, just complete it. Also: just give me the beans!
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
+
+# If attempting completion midword and word is already complete, just skip the
+# completion and jump to the end of the word. Unfortunately, this doesn't pull
+# in the righthand side when a word is incomplete.
+set skip-completed-text on
+

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------------------
 # .bashrc
-# Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
+# Copyright 2009 - 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
 # ------------------------------------------------------------------------------
 # History
@@ -10,8 +10,8 @@
 # space.
 HISTCONTROL=ignoredups:ignorespace
 
-# Set max command entries and file size in history.
-HISTSIZE=5000
+# Set max commands and lines in Bash history.
+HISTSIZE=50000
 HISTFILESIZE=50000
 
 # Timestamp entries.
@@ -41,7 +41,8 @@ shopt -s nocaseglob
 # ------------------------------------------------------------------------------
 # Completion
 
-# Don't attempt to complete empty command lines.
+# Don't attempt to complete empty command lines otherwise it'll hang the prompt
+# for a bit.
 shopt -s no_empty_cmd_completion
 
 # Source default Bash completions.
@@ -59,19 +60,20 @@ set -o vi
 # Check for active jobs before exiting.
 shopt -s checkjobs
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# Check the window size after each command and, if necessary, update the values
+# of LINES and COLUMNS.
 shopt -s checkwinsize
 
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
-# Not great support for this... Keep it simple.
 
-# "\nuser@host:pwd\n" colored blue.
-PS1='\n\[\033[22;34m\]\u@\h:\w\n'
+update_term_title() { [[ "$-" == *i* ]] && echo -en "\033]0;$USERNAME@$HOSTNAME:$PWD\007"; }
+
+# Initial update for interactive shells.
+update_term_title &&
 
 # "$ " colored green for zero exit status, red otherwise.
-PS1+='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
+PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )' &&
 
 # Colorless.
 PS1+='\$ \[\033[00m\]'
@@ -80,23 +82,27 @@ PS1+='\$ \[\033[00m\]'
 # Simple Shell Supplements
 
 # Miscellaneous.
-alias cp='cp -i'
-alias  e='echo'
-alias  g='grep -E --color=auto'
-alias mv='mv -i'
-alias  m='mv'
-alias md='mkdir'
-alias rm='rm -i'
-alias  r='rm'
-alias  s='sed -r'
-alias  t='touch'
-alias  v='gvim -p'
-alias  x='xargs -d\\n' # Xargs newline delimited.
+alias   cp='cp -i' # Prompt on overwrite.
+alias    e='echo'
+alias grep='grep -E --color=auto' # Extended regular expression.
+alias    g=grep
+alias   mv='mv -i' # Prompt on overwrite.
+alias    m='mv'
+alias   md='mkdir'
+alias   rm='rm -i' # Always prompt.
+alias    r='rm'
+alias    s='sed -r' # Extended regular expression.
+alias    t='touch'
+alias    x='xargs'
+alias head='head -n$(($LINES - 5))'
+alias tail='tail -n$(($LINES - 5))'
+alias diff='colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y'
+alias less='less -i' # Smart ignore-case.
 
 alias timestamp='date +%F-%H-%M-%S-%N'
 
 # Directory listing.
-alias  ls='command ls -Ap --color=auto' # Alphabetically.
+alias  ls='ls -Ap --color=auto' # Alphabetically.
 alias   l=ls
 alias lex='l -X'                   # By extension.
 alias lsi='l -S'                   # By size.
@@ -105,7 +111,7 @@ alias lmt='l -t'                   # By mod time.
 alias lat='l -u'                   # By access time.
 [[ -x /usr/bin/dircolors ]] && eval "$(dircolors -b)" # Enable color support.
 
-alias rsync='command rsync -azv --partial-dir=.rsync-partial --partial'
+alias rsync='rsync -azv --partial-dir=.rsync-partial --partial'
 
 # ------------------------------------------------------------------------------
 # Less Simple Shell Supplements
@@ -113,26 +119,32 @@ alias rsync='command rsync -azv --partial-dir=.rsync-partial --partial'
 # Directory navigation.
 dirs()
 {
-  local color=1
+  local color=4
   builtin dirs -p|while read path
   do
     printf "\033[22;3${color}m%s\033[00m " "$path"
 
     # Alternate the color after the first path.
-    [[ $color -eq 5 ]] && color=4 || color=5;
+    [[ $color -eq 5 ]] && color=3 || color=5;
   done
   echo # Newline.
 }
 alias d=dirs
+cd() { builtin cd "$@"; update_term_title; }
 alias c=cd
-pushd() { builtin pushd "$@" > /dev/null; d; } # Change directory.
+pushd() { builtin pushd "$@" > /dev/null; d; update_term_title; } # Change directory.
 alias p=pushd
 alias pb='pushd +1' # Previous directory.
 alias pf='pushd -0' # Next directory.
-popd() { builtin popd > /dev/null; d; }
+popd() { builtin popd > /dev/null; d; update_term_title; }
 alias P=popd
 
 alias abspath='readlink -m'
+
+gvim() { command gvim -p "$@" 2> /dev/null; } # One tab per file.
+alias v=gvim
+
+lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
 # Xargs grep.
 alias xg='x grep -E --color=auto'
@@ -215,6 +227,7 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 init()
 {
   [[ -d ~/bin ]] || mkdir ~/bin
+  [[ -d ~/opt ]] || mkdir ~/opt
 
   # Generate null shorthand link.
   [[ -e /0 ]] || case "$OSTYPE" in
@@ -227,16 +240,16 @@ init()
   ln -fs /usr/bin/gnome-terminal ~/bin/term
   ln -fs {~/opt/eclipse,~/bin}/eclipse
 
-#  ln -fs {"$PWD",~/bin}/4tw
-#  ln -fs {"$PWD",~}/.bashrc
-#  ln -fs {"$PWD",~}/.inputrc
-#ln -fs nsswitch
-#ln -fs {"$PWD",~}/.profile
-#ln -fs {"$PWD",~/bin}/snap
-#ln -fs {"$PWD",~}/.vimrc
-#ln -fs {"$PWD",~}/.Xmodmap
-# what to do about .gitconfig...
-
+  # Use version controlled files from PWD.
+  ln -fs {"$PWD",~/bin}/4tw
+  ln -fs {"$PWD",~}/.bashrc
+  ln -fs {"$PWD",~}/.inputrc
+  ln -fs {"$PWD",/etc}/nsswitch.conf
+  ln -fs {"$PWD",~}/.profile
+  ln -fs {"$PWD",~/bin}/snap
+  ln -fs {"$PWD",~}/.vimrc
+  ln -fs {"$PWD",~}/.Xmodmap
+# what to do about .gitconfig... if work = false? may need gitconfig_work
 }
 
 #which xclip
@@ -262,7 +275,7 @@ up_file()
   builtin cd "$pwd" && return $err
 }
 
-alias updatedb='command updatedb -l0 -oindex.db -U .'
+alias updatedb='updatedb -l0 -oindex.db -U .'
 loc()
 {
   locate -Pd"$(up_file index.db)" --regex "$@"
@@ -279,7 +292,60 @@ reset_webcam()
   echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/bind  > /dev/null
 }
 
-# colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y
 # dic() { ! wn "$@" -over; } # Dictionary definition.
 # alias gd='aspell dump master|g -i' # Grep mediocre dictionary.
+
+# ------------------------------------------------------------------------------
+# Behave Like Windows
+
+# Mimic Explorer style directory navigation. I just really don't like having to
+# type distinct commands to change directories. Set a-up, down, right, and left
+# to unused keys.
+# See also: http://unix.stackexchange.com/questions/9664/how-to-configure-inputrc-so-altup-has-the-effect-of-cd
+case "$OSTYPE" in
+  cygwin)
+    # HACK: I'm not sure what program to use to get key codes on Windows. I
+    # used Zsh and switched to the rudimentary .safe keymap which just prints
+    # control sequences directly on the prompt: bindkey -A .safe main.
+    bind '"\e\e[A":"\201"'
+    bind '"\e\e[B":"\202"'
+    bind '"\e\e[C":"\203"'
+    bind '"\e\e[D":"\204"'
+  ;;
+  linux-gnu|*)
+    bind '"\e[1;3A":"\201"'
+    bind '"\e[1;3B":"\202"'
+    bind '"\e[1;3C":"\203"'
+    bind '"\e[1;3D":"\204"'
+  ;;
+esac
+
+# Map unused keys to push parent, pop, next, and previous directory.
+bind -x '"\201":c ..; printf "\033[22;34m%s\033[00m\n" "$PWD"'
+bind -x '"\202":P'
+bind -x '"\203":pf'
+bind -x '"\204":pb'
+
+# c-left, c-right.
+bind '"\e[1;5C": forward-word'
+bind '"\e[1;5D": backward-word'
+
+# TODO: investigate highlighting / marking for c-s-left, c-s-right, ...
+#"\e[1;6C": ...
+#"\e[1;6D": ...
+
+# c-del, c-] (c-bs == bs and c-\ is some kind of signal).
+bind '"\e[3;5~": kill-word'
+bind '"\C-]": backward-kill-word'
+
+# TODO: quote param.
+#"\C-xq": "\eb\"\ef\""
+
+# TODO: info rluserman
+
+# ------------------------------------------------------------------------------
+# Android
+alias logcat='adb logcat -v long'
+
+#TODO: pull in old zsh
 
