@@ -67,7 +67,7 @@ shopt -s checkwinsize
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
 
-update_term_title() { [[ "$-" == *i* ]] && echo -en "\033]0;$USERNAME@$HOSTNAME:$PWD\007"; }
+update_term_title() { [[ "$-" == *i* ]] && echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
 
 # Initial update for interactive shells.
 update_term_title &&
