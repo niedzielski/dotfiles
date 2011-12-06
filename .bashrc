@@ -119,13 +119,13 @@ alias rsync='rsync -azv --partial-dir=.rsync-partial --partial'
 # Directory navigation.
 dirs()
 {
-  local color=4
+  local color=3
   builtin dirs -p|while read path
   do
     printf "\033[22;3${color}m%s\033[00m " "$path"
 
     # Alternate the color after the first path.
-    [[ $color -eq 3 ]] && color=5 || color=3;
+    [[ $color -eq 4 ]] && color=5 || color=4;
   done
   echo # Newline.
 }
