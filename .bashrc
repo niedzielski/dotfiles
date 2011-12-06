@@ -125,7 +125,7 @@ dirs()
     printf "\033[22;3${color}m%s\033[00m " "$path"
 
     # Alternate the color after the first path.
-    [[ $color -eq 5 ]] && color=3 || color=5;
+    [[ $color -eq 3 ]] && color=5 || color=3;
   done
   echo # Newline.
 }
