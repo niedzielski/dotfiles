@@ -262,7 +262,7 @@ up_file()
   local pwd="$PWD"
   local err=1
 
-  while [[ "$PWD" != "/" ]] && builtin cd ..
+  while :
   do
     if [[ -e "$f" ]]
     then
@@ -270,6 +270,7 @@ up_file()
       echo "$PWD/$f"
       break
     fi
+    [[ "$PWD" != "/" ]] && builtin cd .. || break
   done
 
   builtin cd "$pwd" && return $err
