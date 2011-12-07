@@ -138,7 +138,7 @@ alias pb='pushd +1' # Previous directory.
 alias pf='pushd -0' # Next directory.
 popd() { builtin popd > /dev/null; d; update_term_title; }
 alias P=popd
-alias ..=cd\ ..
+alias ..=cd\ .. # TODO: consider jumping to arb folder / file as cmd...
 
 alias abspath='readlink -m'
 
