@@ -280,7 +280,7 @@ up_file()
 alias updatedb='updatedb -l0 -oindex.db -U .'
 loc()
 {
-  locate -Pd"$(up_file index.db)" --regex "$@"
+  locate -Pd"$(up_file index.db)" --regex "${@:-.}"
 }
 
 # Power cycles the embedded webcam on my System76 Gazelle Professional laptop,
@@ -350,4 +350,4 @@ bind '"\C-]": backward-kill-word'
 alias logcat='adb logcat -v long'
 
 #TODO: pull in old zsh
-
+alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
