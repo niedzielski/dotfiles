@@ -7,7 +7,7 @@
 # Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 # ------------------------------------------------------------------------------
 # 4tw is a supplement for Metacity. I shortcut the numpad keys (KP_7, KP_8,
-# KP_9, ...) in gconf-editor.
+# KP_9, ...) + <Super> in gconf-editor -> /apps/metacity/*.
 
 # ------------------------------------------------------------------------------
 # Process Args
