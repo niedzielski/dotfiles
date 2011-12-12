@@ -225,7 +225,7 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # Source work configuration, if present.
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
 
-init()
+init_links()
 {
   [[ -d ~/bin ]] || mkdir ~/bin
   [[ -d ~/opt ]] || mkdir ~/opt
