@@ -219,6 +219,9 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # ------------------------------------------------------------------------------
 # Misc
 
+# Source Android configuration, if present.
+[[ -f ~/.bashrc_android ]] && . ~/.bashrc_android
+
 # Source private configuration, if present.
 [[ -f ~/.bashrc_home ]] && . ~/.bashrc_home
 
@@ -344,10 +347,6 @@ bind '"\C-]": backward-kill-word'
 #"\C-xq": "\eb\"\ef\""
 
 # TODO: info rluserman
-
-# ------------------------------------------------------------------------------
-# Android
-alias logcat='adb logcat -v long'
 
 #TODO: pull in old zsh
 

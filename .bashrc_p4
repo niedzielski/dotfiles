@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# ------------------------------------------------------------------------------
+# .bashrc_p4
+# Stephen Niedzielski
+# Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
+
+# ------------------------------------------------------------------------------
+export P4CONFIG=.p4config
+export ANDROID_ADB_SERVER_PORT=$((10000 + $(id -u)))
+export ADT_BASE_PORT=$((13000 + ($(id -u) - 2048) * 200))
+export ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100))
+
