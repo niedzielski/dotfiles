@@ -296,6 +296,7 @@ reset_webcam()
   sleep 1
   echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/bind  > /dev/null
 }
+# TODO: reset_usb for when the whole stack tanks.
 
 # dic() { ! wn "$@" -over; } # Dictionary definition.
 # alias gd='aspell dump master|g -i' # Grep mediocre dictionary.
