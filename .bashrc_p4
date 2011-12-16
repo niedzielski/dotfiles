@@ -5,8 +5,27 @@
 # Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
 # ------------------------------------------------------------------------------
-export P4CONFIG=.p4config
-export ANDROID_ADB_SERVER_PORT=$((10000 + $(id -u)))
-export ADT_BASE_PORT=$((13000 + ($(id -u) - 2048) * 200))
-export ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100))
+# P4 Sed Magic
+# Helps cope with the wildly differing output of P4. The only reliable way to
+# make a nice wrapper would be to use marshal Python objects, but that's too
+# involved.
+
+# Escape reserved characters in filenames. There's only a small table of
+# characters listed in documentation, so there's some confidence this should
+# work pretty consistently.
+alias p4se="sed 's_%_%25_g;s_@_%40_g;s_#_%23_g;s_*_%2A_g'"
+
+
+p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
+p4_client_name() { p4 info|sed -rn 's_Client name: (.*)_\1_p'; }
+
+p4_diff_client()
+{
+  local client2="${2:-$(p4_client_name)}"
+  p4 client -o "$client2"|sed -r "s%$client2%%g" > "$client2.client"
+  p4 client -o "$1"|sed -r "s%$1%%g" > "$1.client"
+
+  colordiff "$1.client" "$client2.client"
+  rm -f "$1.client" "$client2.client"
+}
 
