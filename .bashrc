@@ -228,7 +228,7 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # Source work configuration, if present.
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
 
-init()
+init_links()
 {
   [[ -d ~/bin ]] || mkdir ~/bin
   [[ -d ~/opt ]] || mkdir ~/opt
@@ -283,7 +283,7 @@ up_file()
 alias updatedb='updatedb -l0 -oindex.db -U .'
 loc()
 {
-  locate -Pd"$(up_file index.db)" --regex "$@"
+  locate -Pd"$(up_file index.db)" --regex "${@:-.}"
 }
 
 # Power cycles the embedded webcam on my System76 Gazelle Professional laptop,
@@ -349,4 +349,4 @@ bind '"\C-]": backward-kill-word'
 # TODO: info rluserman
 
 #TODO: pull in old zsh
-
+alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
