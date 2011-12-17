@@ -354,3 +354,39 @@ bind '"\C-]": backward-kill-word'
 
 #TODO: pull in old zsh
 alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
+
+# No orphans "bash -c".
+# $1  - command
+# ... - optional parameters
+dead_block()
+{
+  local cmd="$1"
+  shift
+  bash \
+    ${@:+"$@"} \
+    -c 'trap "kill -9 -$$" SIGTERM SIGINT;'"$cmd"$'\nwait'
+}
+
+# $1 pid
+spin()
+{
+  # HACK: I don't know of a way to guarantee the PID or job isn't recycled in
+  # Bash.
+
+  local pid=$1
+  local rest=${2:-10}
+  local cmd="$3"
+  while kill -0 $pid 2> /dev/null
+  do
+    local log="$(last_log)"
+    # Periodically update the user.
+    echo "$(date +%F-%H-%M) $(wc -l "$log"|sed -r 's_([0-9]+).*_\1_'): $(tail -qn1 "$log")"
+    sleep $rest
+  done
+}
+
+dead_spin()
+{
+  :
+}
+
