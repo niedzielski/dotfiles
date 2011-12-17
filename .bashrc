@@ -250,9 +250,12 @@ init_links()
   # Use version controlled files from PWD.
   ln -fs {"$PWD",~/bin}/4tw
   ln -fs {"$PWD",~}/.bashrc
+  ln -fs {"$PWD",~}/.bashrc_android
+  ln -fs {"$PWD",~}/.bashrc_p4
   ln -fs {"$PWD",~}/.inputrc
   ln -fs {"$PWD",/etc}/nsswitch.conf
   ln -fs {"$PWD",~}/.profile
+  ln -fs {"$PWD",~}/.screenrc
   ln -fs {"$PWD",~/bin}/snap
   ln -fs {"$PWD",~}/.vimrc
   ln -fs {"$PWD",~}/.Xmodmap
