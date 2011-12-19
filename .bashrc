@@ -390,3 +390,7 @@ dead_spin()
   :
 }
 
+# proc&
+# spin&
+# wait pid
+
