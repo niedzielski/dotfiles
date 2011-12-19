@@ -26,3 +26,20 @@ unset idu
 # - debugSelectedPort
 # TODO: can I use setprop?
 
+# ------------------------------------------------------------------------------
+
+dump_apk_cert() { unzip -p "$1" META-INF/CERT.RSA; }
+# TODO: support keystore.
+# platform.x509.pem
+# $(gettop)/extension/security
+# $(gettop)/build/target/product/security
+check_apk_cert()
+{
+  local pem="$1"
+  local apk="$2"
+
+  dump_apk_cert "$apk"|
+  openssl pkcs7 -inform DER -outform PEM -print_certs|
+  diff "$pem" -
+}
+
