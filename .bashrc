@@ -45,6 +45,9 @@ shopt -s nocaseglob
 # for a bit.
 shopt -s no_empty_cmd_completion
 
+# Attempt to correct directory names when completing.
+shopt -s dirspell
+
 # Source default Bash completions.
 [[ -f /etc/bash_completion ]] && . /etc/bash_completion
 
@@ -138,7 +141,6 @@ alias pb='pushd +1' # Previous directory.
 alias pf='pushd -0' # Next directory.
 popd() { builtin popd > /dev/null; d; update_term_title; }
 alias P=popd
-alias ..=cd\ .. # TODO: consider jumping to arb folder / file as cmd...
 
 alias abspath='readlink -m'
 
@@ -358,18 +360,17 @@ bind '"\C-]": backward-kill-word'
 #TODO: pull in old zsh
 alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
 
-# No orphans "bash -c".
-# $1  - command
-# ... - optional parameters
-dead_block()
-{
-  local cmd="$1"
-  shift
-  bash \
-    ${@:+"$@"} \
-    -c 'trap "kill -9 -$$" SIGTERM SIGINT;'"$cmd"$'\nwait'
-}
+# huponexit is only applicable to login shells, this covers nonlogin too.
+trap_and_hup() { trap 'kill -HUP -$$' exit; } # kill -9
+trap_and_hup
 
+# No way to catch change directory and update term title? Is that Zsh only?
+# Assume command names that are directory names are the arguments to cd.
+#shopt -s autocd
+# Assume that non-directory arguments to cd are variables with directory values.
+#shopt -s cdable_vars
+
+# job& spin& fg %job
 # $1 pid
 spin()
 {
@@ -386,11 +387,6 @@ spin()
     echo "$(date +%F-%H-%M) $(wc -l "$log"|sed -r 's_([0-9]+).*_\1_'): $(tail -qn1 "$log")"
     sleep $rest
   done
-}
-
-dead_spin()
-{
-  :
 }
 
 # proc&
