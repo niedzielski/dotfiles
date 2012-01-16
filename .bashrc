@@ -57,6 +57,10 @@ shopt -s dirspell
 # Don't overwrite an existing file when using redirection.
 set -C
 
+# The return value of a pipeline is that of the rightmost command to exit with a
+# non-zero status, or zero if all commands exit successfully.
+set -o pipefail
+
 # Use VI style command line editing.
 set -o vi
 
@@ -87,7 +91,8 @@ PS1+='\$ \[\033[00m\]'
 # Miscellaneous.
 alias   cp='cp -i' # Prompt on overwrite.
 alias    e='echo'
-alias grep='grep -E --color=auto' # Extended regular expression.
+alias grep='grep -E --color=auto -ID skip -d skip' # Extended regex, color, skip
+                                                   # bin, dev, sockets, and dir.
 alias    g=grep
 alias   mv='mv -i' # Prompt on overwrite.
 alias    m='mv'
@@ -100,7 +105,7 @@ alias    x='xargs -d\\n' # Xargs newline delimited.
 alias head='head -n$(($LINES - 5))'
 alias tail='tail -n$(($LINES - 5))'
 alias diff='colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y'
-alias less='less -i' # Smart ignore-case.
+alias less='less -ir' # Smart ignore-case + output control chars.
 
 alias timestamp='date +%F-%H-%M-%S-%N'
 
@@ -360,9 +365,17 @@ bind '"\C-]": backward-kill-word'
 #TODO: pull in old zsh
 alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
 
+# shopt's huponexit is only applicable to login shells. The following covers
+# nonlogin shells too.
+#trap 'kill -HUP -$$' exit
+#trap 'kill -9 -$$' exit
+
 # huponexit is only applicable to login shells, this covers nonlogin too.
-trap_and_hup() { trap 'kill -HUP -$$' exit; } # kill -9
-trap_and_hup
+#trap_and_hup() { trap 'kill -HUP -$$' exit; } # kill -9
+#trap_and_hup
+
+# ps --ppid $$|wc -l -gt 2
+# kill -0 $pid
 
 # No way to catch change directory and update term title? Is that Zsh only?
 # Assume command names that are directory names are the arguments to cd.
