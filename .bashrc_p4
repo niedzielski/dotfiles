@@ -16,14 +16,14 @@
 alias p4se="sed 's_%_%25_g;s_@_%40_g;s_#_%23_g;s_*_%2A_g'"
 
 
-p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
-p4_client_name() { p4 info|sed -rn 's_Client name: (.*)_\1_p'; }
+p4_client_root() { p4 info|s -n 's_Client root: (.*)_\1_p'; }
+p4_client_name() { p4 info|s -n 's_Client name: (.*)_\1_p'; }
 
 p4_diff_client()
 {
   local client2="${2:-$(p4_client_name)}"
-  p4 client -o "$client2"|sed -r "s%$client2%%g" > "$client2.client"
-  p4 client -o "$1"|sed -r "s%$1%%g" > "$1.client"
+  p4 client -o "$client2"|s "s%$client2%%g" > "$client2.client"
+  p4 client -o "$1"|s "s%$1%%g" > "$1.client"
 
   colordiff "$1.client" "$client2.client"
   rm -f "$1.client" "$client2.client"

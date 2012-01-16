@@ -91,8 +91,8 @@ PS1+='\$ \[\033[00m\]'
 # Miscellaneous.
 alias   cp='cp -i' # Prompt on overwrite.
 alias    e='echo'
-alias grep='grep -E --color=auto -ID skip -d skip' # Extended regex, color, skip
-                                                   # bin, dev, sockets, and dir.
+alias grep='grep --color=auto -EID skip -d skip' # Extended regex, color, skip
+                                                 # bin, dev, sockets, and dirs.
 alias    g=grep
 alias   mv='mv -i' # Prompt on overwrite.
 alias    m='mv'
@@ -156,7 +156,7 @@ alias v=gvim
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
 # Xargs grep.
-alias xg="x $(alias grep|sed -r "s_alias grep='(.*)'_\1_")"
+alias xg="x $(alias grep|s "s_alias grep='(.*)'_\1_")"
 
 # Find with a couple defaults.
 find()
@@ -397,7 +397,7 @@ spin()
   do
     local log="$(last_log)"
     # Periodically update the user.
-    echo "$(date +%F-%H-%M) $(wc -l "$log"|sed -r 's_([0-9]+).*_\1_'): $(tail -qn1 "$log")"
+    echo "$(date +%F-%H-%M) $(wc -l "$log"|s 's_([0-9]+).*_\1_'): $(tail -qn1 "$log")"
     sleep $rest
   done
 }
