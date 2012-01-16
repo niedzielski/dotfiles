@@ -99,7 +99,8 @@ alias    m='mv'
 alias   md='mkdir'
 alias   rm='rm -i' # Always prompt.
 alias    r='rm'
-alias    s='sed -r' # Extended regular expression.
+alias  sed='sed -r' # Extended regular expression.
+alias    s=sed
 alias    t='touch'
 alias    x='xargs -d\\n' # Xargs newline delimited.
 alias head='head -n$(($LINES - 5))'
@@ -155,7 +156,7 @@ alias v=gvim
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
 # Xargs grep.
-alias xg='x grep -E --color=auto'
+alias xg="x $(alias grep|sed -r "s_alias grep='(.*)'_\1_")"
 
 # Find with a couple defaults.
 find()
@@ -367,13 +368,12 @@ alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
 
 # shopt's huponexit is only applicable to login shells. The following covers
 # nonlogin shells too.
-#trap 'kill -HUP -$$' exit
-#trap 'kill -9 -$$' exit
+# trap 'kill -HUP -$$' exit
+# trap 'kill -9 -$$' exit
 
 # huponexit is only applicable to login shells, this covers nonlogin too.
-#trap_and_hup() { trap 'kill -HUP -$$' exit; } # kill -9
-#trap_and_hup
-
+# trap_and_hup() { trap 'kill -HUP -$$' exit; } # kill -9
+# trap_and_hup
 # ps --ppid $$|wc -l -gt 2
 # kill -0 $pid
 
