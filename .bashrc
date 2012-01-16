@@ -156,7 +156,7 @@ alias v=gvim
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
 # Xargs grep.
-alias xg="x $(alias grep|sed -r "s_alias grep='(.*)'_\1_")"
+alias xg="x $(alias grep|sed "s_alias grep='(.*)'_\1_")"
 
 # Find with a couple defaults.
 find()
@@ -397,7 +397,7 @@ spin()
   do
     local log="$(last_log)"
     # Periodically update the user.
-    echo "$(date +%F-%H-%M) $(wc -l "$log"|sed -r 's_([0-9]+).*_\1_'): $(tail -qn1 "$log")"
+    echo "$(date +%F-%H-%M) $(wc -l "$log"|sed 's_([0-9]+).*_\1_'): $(tail -qn1 "$log")"
     sleep $rest
   done
 }
