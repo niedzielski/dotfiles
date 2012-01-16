@@ -10,8 +10,9 @@ se dir=~
 se ts=4
 
 " Show typos.
-" se spell
-" Disabled until I get around to customizing the terminal color scheme.
+se spell
+" This otherwise defaults to a bright red background that is too distracting.
+hi spellbad cterm=underline ctermbg=none
 
 " Use Bash style file tab completion.
 se wim=list:longest
@@ -96,7 +97,9 @@ map <C-t> :tabe<cr>
 im  <C-t> <C-O>:tabe<cr>
 
 
-
+if &term == 'xterm'
+  se bg=dark
+en
 
 
 
