@@ -97,7 +97,7 @@ map <C-t> :tabe<cr>
 im  <C-t> <C-O>:tabe<cr>
 
 
-if &term == 'xterm'
+if &term == 'xterm' || &term == 'screen'
   se bg=dark
 en
 
