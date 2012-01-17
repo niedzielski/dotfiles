@@ -71,6 +71,8 @@ shopt -s checkjobs
 # of LINES and COLUMNS.
 shopt -s checkwinsize
 
+shopt -s expand_aliases # 'bash -c' sources .bashrc and behaves consistently.
+
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
 
@@ -102,7 +104,7 @@ alias    r='rm'
 alias  sed='sed -r' # Extended regular expression.
 alias    s=sed
 alias    t='touch'
-alias    x='xargs -d\\n' # Xargs newline delimited.
+alias    x='xargs -d\\n ' # Xargs newline delimited + expansion.
 alias head='head -n$(($LINES - 5))'
 alias tail='tail -n$(($LINES - 5))'
 alias diff='colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y'
@@ -155,9 +157,6 @@ alias v=gvim
 
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
-# Xargs grep.
-alias xg="x $(alias grep|s "s_alias grep='(.*)'_\1_")"
-
 # Find with a couple defaults.
 find()
 {
@@ -171,6 +170,7 @@ find()
     # Eliminate dir from @.
     shift
   fi
+  # TODO: while.
 
   command find -O3 "$d" -nowarn -regextype egrep "$@"
 }
