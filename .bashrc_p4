@@ -13,7 +13,7 @@
 # Escape reserved characters in filenames. There's only a small table of
 # characters listed in documentation, so there's some confidence this should
 # work pretty consistently.
-alias p4se="s 's_%_%25_g;s_@_%40_g;s_#_%23_g;s_\*_%2A_g'"
+alias p4se="s 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
 
 
 p4_client_root() { p4 info|s -n 's_Client root: (.*)_\1_p'; }
