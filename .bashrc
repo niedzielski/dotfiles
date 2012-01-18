@@ -4,6 +4,10 @@
 # Copyright 2009 - 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
 # ------------------------------------------------------------------------------
+# Interactive Shell Check
+[[ "$-" == *i* ]] || return
+
+# ------------------------------------------------------------------------------
 # History
 
 # Don't record adjacent duplicate commands or command lines starting with a
@@ -71,14 +75,12 @@ shopt -s checkjobs
 # of LINES and COLUMNS.
 shopt -s checkwinsize
 
-shopt -s expand_aliases # 'bash -c' sources .bashrc and behaves consistently.
-
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
 
-update_term_title() { [[ "$-" == *i* ]] && echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
+update_term_title() { echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
 
-# Initial update for interactive shells.
+# Initial update.
 update_term_title &&
 
 # "$ " colored green for zero exit status, red otherwise.
@@ -101,8 +103,8 @@ alias    m='mv'
 alias   md='mkdir'
 alias   rm='rm -i' # Always prompt.
 alias    r='rm'
-alias  sed='sed -r' # Extended regular expression.
-alias    s=sed
+#alias  sed='sed -r' # Extended regular expression... but Sed won't permit -rrrrrrrrrr.
+alias    s='sed -r'
 alias    t='touch'
 alias    x='xargs -d\\n ' # Xargs newline delimited + expansion.
 alias head='head -n$(($LINES - 5))'
