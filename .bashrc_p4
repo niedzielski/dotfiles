@@ -15,10 +15,11 @@
 # work pretty consistently.
 alias p4se="s 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
 
-
+# ------------------------------------------------------------------------------
 p4_client_root() { p4 info|s -n 's_Client root: (.*)_\1_p'; }
 p4_client_name() { p4 info|s -n 's_Client name: (.*)_\1_p'; }
 
+# Diff two clients but account for name differences.
 p4_diff_client()
 {
   local client2="${2:-$(p4_client_name)}"
@@ -27,5 +28,39 @@ p4_diff_client()
 
   colordiff "$1.client" "$client2.client"
   rm -f "$1.client" "$client2.client"
+}
+
+# Reconcile client directories recursively with server. My best reasonable
+# attempt to implement something like "git status".
+p4_reconcile()
+{
+  local client_root="$(p4_client_root)"
+
+  # TODO: try to handle all dirs in one go.
+  for d in "${@:-$client_root}"
+  do
+    # 1: dump differing and missing files. Bin stderr -- handles empty
+    # synchronization case.
+    p4 diff -sl "$d"/... 2> /dev/null |
+    g -v '^same '
+  
+    # 2: check for unopened but added files.
+  
+    # Dump all files, links, and empty directories.
+    f "$d" \( -type f -o -type l -o -type d -empty \)|
+  
+    # Escape reserved characters in filenames.
+    p4se|
+  
+    # Suppress have files. Reformat added files from stderr.
+    p4 -x- have 2>&1 > /dev/null|
+    s 's%(.*) - file\(s\) not on client\.$%\1%'|
+  
+    # Prune out files opened for add.
+    p4 -x- opened 2>&1 > /dev/null|
+    s 's%(.*) - file\(s\) not opened on this client\.$%add '"$client_root/"'\1%'
+  done
+
+  : # Can't say much about exit status.
 }
 
