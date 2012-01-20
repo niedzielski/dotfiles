@@ -18,10 +18,13 @@ alias p4se="s 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
 # ------------------------------------------------------------------------------
 p4_client_root() { p4 info|s -n 's_Client root: (.*)_\1_p'; }
 p4_client_name() { p4 info|s -n 's_Client name: (.*)_\1_p'; }
+p4_logged_in()   { p4 login -s > /dev/null; }
 
 # Diff two clients but account for name differences.
 p4_diff_client()
 {
+  p4_logged_in || return
+
   local client2="${2:-$(p4_client_name)}"
   p4 client -o "$client2"|s "s%$client2%%g" > "$client2.client"
   p4 client -o "$1"|s "s%$1%%g" > "$1.client"
@@ -34,10 +37,10 @@ p4_diff_client()
 # attempt to implement something like "git status".
 p4_reconcile()
 {
-  local client_root="$(p4_client_root)"
+  p4_logged_in || return
 
   # TODO: try to handle all dirs in one go.
-  for d in "${@:-$client_root}"
+  for d in "${@:-$(p4_client_root)}"
   do
     # 1: dump differing and missing files. Bin stderr -- handles empty
     # synchronization case.
@@ -58,9 +61,34 @@ p4_reconcile()
   
     # Prune out files opened for add.
     p4 -x- opened 2>&1 > /dev/null|
-    s 's%(.*) - file\(s\) not opened on this client\.$%add '"$client_root/"'\1%'
+    s 's%(.*) - file\(s\) not opened on this client\.$%add \1%'
   done
 
   : # Can't say much about exit status.
+}
+
+# $1 template client
+# $2 target client
+# $3 dir
+p4_init()
+{
+  [[ $# -eq 3 ]] &&
+  [[ -n "$P4CONFIG" ]] &&
+
+  # Create client directory and enter it.
+  mkdir "$3" &&
+  cd "$3" &&
+
+  # Templatize from $1 and output result.
+  p4 client -ot "$1" "$2" |
+
+  # Adjust new client options and feed back in.
+  sed -r 's_(^Options:\t).*_\1allwrite clobber nocompress locked nomodtime rmdir_
+          s_(^SubmitOptions:\t).*_\1submitunchanged_
+          s_(^LineEnd:\t).*_\1local_' |
+  p4 client -i &&
+
+  # 
+  echo "P4CLIENT=$2" > "$P4CONFIG"
 }
 
