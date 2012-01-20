@@ -43,3 +43,6 @@ check_apk_cert()
   diff "$pem" -
 }
 
+export USE_CCACHE=1
+export CCACHE_DIR=~/.ccache
+
