@@ -408,3 +408,13 @@ spin()
 # spin&
 # wait pid
 
+xprop_pid()
+{
+  ps -o pid='' \
+    $(xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|
+      sed -r 's_.* = ([0-9]+)_\1_')|
+  tr -d ' '
+}
+
+
+
