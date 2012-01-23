@@ -407,4 +407,5 @@ spin()
 # proc&
 # spin&
 # wait pid
+# Prefix args. "${@/#/$i}"
 
