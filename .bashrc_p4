@@ -17,6 +17,8 @@ export P4CONFIG=.p4config
 # characters listed in documentation, so there's some confidence this should
 # work pretty consistently.
 alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
+alias p4sd="sed -r 's_(.*)#[0-9]+ - .*_\1_'"
+alias p4sdv="sed -r 's_(.*#[0-9]+) - .*_\1_'"
 
 # ------------------------------------------------------------------------------
 p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
