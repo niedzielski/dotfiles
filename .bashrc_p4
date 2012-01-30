@@ -5,6 +5,9 @@
 # Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
 # ------------------------------------------------------------------------------
+export P4CONFIG=.p4config
+
+# ------------------------------------------------------------------------------
 # P4 Sed Magic
 # Helps cope with the wildly differing output of P4. The only reliable way to
 # make a nice wrapper would be to use marshal Python objects, but that's too
@@ -13,7 +16,9 @@
 # Escape reserved characters in filenames. There's only a small table of
 # characters listed in documentation, so there's some confidence this should
 # work pretty consistently.
-alias p4se="s 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
+alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
+alias p4sd="sed -r 's_(.*)#[0-9]+ - .*_\1_'"
+alias p4sdv="sed -r 's_(.*#[0-9]+) - .*_\1_'"
 
 # ------------------------------------------------------------------------------
 p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
@@ -35,7 +40,7 @@ p4_diff_client()
 
 # Reconcile client directories recursively with server. My best reasonable
 # attempt to implement something like "git status".
-p4_reconcile()
+p4_status()
 {
   p4_logged_in || return
 
@@ -65,6 +70,29 @@ p4_reconcile()
   done
 
   : # Can't say much about exit status.
+}
+
+# p4_status|p4 -x- have|sed ...|p4 -x- sync -q
+
+
+# Workaround for maxing maxresults.
+p4_sync_client()
+{
+  p4 client -o| # Dump the client.
+  sed -rn '0,/^View:$/ d; s_\t\+?//.* (//.*)_\1_p;'| # Only print included client filespecs.
+  xargs -d\\n -n1 -i p4 sync -q '{}'"$1" # Sync each view one at a time.
+  # TODO: iterate over args and build hashmap with client file as key using
+  # "p4 sync -n"? Then sync.
+  # local dash_args=...
+  # shift
+  # while read file
+  # do
+  #   for constraint in "${@:-#head}"
+  #   do
+  #     p4 sync -n "$dash_args" "$file$constraint"|
+  #     ...
+  #   done
+  # done
 }
 
 # $1 template client

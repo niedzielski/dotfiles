@@ -407,6 +407,7 @@ spin()
 # proc&
 # spin&
 # wait pid
+# Prefix args. "${@/#/$i}"
 
 xprop_pid()
 {
