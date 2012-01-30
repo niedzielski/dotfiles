@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="run_command_window_screenshot" mtime="1327959462" type="string">
+		<stringvalue>&lt;Alt&gt;F13</stringvalue>
+	</entry>
+	<entry name="run_command_screenshot" mtime="1327959452" type="string">
+		<stringvalue>F13</stringvalue>
+	</entry>
+	<entry name="run_command_10" mtime="1327959438" type="string">
+		<stringvalue>disabled</stringvalue>
+	</entry>
+	<entry name="run_command_9" mtime="1327959409" type="string">
+		<stringvalue>&lt;Super&gt;r</stringvalue>
+	</entry>
+	<entry name="run_command_8" mtime="1327959368" type="string">
+		<stringvalue>&lt;Super&gt;KP_4</stringvalue>
+	</entry>
+	<entry name="run_command_7" mtime="1327959363" type="string">
+		<stringvalue>&lt;Super&gt;KP_1</stringvalue>
+	</entry>
+	<entry name="run_command_6" mtime="1327959359" type="string">
+		<stringvalue>&lt;Super&gt;KP_2</stringvalue>
+	</entry>
+	<entry name="run_command_5" mtime="1327959356" type="string">
+		<stringvalue>&lt;Super&gt;KP_3</stringvalue>
+	</entry>
+	<entry name="run_command_4" mtime="1327959351" type="string">
+		<stringvalue>&lt;Super&gt;KP_6</stringvalue>
+	</entry>
+	<entry name="run_command_3" mtime="1327959347" type="string">
+		<stringvalue>&lt;Super&gt;KP_9</stringvalue>
+	</entry>
+	<entry name="run_command_2" mtime="1327959342" type="string">
+		<stringvalue>&lt;Super&gt;KP_8</stringvalue>
+	</entry>
+	<entry name="run_command_1" mtime="1327959329" type="string">
+		<stringvalue>&lt;Super&gt;KP_7</stringvalue>
+	</entry>
+</gconf>

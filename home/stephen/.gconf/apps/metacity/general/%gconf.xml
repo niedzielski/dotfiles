@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="num_workspaces" mtime="1327959945" type="int" value="1"/>
+	<entry name="mouse_button_modifier" mtime="1327959256" type="string">
+		<stringvalue>&lt;Super&gt;</stringvalue>
+	</entry>
+</gconf>

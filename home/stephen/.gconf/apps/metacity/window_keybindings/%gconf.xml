@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="minimize" mtime="1327959756" type="string">
+		<stringvalue>&lt;Super&gt;Down</stringvalue>
+	</entry>
+	<entry name="toggle_maximized" mtime="1327959741" type="string">
+		<stringvalue>&lt;Super&gt;KP_5</stringvalue>
+	</entry>
+</gconf>

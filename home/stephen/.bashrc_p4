@@ -23,7 +23,9 @@ alias p4sdv="sed -r 's_(.*#[0-9]+) - .*_\1_'"
 # ------------------------------------------------------------------------------
 p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
 p4_client_name() { p4 info|sed -rn 's_Client name: (.*)_\1_p'; }
+p4_client_view() { p4 client -o "$@"|sed -rn '1,/^View:$/ d;s%^\t%%p'; }
 p4_logged_in()   { p4 login -s > /dev/null; }
+p4_user() { p4 info|sed -rn '1s/^User name: (.*)/\1/p'; }
 
 # Diff two clients but account for name differences.
 p4_diff_client()
@@ -78,8 +80,8 @@ p4_status()
 # Workaround for maxing maxresults.
 p4_sync_client()
 {
-  p4 client -o| # Dump the client.
-  sed -rn '0,/^View:$/ d; s_\t\+?//.* (//.*)_\1_p;'| # Only print included client filespecs.
+  p4_client_view|
+  sed -rn 's_\t\+?//.* (//.*)_\1_p;'| # Only print included client filespecs.
   xargs -d\\n -n1 -i p4 sync -q '{}'"$1" # Sync each view one at a time.
   # TODO: iterate over args and build hashmap with client file as key using
   # "p4 sync -n"? Then sync.
