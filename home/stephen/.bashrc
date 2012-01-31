@@ -254,7 +254,7 @@ echo_ng()  { { printf '\033[22;31m'; echo "$@"; printf '\033[00m'; } >&2; } # Re
 prompt() { read -p '<Enter> to continue, <ctrl-c> to abort: '; }
 
 rubadub_root="$(readlink -e "$(dirname "$(readlink -e "$BASH_SOURCE")")/../..")"
-initlinks()
+init_links()
 {
   [[ -d "$rubadub_root" ]] || return
 
