@@ -107,6 +107,10 @@ alias    r='rm'
 alias    s='sed -r'
 alias    t='touch'
 alias    x='xargs -d\\n ' # Xargs newline delimited + expansion.
+# Notes:
+# - Copy ex: x cp --parents -t"$dst"
+# - TODO: Figure out general case. x -i implies -L1. Use
+#   xargs --show-limits --no-run-if-empty < /dev/null?
 alias head='head -n$(($LINES - 5))'
 alias tail='tail -n$(($LINES - 5))'
 alias diff='colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y'
@@ -163,20 +167,22 @@ lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 find()
 {
   # The trouble is that -regextype must appear after path but before expression.
-  local d='.' # Default to current directory.
-  if [[ -n "$1" ]] && [[ "${1:0:1}" != '-' ]]
-  then
+  local d=()
+  while [[ -n "$1" ]] && [[ "${1:0:1}" != '-' ]]
+  do
     # Non-dash parameter, use it.
-    d="$1"
+    d+=("$1")
 
     # Eliminate dir from @.
     shift
-  fi
-  # TODO: while.
+  done
 
-  command find -O3 "$d" -nowarn -regextype egrep "$@"
+  command find -O3 "${d[@]:-.}" -nowarn -regextype egrep "$@"
 }
 alias f=find
+# Notes:
+# - Pruning ex: find rubadub moon \( -path moon/.git -o -path rubadub/.git \) -prune -o \( -type f -o -type l \)
+#   Note: still prints pruned dir.
 
 # Find non-binary files.
 ftxt() { f "$@"|file --mime-encoding -Nf-|grep -v binary\$|s 's_(.+): .+$_\1_';}
