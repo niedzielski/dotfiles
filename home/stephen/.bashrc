@@ -274,7 +274,6 @@ init_links()
     bin/eclipse \
     bin/snap \
     .gitconfig \
-    .gconf/apps/metacity \
     .inputrc \
     .profile \
     .screenrc \
@@ -282,7 +281,7 @@ init_links()
     work/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.ddms.prefs \
     .Xmodmap
   do
-    ln -s "$target_home/$f" ~/"$f"
+    ln -s "$target_home/$f" ~/"$(dirname $f)"
   done
 
   if type init_home_links &> /dev/null
