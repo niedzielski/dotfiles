@@ -194,11 +194,11 @@ cb()
 
 gui() { nautilus "${1:-.}"; }
 
-# ssh-keygen -t rsa # no passphrase
-#ssh_auth()
-#{
-#  ssh "$1" '[[ -d .ssh ]] || mkdir .ssh; cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.pub
-#}
+# ssh-keygen -t rsa
+ssh_auth()
+{
+  ssh "$1" '[[ -d .ssh ]] || mkdir .ssh; cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.pub
+}
 
 # ------------------------------------------------------------------------------
 # Find Files with Extension
