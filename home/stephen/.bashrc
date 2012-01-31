@@ -428,14 +428,12 @@ spin()
 # spin&
 # wait pid
 # Prefix args. "${@/#/$i}"
-
+alias ps='ps -F f e'
 xprop_pid()
 {
   # Only print the PID if it's not a dead parent.
-  ps -o pid='' \
-    $(xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|
-      sed -r 's_.* = ([0-9]+)_\1_')|
-  tr -d ' '
+  ps $(xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|
+       sed -r 's_.* = ([0-9]+)_\1_')
 }
 
 # ------------------------------------------------------------------------------
