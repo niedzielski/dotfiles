@@ -438,3 +438,30 @@ xprop_pid()
   tr -d ' '
 }
 
+# ------------------------------------------------------------------------------
+# Notes
+# du -sh, df -h /
+# [ ! -t 0 ] # stdin
+# f -iregex '.*(ehci|usb).*\.(c|h|inf)'|x sed -ri 's_Portions Copyright_Portions copyright_' # search and replace
+# f \( -ipath './edk2/Build' -o -ipath './edk2/Conf' \) -prune -o -iname 'usb*' -print # find exclude
+# paste, join, cut
+# rsync -vruK audio barnacle:~
+# g '\<foo\>' # grep word foo
+# ls -Ad --color=always */ .*/ # List directories in PWD.
+# TODO python sub: Python regex grep / substituion (without sub, use match?).
+# TODO python sub: python -c 'import re, sys; sys.stdout.write(re.sub("/\*(.|\r?\n)*?\*/", "", sys.stdin.read(), 0))'
+# strings -a
+# pdftotext -layout
+# tac: reverse list
+# TODO: email
+# f -type f -printf '%T@ %p\n'|sort
+# TODO: git grep
+#cat *|sort|uniq -dc|sort  -r
+# increntmal multi-line search working? not very practical so far, not to stop anyway
+# dd bs=1M count=1 if=/dev/zero of=1M.bin - gen big fat file
+# find duplicates - sort|uniq -d
+# 2>&1 stderr to stdout
+# &> stderr and stdout to file
+# echo {1..5} # print 1 2 3 4 5
+# dd if=/dev/dvd of=dvd.iso
+
