@@ -16,7 +16,8 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
-[ -d "$HOME/opt/android-sdk-linux/tools" ] && PATH="$PATH:$HOME/opt/android-sdk-linux/tools"
-[ -d "$HOME/opt/android-sdk-linux/platform-tools" ] && PATH="$PATH:$HOME/opt/android-sdk-linux/platform-tools"
-[ -d "$HOME/opt/p4v-2011.1.405081/bin" ] && PATH="$PATH:$HOME/opt/p4v-2011.1.405081/bin"
+[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH" || :
+[ -d "$HOME/opt/android-sdk-linux/tools" ] && PATH="$PATH:$HOME/opt/android-sdk-linux/tools" || :
+[ -d "$HOME/opt/android-sdk-linux/platform-tools" ] && PATH="$PATH:$HOME/opt/android-sdk-linux/platform-tools" || :
+[ -d "$HOME/opt/p4v-2011.1.405081/bin" ] && PATH="$PATH:$HOME/opt/p4v-2011.1.405081/bin" || :
+
