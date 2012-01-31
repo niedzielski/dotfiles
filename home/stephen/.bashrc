@@ -279,6 +279,7 @@ init_links()
     bin/chrome \
     bin/eclipse \
     bin/snap \
+    .gconf/apps/metacity \
     .gitconfig \
     .inputrc \
     .profile \
