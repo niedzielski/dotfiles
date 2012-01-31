@@ -241,35 +241,63 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # Source work configuration, if present.
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
 
+
+echo_ok()  {   printf '\033[22;32m'; echo "$@"; printf '\033[00m'  ;      } # Green
+echo_wrn() { { printf '\033[22;33m'; echo "$@"; printf '\033[00m'; } >&2; } # Yellow
+echo_ng()  { { printf '\033[22;31m'; echo "$@"; printf '\033[00m'; } >&2; } # Red
+prompt() { read -p '<Enter> to continue, <ctrl-c> to abort: '; }
+
+rubadub_root="$(readlink -e "$(dirname "$(readlink -e "$BASH_SOURCE")")/../..")"
 init_links()
 {
+  [[ -d "$rubadub_root" ]] || return
+
+  # Make some directories.
   [[ -d ~/bin ]] || mkdir ~/bin
   [[ -d ~/opt ]] || mkdir ~/opt
 
+  echo_wrn 'etc/default/cachefilesd requires manual linking'
+  echo_wrn 'etc/nsswitch.conf requires manual linking'
+
   # Generate null shorthand link.
-  [[ -e /0 ]] || case "$OSTYPE" in
-         cygwin) ln -s /dev/null /0 ;;
-    linux-gnu|*) sudo ln -s /dev/null /0 ;;
-  esac
+  ln -s /dev/null /0
 
-  # A couple shortcuts.
-  ln -fs /usr/bin/google-chrome ~/bin/chrome
-  ln -fs /usr/bin/gnome-terminal ~/bin/term
-  ln -fs {~/opt/eclipse,~/bin}/eclipse
+  # Link home files.
+  local target_home="$rubadub_root/home/stephen"
+  for f in \
+    .android/ddms.cfg \
+    .bashrc \
+    .bashrc_android \
+    .bashrc_p4 \
+    bin/4tw \
+    bin/chrome \
+    bin/eclipse \
+    bin/snap \
+    .gitconfig \
+    .gconf/apps/metacity \
+    .inputrc \
+    .profile \
+    .screenrc \
+    .vimrc \
+    work/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.ddms.prefs \
+    .Xmodmap
+  do
+    ln -s "$target_home/$f" ~/"$f"
+  done
 
-  # Use version controlled files from PWD.
-  ln -fs {"$PWD",~/bin}/4tw
-  ln -fs {"$PWD",~}/.bashrc
-  ln -fs {"$PWD",~}/.bashrc_android
-  ln -fs {"$PWD",~}/.bashrc_p4
-  ln -fs {"$PWD",~}/.inputrc
-  ln -fs {"$PWD",/etc}/nsswitch.conf
-  ln -fs {"$PWD",~}/.profile
-  ln -fs {"$PWD",~}/.screenrc
-  ln -fs {"$PWD",~/bin}/snap
-  ln -fs {"$PWD",~}/.vimrc
-  ln -fs {"$PWD",~}/.Xmodmap
-# what to do about .gitconfig... if work = false? may need gitconfig_work
+  if type init_home_links &> /dev/null
+  then
+    init_home_links
+  else
+    :
+  fi
+
+  if type init_work_links &> /dev/null
+  then
+    init_work_links
+  else
+    :
+  fi
 }
 
 #which xclip
