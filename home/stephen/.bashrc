@@ -242,13 +242,13 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
 
 
-echo_ok()  {   printf '\033[22;32m'; echo "$@"; printf '\033[00m'  ;      } # Green
+echo_ok()  {   printf '\033[22;32m'; echo "$@"; printf '\033[00m';        } # Green
 echo_wrn() { { printf '\033[22;33m'; echo "$@"; printf '\033[00m'; } >&2; } # Yellow
 echo_ng()  { { printf '\033[22;31m'; echo "$@"; printf '\033[00m'; } >&2; } # Red
 prompt() { read -p '<Enter> to continue, <ctrl-c> to abort: '; }
 
 rubadub_root="$(readlink -e "$(dirname "$(readlink -e "$BASH_SOURCE")")/../..")"
-init_links()
+initlinks()
 {
   [[ -d "$rubadub_root" ]] || return
 
@@ -283,20 +283,6 @@ init_links()
   do
     ln -s "$target_home/$f" ~/"$(dirname $f)"
   done
-
-  if type init_home_links &> /dev/null
-  then
-    init_home_links
-  else
-    :
-  fi
-
-  if type init_work_links &> /dev/null
-  then
-    init_work_links
-  else
-    :
-  fi
 }
 
 #which xclip
@@ -444,6 +430,4 @@ xprop_pid()
       sed -r 's_.* = ([0-9]+)_\1_')|
   tr -d ' '
 }
-
-
 
