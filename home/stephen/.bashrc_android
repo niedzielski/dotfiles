@@ -46,3 +46,4 @@ check_apk_cert()
 export USE_CCACHE=1
 export CCACHE_DIR=~/.ccache
 
+alias apktool='java -jar ~/opt/apktool/apktool.jar'
