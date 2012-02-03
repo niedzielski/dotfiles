@@ -276,8 +276,6 @@ init_links()
     .bashrc_android \
     .bashrc_p4 \
     bin/4tw \
-    bin/chrome \
-    bin/eclipse \
     bin/snap \
     .gconf/apps/metacity \
     .gitconfig \
@@ -290,11 +288,13 @@ init_links()
   do
     ln -s "$target_home/$f" ~/"$(dirname $f)"
   done
+
+  ln -s /usr/bin/google-chrome ~/bin/chrome
+  ln -s ~/opt/eclipse/eclipse ~/bin/eclipse
 }
 
 #which xclip
 #ctags, vim
-#eclipse
 
 up_file()
 {
