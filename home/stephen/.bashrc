@@ -163,6 +163,7 @@ alias v=gvim
 
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
+# TODO: fix find \! -user stephen fails.
 # Find with a couple defaults.
 find()
 {
@@ -177,7 +178,7 @@ find()
     shift
   done
 
-  command find -O3 "${d[@]:-.}" -nowarn -regextype egrep "$@"
+  command find -O3 "${d[@]}" -nowarn -regextype egrep "$@"
 }
 alias f=find
 # Notes:
@@ -256,6 +257,10 @@ prompt() { read -p '<Enter> to continue, <ctrl-c> to abort: '; }
 rubadub_root="$(readlink -e "$(dirname "$(readlink -e "$BASH_SOURCE")")/../..")"
 init_links()
 {
+  # TODO: rename function.
+  # TODO: make this pretty and maybe isolate these to files?
+  dpkg-query -l autossh vim-gnome git-all valgrind xclip build-essential samba smbfs meld openssh-server winbind gmrun gconf-editor nfs nfs-kernel-server cachefilesd curl ccache colordiff dos2unix gimp html2text libdevice-usb-perl lynx p7zip screen > /dev/null
+
   [[ -d "$rubadub_root" ]] || return
 
   # Make some directories.
@@ -283,6 +288,8 @@ init_links()
     .profile \
     .screenrc \
     .vimrc \
+    opt/eclipse/eclipse.ini \
+    opt/signapk \
     work/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.ddms.prefs \
     .Xmodmap
   do
@@ -464,4 +471,7 @@ alias top=htop
 # &> stderr and stdout to file
 # echo {1..5} # print 1 2 3 4 5
 # dd if=/dev/dvd of=dvd.iso
+
+# TODO: javac colorize / format warnings and errors.
+# sudo lshw -C network; lspci|grep -i eth; lspci -nn|grep Eth
 

@@ -40,6 +40,10 @@ p4_diff_client()
   rm -f "$1.client" "$client2.client"
 }
 
+# TODO: need workaround for "p4 diff -sl" which incorrectly reports files opened
+# for delete.
+# TODO: confirm "p4 diff -sl" checks "-sb" and other cases. check for opened but
+# missing added files, branched but changed, etc.
 # Reconcile client directories recursively with server. My best reasonable
 # attempt to implement something like "git status".
 p4_status()
@@ -97,6 +101,7 @@ p4_sync_client()
   # done
 }
 
+# TODO: tab completion for clients would be super nice.
 # $1 template client
 # $2 target client
 # $3 dir
@@ -122,4 +127,49 @@ p4_init()
   # 
   echo "P4CLIENT=$2" > "$P4CONFIG"
 }
+
+
+
+
+
+# TODO: make it take CLs or in gen be mroe versatile.
+# TODO: just make it output local files...
+p4_zip_opened()
+{
+  p4_logged_in &&
+
+  local dst="$(readlink -m $1)" &&
+  mkdir "$dst" &&
+
+  local root="$(p4_client_root)" &&
+  pushd "$root" > /dev/null &&
+
+  {
+    p4 opened|
+    p4sd|
+    p4 -x- fstat -T clientFile|
+    sed -nr "s%^\.\.\. clientFile $root/%%p"|
+    xargs -d\\n cp --parents -t"$dst"
+    popd > /dev/null
+  }
+  # TODO: zip / tar.
+}
+
+# mkdir bundle &&
+# cd bundle &&
+# p4_zip_opened changes &&
+#local dst="$1" &&
+#mkdir "$dst" &&
+#p4 opened|
+#grep -Ev ' - add change|delete'|
+#p4sdv|
+#while read file
+#do
+  #local
+#  out="$dst/$(p4 fstat -T clientFile "$file"|sed -nr "s%^\.\.\. clientFile $root/%%p")"
+#  p4 print -qo "$out" "$file"
+#done
+
+
+# mm showcommands
 

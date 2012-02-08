@@ -33,3 +33,7 @@ set show-all-if-unmodified on
 # in the righthand side when a word is incomplete.
 set skip-completed-text on
 
+# TODO: need quote mechanism.
+# TODO: read default shortcuts.
+# TODO: man bash.
+

@@ -42,8 +42,71 @@ check_apk_cert()
   openssl pkcs7 -inform DER -outform PEM -print_certs|
   diff "$pem" -
 }
+# TODO: dumpapk
 
 export USE_CCACHE=1
 export CCACHE_DIR=~/.ccache
+# NDK CCACHE?
 
 alias apktool='java -jar ~/opt/apktool/apktool.jar'
+alias signapk='java -jar ~/opt/signapk/signapk.jar' # TODO: i need to add some more files here.
+
+
+
+# TODO: Eclipse minimal platform debugging setup. Add debug recur, search for mult.
+dump_eclipse_jars()
+{
+  {
+    for dir in \
+      out/target/common/obj/JAVA_LIBRARIES/* \
+      out/target/common/obj/APPS/* \
+      out/target/product/*/obj/JAVA_LIBRARIES/*
+    do
+      # TODO: best preference?
+      for jar in \
+        classes-full-debug.jar \
+        javalib.jar \
+        noproguard.classes.jar \
+        classes.jar \
+        classes-jarjar.jar \
+        "$dir/"*.jar
+      do
+        local dirjar="$dir/$jar"
+        [[ -e "$dirjar" ]] && echo "$dirjar" && break
+      done
+    done
+    find out/target/product/*/system/framework -name \*.jar
+  }|sed 's%.*%\t<classpathentry kind="lib" path="\0"/>%'
+}
+# TODO: use ANDROID_PRODUCT_OUT?
+
+
+#insert into logs values('',10);
+#seed=0
+#rnd_num()
+#{
+#  printf '%01d%03d%03d%04d' $(( $RANDOM % 10 )) $(( $RANDOM % 1000 )) $(( $RANDOM % 1000 )) $(( $RANDOM % 10000 ))
+#}
+#local db="/data/data/com.sec.android.provider.logsprovider/databases/logs.db"
+#local table=logs
+#local id=0
+#local rows=200
+#local info=echo
+#while [[ $id -lt $rows ]]
+#do
+  # 8|4255622792||695588723805|0|3|0||||||US|Washington||||0|||100|1|0||||||||||||0|||||||
+#  $(info) adb shell sqlite3 "$db" "insert into $table values($id,'$(rnd_num)',,);"
+#insert into logs values(8,'4253582792',,'695588723805','0','3','0',,,,,,'US','Washington',,,,'0',,,'100','1','0',,,,,,,,,,,,'0',,,,,,,);
+#adb shell
+#su
+#ash
+#cd /data
+#cp /dbdata/databases/com.sec.android.provider.logsprovider/logs.db kenny.loggins
+#chown 2000.2000 kenny.loggins # shell.shell
+#exit
+#exit
+#exit
+#adb pull /data/kenny.loggins
+# TODO: aapt colorize warnings and errors.
+# TODO: study how to enable view server in app when platform doesn't support it.
+
