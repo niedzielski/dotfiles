@@ -259,7 +259,7 @@ init_links()
 {
   # TODO: rename function.
   # TODO: make this pretty and maybe isolate these to files?
-  dpkg-query -l autossh vim-gnome git-all valgrind xclip build-essential samba smbfs meld openssh-server winbind gmrun gconf-editor nfs nfs-kernel-server cachefilesd curl ccache colordiff dos2unix gimp html2text libdevice-usb-perl lynx p7zip screen > /dev/null
+  dpkg-query -l autossh vim-gnome git-all valgrind xclip build-essential samba smbfs meld openssh-server winbind gmrun gconf-editor nfs nfs-kernel-server cachefilesd curl ccache colordiff dos2unix gimp html2text libdevice-usb-perl lynx p7zip screen htop > /dev/null
 
   [[ -d "$rubadub_root" ]] || return
 
@@ -474,4 +474,4 @@ alias top=htop
 
 # TODO: javac colorize / format warnings and errors.
 # sudo lshw -C network; lspci|grep -i eth; lspci -nn|grep Eth
-
+# git, gitk
