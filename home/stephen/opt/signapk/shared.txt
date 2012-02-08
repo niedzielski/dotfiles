@@ -1,0 +1,87 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            f2:a7:33:96:bd:38:76:7a
+        Signature Algorithm: md5WithRSAEncryption
+        Issuer: C=US, ST=California, L=Mountain View, O=Android, OU=Android, CN=Android/emailAddress=android@android.com
+        Validity
+            Not Before: Jul 23 21:57:59 2008 GMT
+            Not After : Dec  9 21:57:59 2035 GMT
+        Subject: C=US, ST=California, L=Mountain View, O=Android, OU=Android, CN=Android/emailAddress=android@android.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c8:c2:db:fd:09:4a:2d:f4:5c:3f:f1:a3:2e:d2:
+                    18:05:ec:72:fc:58:d0:17:97:1b:d0:f6:b5:2c:26:
+                    2d:70:81:9d:19:19:67:e1:58:df:d3:a2:c7:f1:b3:
+                    e0:e8:0c:e5:45:d7:9d:28:48:22:02:11:eb:86:f0:
+                    fd:83:12:d3:7b:42:0c:11:37:50:cc:94:61:8a:e8:
+                    72:f4:88:64:63:bd:c4:62:7c:aa:0c:04:83:c8:64:
+                    93:e3:51:55:71:17:03:38:bf:dc:c4:cd:6a:dd:d1:
+                    c0:a2:f3:5f:5c:f2:4e:d3:e4:04:3a:3e:58:e2:b0:
+                    5e:66:4c:cd:e1:2b:cb:67:73:5f:d6:df:12:49:c3:
+                    69:e6:25:42:bc:0a:47:29:e5:39:17:f5:c3:8f:fa:
+                    52:d1:7b:73:c9:c7:37:98:dd:b1:8e:d4:81:59:08:
+                    75:54:7e:66:bf:c5:da:ca:4c:25:a6:eb:96:0e:d9:
+                    69:23:70:9d:a3:02:ba:64:6c:b4:96:b3:25:e8:6c:
+                    5c:8b:2e:7a:33:77:b2:bb:e4:c7:cf:33:25:42:91:
+                    16:3f:68:91:52:ac:08:85:50:c8:3c:50:8f:4b:f5:
+                    ad:f0:ae:d5:a2:dc:a0:58:3f:9a:b0:ad:17:65:0d:
+                    b7:ee:a4:b2:3f:db:45:88:55:47:d0:fe:ab:72:18:
+                    38:89
+                Exponent: 3 (0x3)
+        X509v3 extensions:
+            X509v3 Subject Key Identifier: 
+                CB:4C:7E:2C:DB:B3:F0:AD:A9:8D:AB:79:96:8D:17:2E:9D:BB:1E:D1
+            X509v3 Authority Key Identifier: 
+                keyid:CB:4C:7E:2C:DB:B3:F0:AD:A9:8D:AB:79:96:8D:17:2E:9D:BB:1E:D1
+                DirName:/C=US/ST=California/L=Mountain View/O=Android/OU=Android/CN=Android/emailAddress=android@android.com
+                serial:F2:A7:33:96:BD:38:76:7A
+
+            X509v3 Basic Constraints: 
+                CA:TRUE
+    Signature Algorithm: md5WithRSAEncryption
+        40:a8:d0:96:99:79:59:e9:17:a3:6c:44:24:6b:6b:ac:2b:ae:
+        05:43:7e:cd:89:79:41:18:f7:83:47:20:35:2d:1c:6f:8a:39:
+        b0:86:99:42:f4:da:65:98:1f:aa:29:51:d3:39:71:12:9e:c1:
+        92:1d:79:56:71:c5:27:d6:e2:49:f2:52:82:9f:af:5b:59:13:
+        10:31:1e:2d:e0:96:50:0d:56:8a:d4:11:4a:65:6d:c3:4a:8c:
+        6f:61:04:53:af:c1:ea:79:92:db:a4:aa:7b:3f:85:43:a6:e3:
+        5c:07:28:de:77:fe:97:ee:ac:83:77:1f:d0:ec:90:f8:e4:44:
+        94:34:ee:0b:60:45:78:3e:70:c7:a2:e4:60:24:92:60:e0:03:
+        cf:76:08:dc:35:2a:4c:9e:f7:06:de:f4:b2:60:50:e9:78:ae:
+        2f:ff:d7:a3:32:37:87:01:49:15:eb:3c:c8:74:fc:c7:a9:ae:
+        93:08:77:c5:c8:c7:d1:c2:e2:a8:ee:86:3c:89:18:0d:18:55:
+        ce:db:a4:00:e7:ba:43:cc:ca:a7:24:3d:39:7e:7c:0e:8e:8e:
+        4d:7d:4f:92:b6:bb:ea:d4:9c:0c:f0:18:06:9e:dd:ca:2e:7e:
+        2f:b4:66:8d:89:db:bd:79:50:d0:cd:25:41:80:fa:1e:aa:fc:
+        2a:55:6f:84
+-----BEGIN CERTIFICATE-----
+MIIEqDCCA5CgAwIBAgIJAPKnM5a9OHZ6MA0GCSqGSIb3DQEBBAUAMIGUMQswCQYD
+VQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4g
+VmlldzEQMA4GA1UEChMHQW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UE
+AxMHQW5kcm9pZDEiMCAGCSqGSIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbTAe
+Fw0wODA3MjMyMTU3NTlaFw0zNTEyMDkyMTU3NTlaMIGUMQswCQYDVQQGEwJVUzET
+MBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEQMA4G
+A1UEChMHQW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9p
+ZDEiMCAGCSqGSIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbTCCASAwDQYJKoZI
+hvcNAQEBBQADggENADCCAQgCggEBAMjC2/0JSi30XD/xoy7SGAXscvxY0BeXG9D2
+tSwmLXCBnRkZZ+FY39Oix/Gz4OgM5UXXnShIIgIR64bw/YMS03tCDBE3UMyUYYro
+cvSIZGO9xGJ8qgwEg8hkk+NRVXEXAzi/3MTNat3RwKLzX1zyTtPkBDo+WOKwXmZM
+zeEry2dzX9bfEknDaeYlQrwKRynlORf1w4/6UtF7c8nHN5jdsY7UgVkIdVR+Zr/F
+2spMJabrlg7ZaSNwnaMCumRstJazJehsXIsuejN3srvkx88zJUKRFj9okVKsCIVQ
+yDxQj0v1rfCu1aLcoFg/mrCtF2UNt+6ksj/bRYhVR9D+q3IYOIkCAQOjgfwwgfkw
+HQYDVR0OBBYEFMtMfizbs/CtqY2reZaNFy6dux7RMIHJBgNVHSMEgcEwgb6AFMtM
+fizbs/CtqY2reZaNFy6dux7RoYGapIGXMIGUMQswCQYDVQQGEwJVUzETMBEGA1UE
+CBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEQMA4GA1UEChMH
+QW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDEiMCAG
+CSqGSIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbYIJAPKnM5a9OHZ6MAwGA1Ud
+EwQFMAMBAf8wDQYJKoZIhvcNAQEEBQADggEBAECo0JaZeVnpF6NsRCRra6wrrgVD
+fs2JeUEY94NHIDUtHG+KObCGmUL02mWYH6opUdM5cRKewZIdeVZxxSfW4knyUoKf
+r1tZExAxHi3gllANVorUEUplbcNKjG9hBFOvwep5ktukqns/hUOm41wHKN53/pfu
+rIN3H9DskPjkRJQ07gtgRXg+cMei5GAkkmDgA892CNw1Kkye9wbe9LJgUOl4ri//
+16MyN4cBSRXrPMh0/MeprpMId8XIx9HC4qjuhjyJGA0YVc7bpADnukPMyqckPTl+
+fA6Ojk19T5K2u+rUnAzwGAae3coufi+0Zo2J2715UNDNJUGA+h6q/CpVb4Q=
+-----END CERTIFICATE-----

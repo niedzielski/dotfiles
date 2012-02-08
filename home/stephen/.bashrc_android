@@ -43,7 +43,7 @@ check_apk_cert()
   diff "$pem" -
 }
 # TODO: dumpapk
-
+#jarsigner -verbose -verify -certs
 export USE_CCACHE=1
 export CCACHE_DIR=~/.ccache
 # NDK CCACHE?
@@ -109,4 +109,28 @@ dump_eclipse_jars()
 #adb pull /data/kenny.loggins
 # TODO: aapt colorize warnings and errors.
 # TODO: study how to enable view server in app when platform doesn't support it.
+
+# export from keystore
+# keytool -exportcert -alias exportkey -keystore keystore.ExportKey
+
+
+# see http://www.kandroid.org/online-pdk/guide/release_keys.html
+# platform: a key for packages that are part of the core platform.
+# shared: a key for packages that are shared in the home/contacts process.
+# media: a key for packages that are part of the media/download system.
+# testkey / releasekey: the default key to sign with if not otherwise specified.
+
+to_keystore()
+{
+  openssl x509 -in $1.x509.pem -text -out $1.txt
+  openssl pkcs8 -inform DER -in $1.pk8 -nocrypt -out $1.pem
+  openssl pkcs12 -export -in $1.txt -inkey $1.pem -password pass:foobar -name $1 -out $1.pkcs12
+  keytool -importkeystore -destkeystore keystore.debug -deststorepass foobar -srckeystore $1.pkcs12 -srcstoretype PKCS12 -srcstorepass foobar
+}
+
+#sign apk with keystore
+#jarsigner -verbose -keystore keystore.debug foo.apk platform
+
+#key used by some web APIs
+# openssl sha1 -binary shared.pem|openssl base64 -out shared.x509.sha1b64
 
