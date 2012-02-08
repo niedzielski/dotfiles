@@ -269,6 +269,7 @@ init_links()
 
   echo_wrn 'etc/default/cachefilesd requires manual linking'
   echo_wrn 'etc/nsswitch.conf requires manual linking'
+  echo_wrn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/51-android.rules)'
 
   # Generate null shorthand link.
   ln -s /dev/null /0
