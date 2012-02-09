@@ -56,7 +56,7 @@ dump_eclipse_jars()
       done
     done
     find out/target/product/*/system/framework -name \*.jar
-  }|sed 's%.*%\t<classpathentry kind="lib" path="\0"/>%'
+  }|sed 's%.*%\t<classpathentry kind="lib" path="\0" sourcepath="android"/>%'
 }
 # TODO: use ANDROID_PRODUCT_OUT?
 # TODO: how to make classpathentry always work with rel paths, even across NFS
