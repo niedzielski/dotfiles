@@ -324,6 +324,7 @@ up_file()
   builtin cd "$pwd" && return $err
 }
 
+# TODO: use up_file to find existing db.
 alias updatedb='updatedb -l0 -oindex.db -U .'
 loc()
 {
