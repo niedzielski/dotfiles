@@ -56,12 +56,12 @@ p4_status()
     # 1: dump differing and missing files. Bin stderr -- handles empty
     # synchronization case.
     p4 diff -sl "$d"/... 2> /dev/null |
-    g -v '^same '
+    grep -Ev '^same '
   
     # 2: check for unopened but added files.
   
     # Dump all files, links, and empty directories.
-    f "$d" \( -type f -o -type l -o -type d -empty \)|
+    find "$d" \( -type f -o -type l -o -type d -empty \)|
   
     # Escape reserved characters in filenames.
     p4se|
