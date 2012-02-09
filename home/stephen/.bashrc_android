@@ -8,26 +8,6 @@
 alias logcat='adb logcat -v long'
 
 # ------------------------------------------------------------------------------
-# Magic for Remote Debugging
-
-idu=2048 # $(id -u)
-export ANDROID_ADB_SERVER_PORT=$((10000 + $idu)) # Use or create ADB server.
-export ADBHOST=$ANDROID_ADB_SERVER_PORT # DDMS.
-export ADT_BASE_PORT=$((13000 + ($idu - 2048) * 200)) # Eclipse base port.
-export ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100)) # Eclipse VM port.
-unset idu
-
-# Note: for Eclipse, modify or add .metadata/.plugins/org.eclipse.core.runtime/
-# .settings/com.android.ide.eclipse.ddms.prefs:
-# - com.android.ide.eclipse.ddms.adbDebugBasePort
-# - com.android.ide.eclipse.ddms.debugSelectedPort
-# Also modify for DDMS in .android/ddms.cfg:
-# - adbDebugBasePort
-# - debugSelectedPort
-# TODO: can I use setprop?
-
-# ------------------------------------------------------------------------------
-
 dump_apk_cert() { unzip -p "$1" META-INF/CERT.RSA; }
 # TODO: support keystore.
 # platform.x509.pem
@@ -79,7 +59,8 @@ dump_eclipse_jars()
   }|sed 's%.*%\t<classpathentry kind="lib" path="\0"/>%'
 }
 # TODO: use ANDROID_PRODUCT_OUT?
-
+# TODO: how to make classpathentry always work with rel paths, even across NFS
+# mount.
 
 #insert into logs values('',10);
 #seed=0

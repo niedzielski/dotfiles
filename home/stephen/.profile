@@ -8,6 +8,7 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+# ------------------------------------------------------------------------------
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -16,8 +17,30 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+# ------------------------------------------------------------------------------
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH" || :
 [ -d "$HOME/opt/android-sdk-linux/tools" ] && PATH="$PATH:$HOME/opt/android-sdk-linux/tools" || :
 [ -d "$HOME/opt/android-sdk-linux/platform-tools" ] && PATH="$PATH:$HOME/opt/android-sdk-linux/platform-tools" || :
 [ -d "$HOME/opt/p4v-2011.1.405081/bin" ] && PATH="$PATH:$HOME/opt/p4v-2011.1.405081/bin" || :
+
+# ------------------------------------------------------------------------------
+# Magic for Remote Android Debugging
+
+# Use or create ADB server. Needed by ADB, DDMS, and ADT / Eclipse.
+idu=2048 # $(id -u)
+export ANDROID_ADB_SERVER_PORT=$((10000 + $idu))
+unset idu
+export ADBHOST=$ANDROID_ADB_SERVER_PORT
+
+# Note: for Eclipse, modify or add .metadata/.plugins/org.eclipse.core.runtime/
+# .settings/com.android.ide.eclipse.ddms.prefs:
+# - com.android.ide.eclipse.ddms.adbDebugBasePort=ADT_BASE_PORT
+# - com.android.ide.eclipse.ddms.debugSelectedPort=ADT_SELECTED_PORT
+# Also modify for DDMS in .android/ddms.cfg:
+# - adbDebugBasePort=ADT_BASE_PORT
+# - debugSelectedPort=ADT_SELECTED_PORT
+# TODO: can I use setprop?
+# TODO: remove when env var support is available.
+ADT_BASE_PORT=$((13000 + ($idu - 2048) * 200)) # Eclipse base port.
+ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100)) # Eclipse VM port.
 
