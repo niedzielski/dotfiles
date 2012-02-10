@@ -477,3 +477,7 @@ alias top=htop
 # TODO: javac colorize / format warnings and errors.
 # sudo lshw -C network; lspci|grep -i eth; lspci -nn|grep Eth
 # git, gitk
+
+
+alias ..='cd ..'
+
