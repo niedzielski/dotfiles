@@ -259,7 +259,10 @@ init_links()
 {
   # TODO: rename function.
   # TODO: make this pretty and maybe isolate these to files?
-  dpkg-query -l autossh vim-gnome git-all valgrind xclip build-essential samba smbfs meld openssh-server winbind gmrun gconf-editor nfs nfs-kernel-server cachefilesd curl ccache colordiff dos2unix gimp html2text libdevice-usb-perl lynx p7zip screen htop > /dev/null
+  dpkg-query -l autossh vim-gnome git-all valgrind xclip build-essential samba \
+    smbfs meld openssh-server winbind gmrun gconf-editor nfs-common \
+    nfs-kernel-server cachefilesd curl ccache colordiff dos2unix gimp \
+    html2text libdevice-usb-perl lynx p7zip screen htop > /dev/null
 
   [[ -d "$rubadub_root" ]] || return
 
@@ -271,9 +274,6 @@ init_links()
   echo_wrn 'etc/nsswitch.conf requires manual linking'
   echo_wrn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/51-android.rules)'
   echo_wrn 'etc/bash_completion.d/android requires manual linking (sudo ln -s ~/work/rubadub/etc/bash_completion.d/android /etc/bash_completion.d/android)'
-
-  # Generate null shorthand link.
-  ln -s /dev/null /0
 
   # Link home files.
   local target_home="$rubadub_root/home/stephen"
@@ -301,9 +301,6 @@ init_links()
   ln -s /usr/bin/google-chrome ~/bin/chrome
   ln -s ~/opt/eclipse/eclipse ~/bin/eclipse
 }
-
-#which xclip
-#ctags, vim
 
 up_file()
 {
