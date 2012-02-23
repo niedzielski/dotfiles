@@ -32,12 +32,18 @@ p4_diff_client()
 {
   p4_logged_in || return
 
-  local client2="${2:-$(p4_client_name)}"
-  p4 client -o "$client2"|sed -r "s%$client2%%g" > "$client2.client"
-  p4 client -o "$1"|sed -r "s%$1%%g" > "$1.client"
+  local lhs="$1"
+  local rhs="${2:-$(p4_client_name)}"
 
-  colordiff "$1.client" "$client2.client"
-  rm -f "$1.client" "$client2.client"
+  # Temp files.
+  local lhs_file="$(mktemp)"
+  local rhs_file="$(mktemp)"
+
+  p4 client -o "$lhs"|sed -r "s%$lhs%CLIENT%g" >| "$lhs_file"
+  p4 client -o "$rhs"|sed -r "s%$rhs%CLIENT%g" >| "$rhs_file"
+
+  diff "$lhs_file" "$rhs_file"
+  rm -f "$lhs_file" "$rhs_file"
 }
 
 # TODO: need workaround for "p4 diff -sl" which incorrectly reports files opened
