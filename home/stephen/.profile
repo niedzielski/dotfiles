@@ -29,7 +29,6 @@ fi
 # Use or create ADB server. Needed by ADB, DDMS, and ADT / Eclipse.
 idu=2048 # $(id -u)
 export ANDROID_ADB_SERVER_PORT=$((10000 + $idu))
-unset idu
 export ADBHOST=$ANDROID_ADB_SERVER_PORT
 
 # Note: for Eclipse, modify or add .metadata/.plugins/org.eclipse.core.runtime/
@@ -43,4 +42,5 @@ export ADBHOST=$ANDROID_ADB_SERVER_PORT
 # TODO: remove when env var support is available.
 ADT_BASE_PORT=$((13000 + ($idu - 2048) * 200)) # Eclipse base port.
 ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100)) # Eclipse VM port.
+unset idu
 
