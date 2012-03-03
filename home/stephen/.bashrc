@@ -292,6 +292,7 @@ init_links()
     .vimrc \
     opt/eclipse/eclipse.ini \
     opt/signapk \
+    opt/apktool \
     work/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.ddms.prefs \
     .Xmodmap
   do
