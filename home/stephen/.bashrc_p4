@@ -88,6 +88,9 @@ p4_status()
 
 
 # Workaround for maxing maxresults.
+# TODO: the best solution here would be just to iterate over client directories
+# and sync. In this way, there's no worry about ordering and you can actually
+# parallelize the sync.
 p4_sync_client()
 {
   p4_client_view|
