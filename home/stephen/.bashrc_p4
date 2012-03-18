@@ -182,4 +182,6 @@ p4_zip_opened()
 
 # mm showcommands
 # p4 changes -ssubmitted ./...@\>1000,1020|tr -cd '[:print:]\n'|sed -r 's_Change ([0-9]+) on.*_\1_g'|p4 -x- describe -s
+# p4 grep -ie 'cna[mp]|cdnip' ./...@2012/03/01,now
+# p4 changes -i //foo/Cdma....java#11,11
 
