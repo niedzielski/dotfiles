@@ -359,7 +359,8 @@ case "$OSTYPE" in
   cygwin)
     # HACK: I'm not sure what program to use to get key codes on Windows. I
     # used Zsh and switched to the rudimentary .safe keymap which just prints
-    # control sequences directly on the prompt: bindkey -A .safe main.
+    # control sequences directly on the prompt: bindkey -A .safe main. Try
+    # "cat -A" next time.
     bind '"\e\e[A":"\201"'
     bind '"\e\e[B":"\202"'
     bind '"\e\e[C":"\203"'
@@ -480,6 +481,7 @@ alias top=htop
 # sudo lshw -C network; lspci|grep -i eth; lspci -nn|grep Eth
 # git, gitk
 # info crontab @reboot
+# ${BASH_REMATCH[0]} 
 
 alias ..='cd ..'
 
