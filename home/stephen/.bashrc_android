@@ -91,6 +91,8 @@ dump_eclipse_jars()
 # TODO: aapt colorize warnings and errors.
 # TODO: study how to enable view server in app when platform doesn't support it.
 
+# update logs set foo = 'The quick brown fox jumped over the lazy dog, WA' where _ID = 110;
+
 # export from keystore
 # keytool -exportcert -alias exportkey -keystore keystore.ExportKey
 
@@ -114,4 +116,12 @@ to_keystore()
 
 #key used by some web APIs
 # openssl sha1 -binary shared.pem|openssl base64 -out shared.x509.sha1b64
+
+
+#adb remount && {
+#  # TODO: supply package name to ps directly?
+#  adb shell su -c kill $(adb shell ps|sed -rn '/com.android.phone/s_([^ ]+ +){2}([^ ]+).*_\1_p')
+#  adb push out/target/product/*/system/app/Phone.apk /system/app/ &&
+#  adb push out/target/product/*/system/app/Contacts.apk /system/app/
+#} && adb reboot
 
