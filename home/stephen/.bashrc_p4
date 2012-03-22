@@ -17,8 +17,12 @@ export P4CONFIG=.p4config
 # characters listed in documentation, so there's some confidence this should
 # work pretty consistently.
 alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
-alias p4sd="sed -r 's_(.*)#[0-9]+ - .*_\1_'"
-alias p4sdv="sed -r 's_(.*#[0-9]+) - .*_\1_'"
+
+alias  p4sd="sed -nr 's_^(\.\.\. )?(//.+)#[0-9]+.*_\2_p'"
+alias p4sdv="sed -nr 's_^(\.\.\. )?(//.+#[0-9]+).*_\2_p'"
+
+alias p4scl="sed -nr 's_^Change ([0-9]+) on.*_\1_p'"
+
 
 # ------------------------------------------------------------------------------
 p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
@@ -52,6 +56,7 @@ p4_diff_client()
 # integrate cases. No native support in P4 to check if branched files have been
 # tampered with? I can't think of a way to get the parent of an unsubmitted
 # branch.
+# TODO: canonicalize output?
 p4_status()
 {
   p4_logged_in || return
