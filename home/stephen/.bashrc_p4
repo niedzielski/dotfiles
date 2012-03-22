@@ -46,12 +46,12 @@ p4_diff_client()
   rm -f "$lhs_file" "$rhs_file"
 }
 
-# TODO: need workaround for "p4 diff -sl" which incorrectly reports files opened
-# for delete.
-# TODO: confirm "p4 diff -sl" checks "-sb" and other cases. check for opened but
-# missing added files, branched but changed, etc.
 # Reconcile client directories recursively with server. My best reasonable
-# attempt to implement something like "git status".
+# attempt to implement something like "git status". Only supply dirs. I believe
+# that for the most part this tool properly handles add, edit, delete, and
+# integrate cases. No native support in P4 to check if branched files have been
+# tampered with? I can't think of a way to get the parent of an unsubmitted
+# branch.
 p4_status()
 {
   p4_logged_in || return
@@ -59,14 +59,29 @@ p4_status()
   # TODO: try to handle all dirs in one go.
   for d in "${@:-$(p4_client_root)}"
   do
-    # 1: dump differing and missing files. Bin stderr -- handles empty
-    # synchronization case.
-    p4 diff -sl "$d"/... 2> /dev/null |
-    grep -Ev '^same '
-  
-    # 2: check for unopened but added files.
-  
-    # Dump all files, links, and empty directories.
+    # P4 doesn't well understand extra slashes. Assume they aren't part of the
+    # filename.
+    d="${d%%*(/)}"
+
+    # Dump differing and missing files.
+    p4 diff -sl "$d"/...|&
+
+    # HACK: P4 incorrectly reports files opened for delete, even if they're
+    # deleted.
+    sed -r '/^same /d; s%(.*) - file\(s\) not on client\.$%\1%; s%^missing %%'|
+    p4se| # Escape reserved characters in filenames.
+    p4 -x- opened 2>&1 > /dev/null|
+    sed -r '
+      s%diff (.*) - file\(s\) not opened on this client\.$%diff \1%;
+      s%(.*) - file\(s\) not opened on this client\.$%miss \1%
+    '
+
+    # Dump files opened for integrate, resolved, and subsequently modified.
+    p4 diff -sb "$d"/... 2> /dev/null|
+    sed -r 's%^%diff %'
+
+    # Check for unopened but added files. Dump all files, links, and empty
+    # directories.
     find "$d" \( -type f -o -type l -o -type d -empty \)|
   
     # Escape reserved characters in filenames.
@@ -76,9 +91,17 @@ p4_status()
     p4 -x- have 2>&1 > /dev/null|
     sed -r 's%(.*) - file\(s\) not on client\.$%\1%'|
   
-    # Prune out files opened for add.
+    # Prune out files opened for add or branch.
     p4 -x- opened 2>&1 > /dev/null|
     sed -r 's%(.*) - file\(s\) not opened on this client\.$%add \1%'
+
+    # HACK: P4 doesn't check files opened for add but that don't exist.
+    p4 opened|
+    sed -rn 's%(//.*)#[0-9]+ - add .*%\1%p'|
+    p4 -x- fstat -T clientFile|
+    sed -rn 's%\.\.\. clientFile (.*)%\1%p'|
+    xargs -d\\n ls 2>&1 > /dev/null|
+    sed -r 's%^ls: cannot access (.*): No such file or directory%miss \1%'
   done
 
   : # Can't say much about exit status.
@@ -88,14 +111,21 @@ p4_status()
 
 
 # Workaround for maxing maxresults.
-# TODO: the best solution here would be just to iterate over client directories
-# and sync. In this way, there's no worry about ordering and you can actually
-# parallelize the sync.
 p4_sync_client()
 {
-  p4_client_view|
-  sed -rn 's_\t\+?//.* (//.*)_\1_p;'| # Only print included client filespecs.
-  xargs -d\\n -n1 -i p4 sync -q '{}'"$1" # Sync each view one at a time.
+  local path=
+  for dir in "$(p4_client_root)/%%1" /%%2 /%%3 /%%4 /%%5 /%%6 /%%7 /%%8 /%%9
+  do
+    path+="$dir"
+    p4 sync -q "$path$1" &
+  done
+  p4 sync -q "$path/...$1" &
+  # TODO: block and kill.
+
+  #p4_client_view|
+  #sed -rn 's_\+?//.* (//.*)_\1_p;'| # Only print included client filespecs.
+  #xargs -d\\n -n1 -i p4 sync -q '{}'"$1" # Sync each view one at a time.
+
   # TODO: iterate over args and build hashmap with client file as key using
   # "p4 sync -n"? Then sync.
   # local dash_args=...
@@ -184,4 +214,7 @@ p4_zip_opened()
 # p4 changes -ssubmitted ./...@\>1000,1020|tr -cd '[:print:]\n'|sed -r 's_Change ([0-9]+) on.*_\1_g'|p4 -x- describe -s
 # p4 grep -ie 'cna[mp]|cdnip' ./...@2012/03/01,now
 # p4 changes -i //foo/Cdma....java#11,11
+# p4 sync @118760 @={119486,119765,119837} ???
+# p4 fstat -c changelist
+# p4 help interchanges
 
