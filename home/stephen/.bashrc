@@ -78,13 +78,13 @@ shopt -s checkwinsize
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
 
-update_term_title() { echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
-
-# Initial update.
-update_term_title &&
+# HACK: Bash won't read updates to PS1 made in readline.
+force_update_term_title() { echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
+force_update_term_title
+#PS1='\[\e]0;\u@\h:\w\a\]'
 
 # "$ " colored green for zero exit status, red otherwise.
-PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )' &&
+PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
 
 # Colorless.
 PS1+='\$ \[\033[00m\]'
@@ -147,14 +147,12 @@ dirs()
   echo # Newline.
 }
 alias d=dirs
-cd() { builtin cd "$@"; update_term_title; }
-alias c=cd
-pushd() { builtin pushd "$@" > /dev/null; d; update_term_title; } # Change directory.
-alias p=pushd
-alias pb='pushd +1' # Previous directory.
-alias pf='pushd -0' # Next directory.
-popd() { builtin popd > /dev/null; d; update_term_title; }
-alias P=popd
+c() { cd "$@"; d; force_update_term_title; }
+p() { pushd "$@" > /dev/null; d; force_update_term_title; } # Change directory.
+alias pb='p +1' # Previous directory.
+alias pf='p -0' # Next directory.
+P() { popd > /dev/null; d; force_update_term_title; }
+alias ..='c ..'
 
 alias abspath='readlink -m'
 
@@ -375,7 +373,7 @@ case "$OSTYPE" in
 esac
 
 # Map unused keys to push parent, pop, next, and previous directory.
-bind -x '"\201":c ..; printf "\033[22;34m%s\033[00m\n" "$PWD"'
+bind -x '"\201":..'
 bind -x '"\202":P'
 bind -x '"\203":pf'
 bind -x '"\204":pb'
@@ -483,5 +481,4 @@ alias top=htop
 # info crontab @reboot
 # ${BASH_REMATCH[0]} 
 
-alias ..='cd ..'
 
