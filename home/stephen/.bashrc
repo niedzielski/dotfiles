@@ -438,7 +438,7 @@ spin()
 # spin&
 # wait pid
 # Prefix args. "${@/#/$i}"
-alias ps='ps -F f e'
+alias ps='ps -eF fe'
 xprop_pid()
 {
   # Only print the PID if it's not a dead parent.
