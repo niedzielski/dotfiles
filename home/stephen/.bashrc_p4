@@ -28,6 +28,7 @@ alias p4scl="sed -nr 's_^Change ([0-9]+) on.*_\1_p'"
 p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
 p4_client_name() { p4 info|sed -rn 's_Client name: (.*)_\1_p'; }
 p4_client_view() { p4 client -o "$@"|sed -rn '1,/^View:$/ d;s%^\t%%p'; }
+p4_client_view_lhs() { p4 client -o "$@"|sed -rn '1,/^View:$/ d;s%^\t(.+) //.*%\1%p'; }
 p4_logged_in()   { p4 login -s > /dev/null; }
 p4_user() { p4 info|sed -rn '1s/^User name: (.*)/\1/p'; }
 
