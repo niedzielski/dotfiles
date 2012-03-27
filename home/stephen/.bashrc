@@ -161,24 +161,22 @@ alias v=gvim
 
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
-# TODO: fix find \! -user stephen fails.
 # Find with a couple defaults.
-find()
+f()
 {
   # The trouble is that -regextype must appear after path but before expression.
-  local d=()
-  while [[ -n "$1" ]] && [[ "${1:0:1}" != '-' ]]
+  # HACK: "-D debugopts" unsupported and -[HLPO] options assumed to before dirs.
+  local a=()
+  while [[ -n "$1" ]] && ( [[ ! "${1:0:1}" =~ [-!(),] ]] || [[ "${1:0:2}" =~ -[HLPO] ]] )
   do
-    # Non-dash parameter, use it.
-    d+=("$1")
+    a+=("$1")
 
-    # Eliminate dir from @.
+    # Eliminate arg from @.
     shift
   done
 
-  command find -O3 "${d[@]}" -nowarn -regextype egrep "$@"
+  find -O3 "${a[@]}" -nowarn -regextype egrep "$@"
 }
-alias f=find
 # Notes:
 # - Pruning ex: find rubadub moon \( -path moon/.git -o -path rubadub/.git \) -prune -o \( -type f -o -type l \)
 #   Note: still prints pruned dir.
