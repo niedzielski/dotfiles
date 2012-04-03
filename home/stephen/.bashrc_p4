@@ -19,10 +19,13 @@ export P4CONFIG=.p4config
 alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
 
 alias  p4sd="sed -nr 's_^(\.\.\. )?(//.+)#[0-9]+.*_\2_p'"
-alias p4sdv="sed -nr 's_^(\.\.\. )?(//.+#[0-9]+).*_\2_p'"
+
+# HACK: deleted files print at the revision they're deleted at not the deletion
+# revision.
+alias p4sdv="sed -nr 's_#[0-9]+ - deleted as _#0_; s_^(\.\.\. )?(//.+#[0-9]+).*_\2_p'"
 
 alias p4scl="sed -nr 's_^Change ([0-9]+) on.*_\1_p'"
-
+alias p4sw="sed -r 's_.*#[0-9]+ - (/.+)_\1_'"
 
 # ------------------------------------------------------------------------------
 p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
@@ -106,7 +109,7 @@ p4_status()
     sed -rn 's%(//.*)#[0-9]+ - add .*%\1%p'|
     p4 -x- fstat -T clientFile|
     sed -rn 's%\.\.\. clientFile (.*)%\1%p'|
-    xargs -d\\n ls 2>&1 > /dev/null|
+    xargs -rd\\n ls 2>&1 > /dev/null|
     sed -r 's%^ls: cannot access (.*): No such file or directory%miss \1%'
   done
 
@@ -188,14 +191,13 @@ p4_zip_opened()
 
   local root="$(p4_client_root)" &&
   pushd "$root" > /dev/null &&
-
   {
     p4 opened|
     p4sd|
     p4 -x- fstat -T clientFile|
     sed -nr "s%^\.\.\. clientFile $root/%%p"|
     xargs -d\\n cp --parents -t"$dst"
-    popd > /dev/null
+  popd > /dev/null
   }
   # TODO: zip / tar.
 }
@@ -223,4 +225,34 @@ p4_zip_opened()
 # p4 sync @118760 @={119486,119765,119837} ???
 # p4 fstat -c changelist
 # p4 help interchanges
+# time bash -- <<'EOF'
+#  p4 sync -n @xxx|p4sdv|
+#  xargs -rd\\n -n1000 -P100 p4 sync -q
+#EOF
+
+
+
+#time {
+#  p4 sync -n @xxx|p4sdv|p4se|
+#  xargs -rd\\n -n1000 -P100 p4 sync -q
+#}
+
+
+#p4_sync_wrapper
+#{
+#  # TODO: is there a nicer way without making a Christmas tree?
+#  parallel -i p4 sync -n //"$P4CLIENT"/'{}'"$@" -- \
+#    '*' \
+#    '*/*' \
+#    '*/*/*' \
+#    '*/*/*/*' \
+#    '*/*/*/*/*' \
+#    '*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*/*/*/...'|
+#  p4sdv|p4se|
+#  xargs -rd\\n -n1000 -P0 p4 sync -q
+#}
 
