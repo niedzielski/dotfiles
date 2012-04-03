@@ -95,8 +95,9 @@ PS1+='\$ \[\033[00m\]'
 # Miscellaneous.
 alias   cp='cp -i' # Prompt on overwrite.
 alias    e='echo'
-alias grep='grep --color=auto -EID skip -d skip' # Extended regex, color, skip
-                                                 # bin, dev, sockets, and dirs.
+
+# Extended regex, color, skip binaries, devices, sockets, and dirs.
+export GREP_OPTIONS='--color=auto -EID skip -d skip'
 alias    g=grep
 alias   mv='mv -i' # Prompt on overwrite.
 alias    m='mv'
@@ -106,15 +107,13 @@ alias    r='rm'
 #alias  sed='sed -r' # Extended regular expression... but Sed won't permit -rrrrrrrrrr.
 alias    s='sed -r'
 alias    t='touch'
-alias    x='xargs -d\\n ' # Xargs newline delimited + expansion.
+alias    x='xargs -d\\n ' # Xargs newline delimited + expansion. Use -r to not run on empty input.
 # Notes:
 # - Copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use
 #   xargs --show-limits --no-run-if-empty < /dev/null?
-alias head='head -n$(($LINES - 5))'
-alias tail='tail -n$(($LINES - 5))'
 alias diff='colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y'
-alias less='less -ir' # Smart ignore-case + output control chars.
+export LESS='-ir' # Smart ignore-case + output control chars.
 
 alias timestamp='date +%F-%H-%M-%S-%N'
 
@@ -187,7 +186,7 @@ ftxt() { f "$@"|file --mime-encoding -Nf-|grep -v binary\$|s 's_(.+): .+$_\1_';}
 # Clipboard for GUI integration.
 cb()
 {
-  if [[ ! -t 0 ]]
+  if [[ ! -t 0 ]] # ifne
   then
     xclip -sel c
   else
@@ -478,5 +477,9 @@ alias top=htop
 # git, gitk
 # info crontab @reboot
 # ${BASH_REMATCH[0]} 
+# gnu moreutils
+# echo -e 'a\nb\nc'|sed -r -e '$a\foo' -e '$a\bar'
+# gnu parallel
 
+# TODO: man ps, man bash -> LC_TIME
 
