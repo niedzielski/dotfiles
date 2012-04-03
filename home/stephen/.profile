@@ -40,7 +40,7 @@ export ADBHOST=$ANDROID_ADB_SERVER_PORT
 # - debugSelectedPort=ADT_SELECTED_PORT
 # TODO: can I use setprop?
 # TODO: remove when env var support is available.
-ADT_BASE_PORT=$((13000 + ($idu - 2048) * 200)) # Eclipse base port.
-ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100)) # Eclipse VM port.
+# HACK: wouldn't need to export either of these if we kept them in .bashrc.
+export ADT_BASE_PORT=$((13000 + ($idu - 2048) * 200)) # Eclipse base port.
+export ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100)) # Eclipse VM port.
 unset idu
-
