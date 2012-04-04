@@ -97,8 +97,7 @@ alias   cp='cp -i' # Prompt on overwrite.
 alias    e='echo'
 
 # Extended regex, color, skip binaries, devices, sockets, and dirs.
-export GREP_OPTIONS='--color=auto -EID skip -d skip'
-alias    g=grep
+alias    g='grep --color=auto -EID skip -d skip'
 alias   mv='mv -i' # Prompt on overwrite.
 alias    m='mv'
 alias   md='mkdir'
