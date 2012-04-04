@@ -60,6 +60,8 @@ p4_diff_client()
 # integrate cases. No native support in P4 to check if branched files have been
 # tampered with? I can't think of a way to get the parent of an unsubmitted
 # branch.
+# TODO: investigate if p4 revert -an can check if branched files have been
+# tampered with.
 # TODO: canonicalize output?
 p4_status()
 {
