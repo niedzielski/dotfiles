@@ -16,7 +16,7 @@ export P4CONFIG=.p4config
 # Escape reserved characters in filenames. There's only a small table of
 # characters listed in documentation, so there's some confidence this should
 # work pretty consistently.
-alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
+alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\#_%23_g;s_\*_%2A_g'"
 
 alias  p4sd="sed -nr 's_^(\.\.\. )?(//.+)#[0-9]+.*_\2_p'"
 
@@ -258,3 +258,12 @@ p4_zip_opened()
 #  xargs -rd\\n -n1000 -P0 p4 sync -q
 #}
 
+#p4_dirs_R()
+#{
+#  local d="${1:-//$(p4_client_name)}"
+#  echo "$d"
+#
+#  p4 dirs -C "$d/"{'*','*/*','*/*/*','*/*/*/*','*/*/*/*/*','*/*/*/*/*/*','*/*/*/*/*/*/*','*/*/*/*/*/*/*/*'} &&
+#  p4 dirs -C "$d/*/*/*/*/*/*/*/*/*"|p4se|xargs -rd\\n -n1 -P0 bash -c 'p4_dirs_R'
+#}
+#export -f p4_dirs_R
