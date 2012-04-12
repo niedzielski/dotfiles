@@ -267,3 +267,66 @@ p4_zip_opened()
 #  p4 dirs -C "$d/*/*/*/*/*/*/*/*/*"|p4se|xargs -rd\\n -n1 -P0 bash -c 'p4_dirs_R'
 #}
 #export -f p4_dirs_R
+
+
+p4_dirs_CR9()
+{
+  p4 dirs -C \
+    "$@" \
+    "${@/%//*}" \
+    "${@/%//*/*}" \
+    "${@/%//*/*/*}" \
+    "${@/%//*/*/*/*}" \
+    "${@/%//*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*/*/*/*}" 2> /dev/null|grep --color=never .
+}
+
+#p4_dirs_CR()
+#{
+#  # HACK: assume directories always have files within 8 subdirs.
+#
+#  # TODO: should add "$@" below and remove "pee cat" further down.
+#
+#  p4 dirs -C \
+#    "${@/%//*}" \
+#    "${@/%//*/*}" \
+#    "${@/%//*/*/*}" \
+#    "${@/%//*/*/*/*}" \
+#    "${@/%//*/*/*/*/*}" \
+#    "${@/%//*/*/*/*/*/*}" \
+#    "${@/%//*/*/*/*/*/*/*}" \
+#    "${@/%//*/*/*/*/*/*/*/*}" 2> /dev/null|grep --color=never . &&
+#
+#  p4 dirs -C "${@/%//*/*/*/*/*/*/*/*/*}" 2> /dev/null|
+#  ifne pee cat '
+#    bash -c "
+#      p4se|
+#      xargs -rd\\\\n bash -c \"
+#        p4_dirs_R \\\"\\\$@\\\"
+#      \" --
+#    "
+#  '
+#}
+#export -f p4_dirs_R p4se
+
+#p4_dirs_R()
+#{
+#  # HACK: "${d:-//$(p4_client_name)}" resolves p4_client_name() whether used or
+#  # not.
+#  [[ -n "$1" ]] && local d="$1" || local d="//$(p4_client_name)"
+#
+#  # No echo here to be consistent with P4 concept of dirs. See "p4 help dirs".
+#  #echo "$d"
+#
+#  # HACK: p4 dirs exits 0 even if no dirs are found. Hence, if stdout, continue.
+#  # Else, fail. Using grep.
+#
+#  p4 dirs -C "$d/"{'*','*/*','*/*/*','*/*/*/*','*/*/*/*/*','*/*/*/*/*/*','*/*/*/*/*/*/*','*/*/*/*/*/*/*/*'} 2> /dev/null|grep . &&
+#
+#  p4 dirs -C "$d/*/*/*/*/*/*/*/*/*" 2> /dev/null|
+#  ifne pee cat 'bash -c "p4se|xargs -rI'{}' -P0 bash -c \"p4_dirs_R {}\" 2> /dev/null"'
+#}
+
