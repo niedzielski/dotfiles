@@ -118,10 +118,45 @@ to_keystore()
 # openssl sha1 -binary shared.pem|openssl base64 -out shared.x509.sha1b64
 
 
+# $1 is actually a regex.
+adb_killall()
+{
+  adb shell ps|sed -rn "/ $1"'\r$/s_([^ ]+ +){2}([^ ]+).*_\1_p'|
+              #sed -rn 's_^[^ ]+ +([^ ]+) +([^ ]+ +){6}'"$1"'\r$_\1_p'
+  xargs -rd\\n adb shell su -c kill
+}
+
+adb_basename2pkg()
+{
+  adb shell pm list packages -f|
+  sed -rn 's_\r__; s%^package:.*'"$1"'=(.+)%\1%p'|
+  command grep . # Error return status if empty.
+}
+
+adb_pkg2file()
+{
+  adb shell pm path "$1"|sed -r 's_^package:(.+)\r_\1_'|command grep .
+}
+
+adb_grep_pkgs()
+{
+  adb shell pm list packages|g "$@"|sed -r 's_^package:(.+)\r_\1_'
+}
+#TODO: fix grep, xargs, ? in packages.
+
 #adb remount && {
 #  # TODO: supply package name to ps directly?
 #  adb shell su -c kill $(adb shell ps|sed -rn '/com.android.phone/s_([^ ]+ +){2}([^ ]+).*_\1_p')
 #  adb push out/target/product/*/system/app/Phone.apk /system/app/ &&
 #  adb push out/target/product/*/system/app/Contacts.apk /system/app/
 #} && adb reboot
+# sqlitebrowser
+
+# HACK: it isn't clear to my why I have to wrap to wrap the shell command in
+# another shell.
+# xargs -s1024 -rd\\n adb shell sh -c '
+#   for i in \"\$@\"
+#   do
+#     pm path \"\$i\"
+#   done' "$@"
 

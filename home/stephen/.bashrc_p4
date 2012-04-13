@@ -16,14 +16,22 @@ export P4CONFIG=.p4config
 # Escape reserved characters in filenames. There's only a small table of
 # characters listed in documentation, so there's some confidence this should
 # work pretty consistently.
-alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\\#_%23_g;s_\\*_%2A_g'"
-alias p4sd="sed -r 's_(.*)#[0-9]+ - .*_\1_'"
-alias p4sdv="sed -r 's_(.*#[0-9]+) - .*_\1_'"
+alias p4se="sed -r 's_%_%25_g;s_@_%40_g;s_\#_%23_g;s_\*_%2A_g'"
+
+alias  p4sd="sed -nr 's_^(\.\.\. )?(//.+)#[0-9]+.*_\2_p'"
+
+# HACK: deleted files print at the revision they're deleted at not the deletion
+# revision.
+alias p4sdv="sed -nr 's_#[0-9]+ - deleted as _#0_; s_^(\.\.\. )?(//.+#[0-9]+).*_\2_p'"
+
+alias p4scl="sed -nr 's_^Change ([0-9]+) on.*_\1_p'"
+alias p4sw="sed -r 's_.*#[0-9]+ - (/.+)_\1_'"
 
 # ------------------------------------------------------------------------------
 p4_client_root() { p4 info|sed -rn 's_Client root: (.*)_\1_p'; }
 p4_client_name() { p4 info|sed -rn 's_Client name: (.*)_\1_p'; }
 p4_client_view() { p4 client -o "$@"|sed -rn '1,/^View:$/ d;s%^\t%%p'; }
+p4_client_view_lhs() { p4 client -o "$@"|sed -rn '1,/^View:$/ d;s%^\t(.+) //.*%\1%p'; }
 p4_logged_in()   { p4 login -s > /dev/null; }
 p4_user() { p4 info|sed -rn '1s/^User name: (.*)/\1/p'; }
 
@@ -52,6 +60,9 @@ p4_diff_client()
 # integrate cases. No native support in P4 to check if branched files have been
 # tampered with? I can't think of a way to get the parent of an unsubmitted
 # branch.
+# TODO: investigate if p4 revert -an can check if branched files have been
+# tampered with.
+# TODO: canonicalize output?
 p4_status()
 {
   p4_logged_in || return
@@ -100,7 +111,7 @@ p4_status()
     sed -rn 's%(//.*)#[0-9]+ - add .*%\1%p'|
     p4 -x- fstat -T clientFile|
     sed -rn 's%\.\.\. clientFile (.*)%\1%p'|
-    xargs -d\\n ls 2>&1 > /dev/null|
+    xargs -rd\\n ls 2>&1 > /dev/null|
     sed -r 's%^ls: cannot access (.*): No such file or directory%miss \1%'
   done
 
@@ -182,14 +193,13 @@ p4_zip_opened()
 
   local root="$(p4_client_root)" &&
   pushd "$root" > /dev/null &&
-
   {
     p4 opened|
     p4sd|
     p4 -x- fstat -T clientFile|
     sed -nr "s%^\.\.\. clientFile $root/%%p"|
     xargs -d\\n cp --parents -t"$dst"
-    popd > /dev/null
+  popd > /dev/null
   }
   # TODO: zip / tar.
 }
@@ -217,4 +227,106 @@ p4_zip_opened()
 # p4 sync @118760 @={119486,119765,119837} ???
 # p4 fstat -c changelist
 # p4 help interchanges
+# time bash -- <<'EOF'
+#  p4 sync -n @xxx|p4sdv|
+#  xargs -rd\\n -n1000 -P100 p4 sync -q
+#EOF
+
+
+
+#time {
+#  p4 sync -n @xxx|p4sdv|p4se|
+#  xargs -rd\\n -n1000 -P100 p4 sync -q
+#}
+
+
+#p4_sync_wrapper
+#{
+#  # TODO: is there a nicer way without making a Christmas tree?
+#  parallel -i p4 sync -n //"$P4CLIENT"/'{}'"$@" -- \
+#    '*' \
+#    '*/*' \
+#    '*/*/*' \
+#    '*/*/*/*' \
+#    '*/*/*/*/*' \
+#    '*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*/*/*' \
+#    '*/*/*/*/*/*/*/*/*/...'|
+#  p4sdv|p4se|
+#  xargs -rd\\n -n1000 -P0 p4 sync -q
+#}
+
+#p4_dirs_R()
+#{
+#  local d="${1:-//$(p4_client_name)}"
+#  echo "$d"
+#
+#  p4 dirs -C "$d/"{'*','*/*','*/*/*','*/*/*/*','*/*/*/*/*','*/*/*/*/*/*','*/*/*/*/*/*/*','*/*/*/*/*/*/*/*'} &&
+#  p4 dirs -C "$d/*/*/*/*/*/*/*/*/*"|p4se|xargs -rd\\n -n1 -P0 bash -c 'p4_dirs_R'
+#}
+#export -f p4_dirs_R
+
+
+p4_dirs_CR9()
+{
+  p4 dirs -C \
+    "$@" \
+    "${@/%//*}" \
+    "${@/%//*/*}" \
+    "${@/%//*/*/*}" \
+    "${@/%//*/*/*/*}" \
+    "${@/%//*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*/*/*}" \
+    "${@/%//*/*/*/*/*/*/*/*/*}" 2> /dev/null|grep --color=never .
+}
+
+#p4_dirs_CR()
+#{
+#  # HACK: assume directories always have files within 8 subdirs.
+#
+#  # TODO: should add "$@" below and remove "pee cat" further down.
+#
+#  p4 dirs -C \
+#    "${@/%//*}" \
+#    "${@/%//*/*}" \
+#    "${@/%//*/*/*}" \
+#    "${@/%//*/*/*/*}" \
+#    "${@/%//*/*/*/*/*}" \
+#    "${@/%//*/*/*/*/*/*}" \
+#    "${@/%//*/*/*/*/*/*/*}" \
+#    "${@/%//*/*/*/*/*/*/*/*}" 2> /dev/null|grep --color=never . &&
+#
+#  p4 dirs -C "${@/%//*/*/*/*/*/*/*/*/*}" 2> /dev/null|
+#  ifne pee cat '
+#    bash -c "
+#      p4se|
+#      xargs -rd\\\\n bash -c \"
+#        p4_dirs_R \\\"\\\$@\\\"
+#      \" --
+#    "
+#  '
+#}
+#export -f p4_dirs_R p4se
+
+#p4_dirs_R()
+#{
+#  # HACK: "${d:-//$(p4_client_name)}" resolves p4_client_name() whether used or
+#  # not.
+#  [[ -n "$1" ]] && local d="$1" || local d="//$(p4_client_name)"
+#
+#  # No echo here to be consistent with P4 concept of dirs. See "p4 help dirs".
+#  #echo "$d"
+#
+#  # HACK: p4 dirs exits 0 even if no dirs are found. Hence, if stdout, continue.
+#  # Else, fail. Using grep.
+#
+#  p4 dirs -C "$d/"{'*','*/*','*/*/*','*/*/*/*','*/*/*/*/*','*/*/*/*/*/*','*/*/*/*/*/*/*','*/*/*/*/*/*/*/*'} 2> /dev/null|grep . &&
+#
+#  p4 dirs -C "$d/*/*/*/*/*/*/*/*/*" 2> /dev/null|
+#  ifne pee cat 'bash -c "p4se|xargs -rI'{}' -P0 bash -c \"p4_dirs_R {}\" 2> /dev/null"'
+#}
 

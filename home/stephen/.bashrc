@@ -78,13 +78,13 @@ shopt -s checkwinsize
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
 
-update_term_title() { echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
-
-# Initial update.
-update_term_title &&
+# HACK: Bash won't read updates to PS1 made in readline.
+force_update_term_title() { echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
+force_update_term_title
+#PS1='\[\e]0;\u@\h:\w\a\]'
 
 # "$ " colored green for zero exit status, red otherwise.
-PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )' &&
+PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
 
 # Colorless.
 PS1+='\$ \[\033[00m\]'
@@ -95,9 +95,9 @@ PS1+='\$ \[\033[00m\]'
 # Miscellaneous.
 alias   cp='cp -i' # Prompt on overwrite.
 alias    e='echo'
-alias grep='grep --color=auto -EID skip -d skip' # Extended regex, color, skip
-                                                 # bin, dev, sockets, and dirs.
-alias    g=grep
+
+# Extended regex, color, skip binaries, devices, sockets, and dirs.
+alias    g='grep --color=auto -EID skip -d skip'
 alias   mv='mv -i' # Prompt on overwrite.
 alias    m='mv'
 alias   md='mkdir'
@@ -106,15 +106,13 @@ alias    r='rm'
 #alias  sed='sed -r' # Extended regular expression... but Sed won't permit -rrrrrrrrrr.
 alias    s='sed -r'
 alias    t='touch'
-alias    x='xargs -d\\n ' # Xargs newline delimited + expansion.
+alias    x='xargs -d\\n ' # Xargs newline delimited + expansion. Use -r to not run on empty input.
 # Notes:
 # - Copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use
 #   xargs --show-limits --no-run-if-empty < /dev/null?
-alias head='head -n$(($LINES - 5))'
-alias tail='tail -n$(($LINES - 5))'
 alias diff='colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y'
-alias less='less -ir' # Smart ignore-case + output control chars.
+export LESS='-ir' # Smart ignore-case + output control chars.
 
 alias timestamp='date +%F-%H-%M-%S-%N'
 
@@ -147,14 +145,12 @@ dirs()
   echo # Newline.
 }
 alias d=dirs
-cd() { builtin cd "$@"; update_term_title; }
-alias c=cd
-pushd() { builtin pushd "$@" > /dev/null; d; update_term_title; } # Change directory.
-alias p=pushd
-alias pb='pushd +1' # Previous directory.
-alias pf='pushd -0' # Next directory.
-popd() { builtin popd > /dev/null; d; update_term_title; }
-alias P=popd
+c() { cd "$@"; d; force_update_term_title; }
+p() { pushd "$@" > /dev/null; d; force_update_term_title; } # Change directory.
+alias pb='p +1' # Previous directory.
+alias pf='p -0' # Next directory.
+P() { popd > /dev/null; d; force_update_term_title; }
+alias ..='c ..'
 
 alias abspath='readlink -m'
 
@@ -163,24 +159,22 @@ alias v=gvim
 
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
-# TODO: fix find \! -user stephen fails.
 # Find with a couple defaults.
-find()
+f()
 {
   # The trouble is that -regextype must appear after path but before expression.
-  local d=()
-  while [[ -n "$1" ]] && [[ "${1:0:1}" != '-' ]]
+  # HACK: "-D debugopts" unsupported and -[HLPO] options assumed to before dirs.
+  local a=()
+  while [[ -n "$1" ]] && ( [[ ! "${1:0:1}" =~ [-!(),] ]] || [[ "${1:0:2}" =~ -[HLPO] ]] )
   do
-    # Non-dash parameter, use it.
-    d+=("$1")
+    a+=("$1")
 
-    # Eliminate dir from @.
+    # Eliminate arg from @.
     shift
   done
 
-  command find -O3 "${d[@]}" -nowarn -regextype egrep "$@"
+  find -O3 "${a[@]}" -nowarn -regextype egrep "$@"
 }
-alias f=find
 # Notes:
 # - Pruning ex: find rubadub moon \( -path moon/.git -o -path rubadub/.git \) -prune -o \( -type f -o -type l \)
 #   Note: still prints pruned dir.
@@ -191,7 +185,7 @@ ftxt() { f "$@"|file --mime-encoding -Nf-|grep -v binary\$|s 's_(.+): .+$_\1_';}
 # Clipboard for GUI integration.
 cb()
 {
-  if [[ ! -t 0 ]]
+  if [[ ! -t 0 ]] # ifne
   then
     xclip -sel c
   else
@@ -378,7 +372,7 @@ case "$OSTYPE" in
 esac
 
 # Map unused keys to push parent, pop, next, and previous directory.
-bind -x '"\201":c ..; printf "\033[22;34m%s\033[00m\n" "$PWD"'
+bind -x '"\201":..'
 bind -x '"\202":P'
 bind -x '"\203":pf'
 bind -x '"\204":pb'
@@ -443,7 +437,7 @@ spin()
 # spin&
 # wait pid
 # Prefix args. "${@/#/$i}"
-alias ps='ps -F f e'
+alias ps='ps -eF fe'
 xprop_pid()
 {
   # Only print the PID if it's not a dead parent.
@@ -485,6 +479,9 @@ alias top=htop
 # git, gitk
 # info crontab @reboot
 # ${BASH_REMATCH[0]} 
+# gnu moreutils
+# echo -e 'a\nb\nc'|sed -r -e '$a\foo' -e '$a\bar'
+# gnu parallel
 
-alias ..='cd ..'
-
+# TODO: man ps, man bash -> LC_TIME
+# echo foo{,,,,,,}

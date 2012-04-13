@@ -7,6 +7,14 @@
 # Don't display licensing on startup.
 startup_message off
 
+# Big scrollback. No infinite option?
+defscrollback 1048576
+
+# Report activity in hidden windows.
+defmonitor on
+
+# Ignore case when searching.
+ignorecase on
 
 # Forward mouse scroll to screen
 #termcapinfo xterm|xterms|xs|rxvt ti@:te@
