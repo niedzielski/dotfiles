@@ -342,6 +342,12 @@ reset_webcam()
 }
 # TODO: reset_usb for when the whole stack tanks.
 
+reset_mouse()
+{
+  sudo modprobe -r psmouse
+  sudo modprobe psmouse
+}
+
 # dic() { ! wn "$@" -over; } # Dictionary definition.
 # alias gd='aspell dump master|g -i' # Grep mediocre dictionary.
 
