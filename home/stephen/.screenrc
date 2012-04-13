@@ -6,3 +6,7 @@
 # ------------------------------------------------------------------------------
 # Don't display licensing on startup.
 startup_message off
+
+
+# Forward mouse scroll to screen
+#termcapinfo xterm|xterms|xs|rxvt ti@:te@
