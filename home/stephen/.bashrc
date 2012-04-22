@@ -485,3 +485,13 @@ alias top=htop
 
 # TODO: man ps, man bash -> LC_TIME
 # echo foo{,,,,,,}
+# man watch
+
+# echo() { printf "%b\n" "$*"; }
+
+log() { echo "$@"|tee -a ${log_file:+"$log_file"}; }
+log-ok()   {   printf '\033[22;32m'; log "$@"; printf '\033[00m';        } # Green
+log-warn() { { printf '\033[22;33m'; log "$@"; printf '\033[00m'; } >&2; } # Yellow
+log-ng()   { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
+
+naut() { nautilus "${@:-.}"; }
