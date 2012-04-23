@@ -1,6 +1,5 @@
 # adb protocol for Google devices
-SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0606"
+SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0666"
 
 # adb protocol for Samsung devices
-SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0606"
-
+SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666"
