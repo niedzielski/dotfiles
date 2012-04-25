@@ -267,6 +267,21 @@ p4_zip_opened()
 #  p4 dirs -C "$d/*/*/*/*/*/*/*/*/*"|p4se|xargs -rd\\n -n1 -P0 bash -c 'p4_dirs_R'
 #}
 #export -f p4_dirs_R
+#p4_dirs_R()
+#{
+#  local export P4SE="${P4SE:-"$(antialias p4se)"}" 2> /dev/null
+#
+#  {
+#    p4 dirs -C "$1/"{'*','*/*','*/*/*','*/*/*/*','*/*/*/*/*','*/*/*/*/*/*','*/*/*/*/*/*/*','*/*/*/*/*/*/*/*'} &&
+#    p4 dirs -C "$1/*/*/*/*/*/*/*/*/*"|pee cat "$P4SE"|xargs -rd\\n -I'{}' -P32 bash -c 'p4_dirs_R {}'
+#  } 2> /dev/null
+#}
+#export -f p4_dirs_R
+#for depot in $(p4 depots|sed -r 's_.*/p4depot/([^/]+)/\.\.\..*_//\1_')
+#do
+#  p4_dirs_R "$depot"
+#done
+
 
 
 p4_dirs_CR9()
