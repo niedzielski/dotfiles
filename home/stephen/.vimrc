@@ -320,3 +320,5 @@ en
 
 "se gfn=Bitstream\ Vera\ Sans\ Mono\ 8
 
+" Search the Cscope database in addition to Ctags.
+se cst
