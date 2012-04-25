@@ -240,7 +240,7 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 [[ -f ~/.bashrc_android ]] && . ~/.bashrc_android
 
 # Source Perforce configuration, if present.
-[[ -f ~/.bashrc_p4 ]] && . ~/.bashrc_p4
+#[[ -f ~/.bashrc_p4 ]] && . ~/.bashrc_p4
 
 # Source private configuration, if present.
 [[ -f ~/.bashrc_home ]] && . ~/.bashrc_home
