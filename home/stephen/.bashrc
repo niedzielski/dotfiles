@@ -76,6 +76,12 @@ shopt -s checkjobs
 shopt -s checkwinsize
 
 # ------------------------------------------------------------------------------
+log() { echo "$@"|tee -a ${log_file:+"$log_file"}; }
+log-ok()   {   printf '\033[22;32m'; log "$@"; printf '\033[00m';        } # Green
+log-warn() { { printf '\033[22;33m'; log "$@"; printf '\033[00m'; } >&2; } # Yellow
+log-ng()   { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
+
+# ------------------------------------------------------------------------------
 # Prompt and Window Title
 
 # HACK: Bash won't read updates to PS1 made in readline.
@@ -242,12 +248,6 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # Source work configuration, if present.
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
 
-
-echo_ok()  {   printf '\033[22;32m'; echo "$@"; printf '\033[00m';        } # Green
-echo_wrn() { { printf '\033[22;33m'; echo "$@"; printf '\033[00m'; } >&2; } # Yellow
-echo_ng()  { { printf '\033[22;31m'; echo "$@"; printf '\033[00m'; } >&2; } # Red
-prompt() { read -p '<Enter> to continue, <ctrl-c> to abort: '; }
-
 rubadub_root="$(readlink -e "$(dirname "$(readlink -e "$BASH_SOURCE")")/../..")"
 init_links()
 {
@@ -264,10 +264,11 @@ init_links()
   [[ -d ~/bin ]] || mkdir ~/bin
   [[ -d ~/opt ]] || mkdir ~/opt
 
-  echo_wrn 'etc/default/cachefilesd requires manual linking'
-  echo_wrn 'etc/nsswitch.conf requires manual linking'
-  echo_wrn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/51-android.rules)'
-  echo_wrn 'etc/bash_completion.d/android requires manual linking (sudo ln -s ~/work/rubadub/etc/bash_completion.d/android /etc/bash_completion.d/android)'
+  log-warn 'etc/default/cachefilesd requires manual linking'
+  log-warn 'etc/nsswitch.conf requires manual linking'
+  log-warn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/51-android.rules)'
+  log-warn 'etc/udev/rules.d/saleae.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/saleae.rules /etc/udev/rules.d/saleae.rules)'
+  log-warn 'etc/bash_completion.d/android requires manual linking (sudo ln -s ~/work/rubadub/etc/bash_completion.d/android /etc/bash_completion.d/android)'
 
   # Link home files.
   local target_home="$rubadub_root/home/stephen"
@@ -295,6 +296,8 @@ init_links()
 
   ln -s /usr/bin/google-chrome ~/bin/chrome
   ln -s ~/opt/eclipse/eclipse ~/bin/eclipse
+  ln -s ~/opt/eagle/bin/eagle ~/bin/eagle
+  ln -s ~/opt/logic/Logic ~/bin/logic
 }
 
 up_file()
@@ -318,10 +321,10 @@ up_file()
 }
 
 # TODO: use up_file to find existing db.
-alias updatedb='updatedb -l0 -oindex.db -U .'
+alias udb='updatedb -l0 -oindex.db -U .'
 loc()
 {
-  locate -Pd"$(up_file index.db)" --regex "${@:-.}"
+  locate -ePd"$(up_file index.db)" --regex "${@:-.}"
 }
 
 # Power cycles the embedded webcam on my System76 Gazelle Professional laptop,
@@ -447,6 +450,17 @@ xprop_pid()
 
 alias top=htop
 
+naut() { nautilus "${@:-.}"; }
+
+# Use "eval $(antialias foo)" to invoke as a command.
+antialias()
+{
+  # "alias" does escaping, so use "type" instead.
+  type "$1"|
+  sed -r 's%'"$1"' is aliased to `(.*)'\''%\1%'
+}
+
+
 # ------------------------------------------------------------------------------
 # Notes
 # du -sh, df -h /
@@ -473,6 +487,7 @@ alias top=htop
 # &> stderr and stdout to file
 # echo {1..5} # print 1 2 3 4 5
 # dd if=/dev/dvd of=dvd.iso
+# cat -v
 
 # TODO: javac colorize / format warnings and errors.
 # sudo lshw -C network; lspci|grep -i eth; lspci -nn|grep Eth
@@ -486,12 +501,9 @@ alias top=htop
 # TODO: man ps, man bash -> LC_TIME
 # echo foo{,,,,,,}
 # man watch
-
 # echo() { printf "%b\n" "$*"; }
-
-log() { echo "$@"|tee -a ${log_file:+"$log_file"}; }
-log-ok()   {   printf '\033[22;32m'; log "$@"; printf '\033[00m';        } # Green
-log-warn() { { printf '\033[22;33m'; log "$@"; printf '\033[00m'; } >&2; } # Yellow
-log-ng()   { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
-
-naut() { nautilus "${@:-.}"; }
+# complete -G
+#watch -n 1 --precise 'df -h /'
+# TODO: rename files or functions with -?
+# vboxmanage list runningvms
+# VBoxManage controlvm "<name>" savestate
