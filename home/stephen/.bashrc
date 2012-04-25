@@ -160,8 +160,7 @@ alias ..='c ..'
 
 alias abspath='readlink -m'
 
-gvim() { command gvim -p "$@" 2> /dev/null; } # One tab per file.
-alias v=gvim
+v() { gvim -p "$@" 2> /dev/null; } # One tab per file.
 
 lynx() { command lynx -accept_all_cookies "$@" 2> /dev/null; }
 
@@ -460,6 +459,12 @@ antialias()
   sed -r 's%'"$1"' is aliased to `(.*)'\''%\1%'
 }
 
+index-pwd()
+{
+  udb &&
+  loc|s 's_\\_\\\\_g; s_"_\\"_g; s_^|$_"_g' >| cscope.files &&
+  cscope -eq
+}
 
 # ------------------------------------------------------------------------------
 # Notes
