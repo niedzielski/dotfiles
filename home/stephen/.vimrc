@@ -322,3 +322,5 @@ en
 
 " Search the Cscope database in addition to Ctags.
 se cst
+
+" TODO: pipe region to bash column program.
