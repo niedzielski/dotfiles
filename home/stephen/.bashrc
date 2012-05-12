@@ -85,9 +85,11 @@ log-ng()   { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
 # Prompt and Window Title
 
 # HACK: Bash won't read updates to PS1 made in readline.
-force_update_term_title() { echo -en "\033]0;$USER@$HOSTNAME:$PWD\007"; }
+force_update_term_title() { echo -en "\033]0;$USER@${debian_chroot:-$HOSTNAME}:$PWD\007"; }
 force_update_term_title
 #PS1='\[\e]0;\u@\h:\w\a\]'
+
+# TODO: doesn't update on exit from chroot....
 
 # "$ " colored green for zero exit status, red otherwise.
 PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
@@ -99,7 +101,7 @@ PS1+='\$ \[\033[00m\]'
 # Simple Shell Supplements
 
 # Miscellaneous.
-alias   cp='cp -i' # Prompt on overwrite.
+alias   cp='cp -ai' # Prompt on overwrite, preserve all.
 alias    e='echo'
 
 # Extended regex, color, skip binaries, devices, sockets, and dirs.
@@ -264,9 +266,10 @@ init_links()
   [[ -d ~/opt ]] || mkdir ~/opt
 
   log-warn 'etc/default/cachefilesd requires manual linking'
-  log-warn 'etc/nsswitch.conf requires manual linking'
-  log-warn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/51-android.rules)'
-  log-warn 'etc/udev/rules.d/saleae.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/saleae.rules /etc/udev/rules.d/saleae.rules)'
+  log-warn 'etc/nsswitch.conf requires manual linking (sudo ln -s ~/work/rubadub/etc/nsswitch.conf /etc/nsswitch.conf)'
+  log-warn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/)'
+  log-warn 'etc/udev/rules.d/saleae.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/saleae.rules /etc/udev/rules.d/)'
+  log-warn 'etc/udev/rules.d/ftdi-ft232.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/ftdi-ft232.rules /etc/udev/rules.d/)'
   log-warn 'etc/bash_completion.d/android requires manual linking (sudo ln -s ~/work/rubadub/etc/bash_completion.d/android /etc/bash_completion.d/android)'
 
   # Link home files.
@@ -279,7 +282,6 @@ init_links()
     bin/4tw \
     bin/snap \
     .gconf/apps/metacity \
-    .gitconfig \
     .inputrc \
     .profile \
     .screenrc \
@@ -294,8 +296,8 @@ init_links()
   done
 
   ln -s /usr/bin/google-chrome ~/bin/chrome
+  ln -s /usr/bin/gnome-terminal ~/bin/term
   ln -s ~/opt/eclipse/eclipse ~/bin/eclipse
-  ln -s ~/opt/eagle/bin/eagle ~/bin/eagle
   ln -s ~/opt/logic/Logic ~/bin/logic
 }
 
@@ -505,6 +507,7 @@ index-pwd()
 
 # TODO: man ps, man bash -> LC_TIME
 # echo foo{,,,,,,}
+# {1..10} --> 1 2 3 4 5 6 7 8 9 10
 # man watch
 # echo() { printf "%b\n" "$*"; }
 # complete -G
@@ -512,3 +515,13 @@ index-pwd()
 # TODO: rename files or functions with -?
 # vboxmanage list runningvms
 # VBoxManage controlvm "<name>" savestate
+# unp -u * # unpack (extract, decompress, unzip) archive
+# aspell dump master # dump mediocre dictionary
+# ctags -R
+
+#sudo chroot ~/work/chroot/lucid/ su - $USER
+#last-log -> last-glob-n, keybind to shift tab or something.
+#time mm -j -l2.5
+alias mtime='date +%s'
+# trap 'kill -HUP -$$' exit
+#udevadm
