@@ -9,6 +9,8 @@
 # 4tw is a supplement for Metacity. I shortcut the numpad keys (KP_7, KP_8,
 # KP_9, ...) + <Super> in gconf-editor -> /apps/metacity/*.
 
+# TODO: protect against grabbing root.
+
 # ------------------------------------------------------------------------------
 dpkg-query -l wmctrl > /dev/null || exit
 
@@ -27,6 +29,9 @@ rltrb=($(xprop -root -f _NET_WORKAREA 0c ' $0 $1 $2 $3' _NET_WORKAREA|sed -r 's_
 #rh=$((${rltrb[3]} - ${rltrb[1]}))
 rw=${rltrb[2]}
 rh=${rltrb[3]}
+
+# TODO: something's wrong with the padding calculation in Precise.
+# TODO: something's wrong with repeated south tappings.
 
 rw2=$(($rw/2))
 rh2=$(($rh/2))
