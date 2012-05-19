@@ -525,3 +525,4 @@ index-pwd()
 alias mtime='date +%s'
 # trap 'kill -HUP -$$' exit
 #udevadm
+#lsb_release --short --codename
