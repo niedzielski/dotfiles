@@ -160,3 +160,44 @@ adb_grep_pkgs()
 #     pm path \"\$i\"
 #   done' "$@"
 
+
+
+
+# ------------------------------------------------------------------------------
+# Notes on Chroot
+# sudo git init
+# timestamp() { date +%F-%H-%M-%S-%N; }
+
+# From http://web.archive.org/web/20110707142234/http://source.android.com/source/initializing.html
+# (oldest version of http://s.android.com/source/initializing.html).
+#android_pkgs="git-core gnupg flex bison gperf build-essential \
+#  zip curl zlib1g-dev libc6-dev lib32ncurses5-dev \
+#  x11proto-core-dev libx11-dev lib32readline5-dev lib32z-dev \
+#  libgl1-mesa-dev g++-multilib tofrodos"
+
+#base=lucid-lynx-64
+#dist=lucid
+#arch=amd64
+#sudo pbuilder --create \
+#  --logfile "$base-$(timestamp).log" \
+#  --distribution "$dist" \
+#  --architecture "$arch" \
+#  --extrapackages "$android_pkgs" \
+#  --timeout 5h \
+#  --basetgz "$base.tgz"
+
+#sudo git add "$base.tgz"
+#sudo git commit
+
+#sudo pbuilder --login --save-after-login --basetgz "$base.tgz"
+
+#echo 'deb http://ppa.launchpad.net/sun-java-community-team/sun-java6/ubuntu lucid main' >> /etc/apt/sources.list &&
+#apt-get update &&
+#echo "sun-java6-jdk shared/accepted-sun-dlj-v1-1 boolean true" | debconf-set-selections &&
+#apt-get install sun-java6-jdk
+#exit
+
+#sudo git add "$base.tgz"
+
+#sudo pbuilder --login --bindmounts /home --basetgz "$base.tgz"
+
