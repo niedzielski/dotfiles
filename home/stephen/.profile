@@ -21,9 +21,8 @@ fi
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH" || :
 [ -d "$HOME/opt/android-sdk/tools" ] && PATH="$PATH:$HOME/opt/android-sdk/tools" || :
 [ -d "$HOME/opt/android-sdk/platform-tools" ] && PATH="$PATH:$HOME/opt/android-sdk/platform-tools" || :
-[ -d "$HOME/opt/p4v-2011.1.405081/bin" ] && PATH="$PATH:$HOME/opt/p4v-2011.1.405081/bin" || :
 [ -d "$HOME/opt/jdk1.6.0_32" ] && export JAVA_HOME="$HOME/opt/jdk1.6.0_32" && PATH="$PATH:$JAVA_HOME/bin"
-[ -d "$HOME/opt/android-ndk-r7c" ] && PATH="$PATH:$HOME/opt/android-ndk-r7c"
+[ -d "$HOME/opt/android-ndk-r8" ] && PATH="$PATH:$HOME/opt/android-ndk-r7c"
 
 # TODO: consider putting home bin before existing PATH.
 
