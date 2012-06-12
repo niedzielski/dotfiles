@@ -165,7 +165,7 @@ adb_grep_pkgs()
 
 # ------------------------------------------------------------------------------
 # Notes on Chroot
-# sudo git init
+# git init
 # timestamp() { date +%F-%H-%M-%S-%N; }
 
 # From http://web.archive.org/web/20110707142234/http://source.android.com/source/initializing.html
@@ -173,7 +173,10 @@ adb_grep_pkgs()
 #android_pkgs="git-core gnupg flex bison gperf build-essential \
 #  zip curl zlib1g-dev libc6-dev lib32ncurses5-dev \
 #  x11proto-core-dev libx11-dev lib32readline5-dev lib32z-dev \
-#  libgl1-mesa-dev g++-multilib tofrodos"
+#  libgl1-mesa-dev g++-multilib tofrodos unzip" # TODO: is python-lxml necessary?
+#
+# curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > /usr/bin/repo
+# chmod +x /usr/bin/repo
 
 #base=lucid-lynx-64
 #dist=lucid
@@ -186,8 +189,8 @@ adb_grep_pkgs()
 #  --timeout 5h \
 #  --basetgz "$base.tgz"
 
-#sudo git add "$base.tgz"
-#sudo git commit
+#sudo chown stephen:stephen "$base.tgz"
+#git commit
 
 #sudo pbuilder --login --save-after-login --basetgz "$base.tgz"
 
@@ -197,7 +200,7 @@ adb_grep_pkgs()
 #apt-get install sun-java6-jdk
 #exit
 
-#sudo git add "$base.tgz"
+#git add "$base.tgz"
 
 #sudo pbuilder --login --bindmounts /home --basetgz "$base.tgz"
 
