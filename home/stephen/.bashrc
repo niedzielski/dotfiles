@@ -158,7 +158,21 @@ p() { pushd "$@" > /dev/null; d; force_update_term_title; } # Change directory.
 alias pb='p +1' # Previous directory.
 alias pf='p -0' # Next directory.
 P() { popd > /dev/null; d; force_update_term_title; }
-alias ..='c ..'
+
+shopt -s autocd cdable_vars cdspell dirspell
+
+
+shopt -s checkjobs
+shopt -s checkwinsize
+
+
+shopt -s hostcomplete
+
+shopt -u huponexit
+shopt -s no_empty_cmd_completion
+
+set -b
+#set -u
 
 alias abspath='readlink -m'
 
@@ -468,6 +482,8 @@ index-pwd()
   cscope -eq
 }
 
+set -o pipefail
+
 # ------------------------------------------------------------------------------
 # Notes
 # du -sh, df -h /
@@ -526,3 +542,83 @@ alias mtime='date +%s'
 # trap 'kill -HUP -$$' exit
 #udevadm
 #lsb_release --short --codename
+#dpkg --print-architecture
+#dpkg -l pbuilder or dpkg-query -l pbuilder? wildcard?
+# TODO: need an alias for sudo screen /dev/ttuUSB0 115200. TODO: need udev rules too.
+# git gui
+# nohup
+# netstat
+# find -exec vs xargs. which is fastest
+# awk, columns
+# getopts
+
+# (Last sorted argument.)
+larg()
+{
+  [[ "${1:0:1}" == "-" ]] &&
+  {
+    local a=("$@")
+    local i=0
+    local n=$(($# - 1))
+
+    while [[ $i -lt $n ]] && [[ "${a[$i]}" != "--" ]] && shift
+    do
+      shift
+      let i+=1
+    done
+
+    shift
+    let i+=1
+    a=("${a:0:$i}")
+  }
+
+e "${a[@]}"
+e "$@"
+
+  printf "%s\n" "$@"|sort "${a[@]}"|tail -n1
+}
+
+
+
+
+
+
+
+# dpkg-query -L udev | grep rules
+# tail -f -n 0 /var/log/kern.log
+# udevadm monitor --environment
+# find /sys ! -type l -iname ttyUSB0
+# udevadm info --attribute-walk --path=/sys/class/tty/ttyUSB0
+# udevadm monitor --environment --property
+# udevadm info -a --attribute-walk --root --name=/dev/ttyUSB0
+# screen /dev/ttyUSB0 115200
+# diff <(cmd1) <(cmd2)
+# apt-cache search jar
+
+# coproc
+# IFS= read -r
+# LC_COLLATE=C tr A-Z a-z OR tr '[:upper:]' '[:lower:]'
+# mapfile
+# flock
+
+
+# Prints Bash environment.
+envy()
+{
+  alias
+  declare -p
+  declare -f
+  hash -l
+  trap -p
+  bind -psv
+  # TODO: go through Bash source to understand what other attributes a shell
+  # maintains.
+
+  # TODO: copy / overwrite env.
+  # Shopt Options (all stored in read-only variable BASHOPTS?)
+  # shopt -p
+  # Set Options (all stored in read-only variable SHELLOPTS? Superset of -?)
+  # TODO: how to set readonly vars?
+  # TODO: PWD
+  # env -i bash --norc ... empty shell
+}
