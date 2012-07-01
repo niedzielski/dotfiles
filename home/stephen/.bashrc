@@ -214,7 +214,21 @@ cb()
   fi
 }
 
-gui() { nautilus "${1:-.}"; }
+case "$OSTYPE" in
+  cygwin)      gui() { explorer "${@:-.}"; } ;;
+  linux-gnu|*)
+esac
+
+if pgrep Thunar &> /dev/null
+then
+  gui() { thunar "${@:-.}"; }
+elif pgrep nautilus  &> /dev/null
+then
+  gui() { nautilus "${@:-.}"; }
+elif pgrep explorer &> /dev/null
+then
+  gui() { explorer "${@:-.}"; }
+fi
 
 # ssh-keygen -t rsa
 ssh_auth()
@@ -313,6 +327,7 @@ init_links()
   ln -s /usr/bin/gnome-terminal ~/bin/term
   ln -s ~/opt/eclipse/eclipse ~/bin/eclipse
   ln -s ~/opt/logic/Logic ~/bin/logic
+  ln -s ~/opt/apache-ant-1.8.4/bin/ant ~/bin/ant
 }
 
 up_file()
@@ -462,10 +477,12 @@ xprop_pid()
   ps $(xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|
        sed -r 's_.* = ([0-9]+)_\1_')
 }
+#pidof
+#TODO: declare / readonly / local
 
 alias top=htop
 
-naut() { nautilus "${@:-.}"; }
+#naut() { nautilus "${@:-.}"; }
 
 # Use "eval $(antialias foo)" to invoke as a command.
 antialias()
@@ -577,6 +594,7 @@ e "$@"
 
   printf "%s\n" "$@"|sort "${a[@]}"|tail -n1
 }
+#--, - arg parsing
 
 
 
@@ -622,3 +640,16 @@ envy()
   # TODO: PWD
   # env -i bash --norc ... empty shell
 }
+
+# readonly
+# mapfile
+# compgen
+# complete
+# getopts
+# coproc
+# compopt
+# bind
+# help read, read -r, ifs
+# #!/usr/bin/env foo params?
+# TODO: init link warty
+# TODO: PS for pwd on ssh / chroot / name only cd broken.
