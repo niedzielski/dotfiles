@@ -155,7 +155,7 @@ en
 " Remove toolbar (icons) and menubar (file, edit, ...).
 "se go-=m
 
-
+colo desert
 
 " ------------------------------------------------------------------------------
 " Indentation
