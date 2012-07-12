@@ -4,17 +4,19 @@
 #  4---5---6  the          Moves and sizes the active window to the corner or
 #  |   |   |  win          half of the screen as specified by X: NW, N, NE, E,
 #  1---2---3               SE, S, SW, or W. Or use O to toggle maximized state,
-#                          or no args to toggle show desktop / hide all state.
+#                          0 to minimize, or no args to toggle show desktop /
+#                          hide all state.
 #
 # Copyright 2011 - 2012 Stephen Niedzielski. Licensed under GPLv3+.
 # ------------------------------------------------------------------------------
 # 4tw is a supplement for Metacity. I shortcut the numpad keys (KP_7, KP_8,
-# KP_9, ...) + <Super> in gconf-editor -> /apps/metacity/*.
+# KP_9, ...) + <Super> in gconf-editor -> /apps/metacity/*. With KP_5 being
+# Origin and KP_0 being minimize.
 
 # TODO: protect against grabbing root / desktop.
 
 # ------------------------------------------------------------------------------
-dpkg-query -l wmctrl > /dev/null || exit
+dpkg-query -l wmctrl xdotool > /dev/null || exit
 
 # ------------------------------------------------------------------------------
 # Process Args
@@ -32,6 +34,11 @@ then
   else
     wmctrl -k off
   fi
+elif [[ "$X" == 0 ]]
+then
+  # TODO: is there a way to minimize with wmctrl or should we switch all to
+  # xdotool? Which is best?
+  xdotool getactivewindow windowminimize
 elif [[ "$X" == o ]]
 then
   wmctrl -btoggle,maximized_vert,maximized_horz -r:ACTIVE:
