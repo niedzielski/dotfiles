@@ -324,3 +324,10 @@ colo desert
 se cst
 
 " TODO: pipe region to bash column program.
+
+" Infer case.
+se inf
+
+
+" Ignore case on filename completion.
+se wic
