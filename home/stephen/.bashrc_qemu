@@ -1,0 +1,34 @@
+# TODO: complete survey of industry standard and promising emerging technologies.
+# virt-manager, virt-viewer
+# virt-dmesg, virt-uname, virt-clone, virt-install
+# oz
+# virsh
+# qemu
+# kvm
+# spice
+# aqemu
+# python-virtinst
+# libguestfs-tools, libvirt-bin, libvirt, qemu-kvm, libguestfs, guestfish, virt-tools, virt-ls
+
+# qemu-img create  ubuntu-quantal-alpha-3-64b-0 8G
+# qemu-system-x86_64 -hda ubuntu-quantal-alpha-3-64b-0 -cdrom ~/Desktop/quantal-desktop-amd64.iso -m 2G -boot d
+
+# export nfs mounts as needed
+
+# VBoxManage startvm app
+# VBoxManage guestcontrol app stat 'C:\Windows\System32\cmd.exe' --username stephen --password stephen
+# VBoxManage guestcontrol app exec --image %ComSpec% --username stephen --password stephen --wait-exit --wait-stdout --wait-stderr --
+# VBoxManage controlvm app poweroff
+
+# clipboard -- see http://borderworlds.dk/blog/20070224-00.htmlä
+# display resizes
+# snapshot
+
+
+# virt-ls -lR -a img --time-relative / |
+# grep '^-'|
+# awk '$6 < 240'
+
+# Machines and disks should be qemu.qemu (user / group).
+# vb vs qemu, virtualization vs vm.
+
