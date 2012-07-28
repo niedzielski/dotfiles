@@ -1,10 +1,10 @@
-#Tue Jan 24 16:00:26 PST 2012
+#Sun Feb 05 16:58:25 PST 2012
 emulatorControl.track.first=146
 emulatorControl.track.count=42
-threadPanel.stack.col4=247
+threadPanel.stack.col4=501
 logcat.view.colsize.PID=54
 threadPanel.stack.col3=50
-threadPanel.Col5=730
+threadPanel.Col5=984
 threadPanel.stack.col2=399
 threadPanel.Col4=49
 threadPanel.stack.col1=133
@@ -26,9 +26,9 @@ devicePanel.Col4=179
 devicePanel.Col1=56
 logcat.view.colsize.Application=169
 com.android.ide.eclipse.ddms.adbDebugBasePort=13000
-devicePanel.Col0=138
+devicePanel.Col0=419
 emulatorControl.waypoint.elevation=62
 emulatorControl.track.name=151
 emulatorControl.waypoint.name=91
-logcat.view.colsize.Text=674
+logcat.view.colsize.Text=1075
 emulatorControl.waypoint.latitude=90
