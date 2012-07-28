@@ -331,3 +331,8 @@ se inf
 
 " Ignore case on filename completion.
 se wic
+
+
+" Make undo more granular when entering text.
+ino <Space> <Space><C-g>u
+
