@@ -50,7 +50,8 @@ shopt -s nocaseglob
 shopt -s no_empty_cmd_completion
 
 # Attempt to correct directory names when completing.
-shopt -s dirspell
+#  These don't seem to correct prior to passing to prog.
+# shopt -s dirspell
 
 # Source default Bash completions.
 [[ -f /etc/bash_completion ]] && . /etc/bash_completion
@@ -159,7 +160,8 @@ alias pb='p +1' # Previous directory.
 alias pf='p -0' # Next directory.
 P() { popd > /dev/null; d; force_update_term_title; }
 
-shopt -s autocd cdable_vars cdspell dirspell
+#  These don't seem to correct prior to passing to prog.
+shopt -s autocd cdable_vars # cdspell dirspell
 
 
 shopt -s checkjobs
@@ -271,6 +273,9 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # Source Perforce configuration, if present.
 #[[ -f ~/.bashrc_p4 ]] && . ~/.bashrc_p4
 
+# Source QEMU configuration, if present.
+[[ -f ~/.bashrc_qemu ]] && . ~/.bashrc_qemu
+
 # Source private configuration, if present.
 [[ -f ~/.bashrc_home ]] && . ~/.bashrc_home
 
@@ -307,6 +312,7 @@ init_links()
     .bashrc \
     .bashrc_android \
     .bashrc_p4 \
+    .bashrc_qemu \
     bin/4tw \
     bin/snap \
     .gconf/apps/metacity \
@@ -665,3 +671,5 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
 
 # cal
 # iodine
+# truncate - shrink or extend the size of a file to the specified size.
+# gnome-specimen - fonts
