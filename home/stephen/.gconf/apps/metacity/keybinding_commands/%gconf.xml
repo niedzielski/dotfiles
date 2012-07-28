@@ -1,36 +1,36 @@
 <?xml version="1.0"?>
 <gconf>
-	<entry name="command_9" mtime="1327959669" type="string">
+	<entry name="command_9" mtime="1335828077" type="string">
 		<stringvalue>gmrun</stringvalue>
 	</entry>
-	<entry name="command_8" mtime="1327959662" type="string">
+	<entry name="command_8" mtime="1335828077" type="string">
 		<stringvalue>4tw w</stringvalue>
 	</entry>
-	<entry name="command_7" mtime="1327959655" type="string">
+	<entry name="command_7" mtime="1335828077" type="string">
 		<stringvalue>4tw sw</stringvalue>
 	</entry>
-	<entry name="command_6" mtime="1327959650" type="string">
+	<entry name="command_6" mtime="1335828077" type="string">
 		<stringvalue>4tw s</stringvalue>
 	</entry>
-	<entry name="command_5" mtime="1327959647" type="string">
+	<entry name="command_5" mtime="1335828077" type="string">
 		<stringvalue>4tw se</stringvalue>
 	</entry>
-	<entry name="command_4" mtime="1327959641" type="string">
+	<entry name="command_4" mtime="1335828077" type="string">
 		<stringvalue>4tw e</stringvalue>
 	</entry>
-	<entry name="command_3" mtime="1327959637" type="string">
+	<entry name="command_3" mtime="1335828077" type="string">
 		<stringvalue>4tw ne</stringvalue>
 	</entry>
-	<entry name="command_2" mtime="1327959633" type="string">
+	<entry name="command_2" mtime="1335828077" type="string">
 		<stringvalue>4tw n</stringvalue>
 	</entry>
-	<entry name="command_1" mtime="1327959625" type="string">
-		<stringvalue>4tw nw</stringvalue>
+	<entry name="command_1" mtime="1335828622" type="string">
+		<stringvalue>gedit</stringvalue>
 	</entry>
-	<entry name="command_window_screenshot" mtime="1327959603" type="string">
+	<entry name="command_window_screenshot" mtime="1335828077" type="string">
 		<stringvalue>snap</stringvalue>
 	</entry>
-	<entry name="command_screenshot" mtime="1327959601" type="string">
+	<entry name="command_screenshot" mtime="1335828077" type="string">
 		<stringvalue>snap root</stringvalue>
 	</entry>
 </gconf>

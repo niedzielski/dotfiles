@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <gconf>
-	<entry name="minimize" mtime="1327959756" type="string">
-		<stringvalue>&lt;Super&gt;Down</stringvalue>
+	<entry name="unmaximize" mtime="1335829287" type="string">
+		<stringvalue></stringvalue>
 	</entry>
-	<entry name="toggle_maximized" mtime="1327959741" type="string">
-		<stringvalue>&lt;Super&gt;KP_5</stringvalue>
+	<entry name="minimize" mtime="1335829229" type="string">
+		<stringvalue>&lt;Primary&gt;&lt;Alt&gt;KP_Insert</stringvalue>
+	</entry>
+	<entry name="toggle_maximized" mtime="1335829193" type="string">
+		<stringvalue>&lt;Primary&gt;&lt;Alt&gt;KP_Begin</stringvalue>
 	</entry>
 </gconf>
