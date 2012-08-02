@@ -1,68 +1,49 @@
 #!/usr/bin/env bash
-sudo dpkg --set-selections <<EOF
+
+# TODO: investigate why "sudo dpkg --set-selections" fails.
+pkgs+=(autossh ssh-import-id)
+pkgs+=(bash-completion)
+pkgs+=(ccache)
+pkgs+=(cscope)
+pkgs+=(curl wget)
+pkgs+=(espeak)
+pkgs+=(g++)
+pkgs+=(gcc)
+pkgs+=(gdb)
+pkgs+=(gimp)
+pkgs+=(git git-gui gitk github-cli)
+pkgs+=(gnome-specimen)
+pkgs+=(gparted unetbootin)
+pkgs+=(graphviz)
+pkgs+=(idle ipython)
+pkgs+=(imagemagick)
+pkgs+=(iodine)
+pkgs+=(iperf)
+pkgs+=(lsb-release)
+pkgs+=(lshw)
+pkgs+=(lsof)
+pkgs+=(lynx)
+pkgs+=(make)
+pkgs+=(meld colordiff)
+pkgs+=(moreutils)
+pkgs+=(rar unrar p7zip p7zip-rar)
+pkgs+=(pbuilder)
+pkgs+=(python-beautifulsoup)
+pkgs+=(qemu qemu-kvm qemubuilder)
+pkgs+=(rsync)
+pkgs+=(screen)
+pkgs+=(skype)
+pkgs+=(sqlitebrowser)
+pkgs+=(telnet)
+pkgs+=(usbutils)
+pkgs+=(vim-gnome)
+pkgs+=(virtualbox virtualbox-guest-additions-iso)
+pkgs+=(vlc)
+pkgs+=(winbind)
+pkgs+=(xclip)
+pkgs+=(xdotool wmctrl)
+
 # eagle logic
-# openscad inkscape blender	
-autossh						install
-bash-completion					install
-binutils					install
-build-essential					install
-bzip2						install
-bzr						install
-ccache						install
-colordiff					install
-coreutils					install
-cron						install
-cscope						install
-curl						install
-espeak						install
-g++						install
-gcc						install
-gdb						install
-gimp						install
-git						install
-git-gui						install
-github-cli					install
-gitk						install
-gnome-specimen					install
-gparted						install
-graphviz					install
-gzip						install
-idle						install
-imagemagick					install
-iodine						install
-iperf						install
-ipython						install
-lsb-release					install
-lshw						install
-lsof						install
-lynx						install
-make						install
-meld						install
-moreutils					install
-p7zip						install
-pbuilder					install
-python-beautifulsoup				install
-qemu						install
-qemubuilder					install
-rar						install
-rsync						install
-screen						install
-skype						install
-sqlitebrowser					install
-ssh-import-id					install
-telnet						install
-unetbootin					install
-unrar						install
-unzip						install
-usbutils					install
-vim-gnome					install
-virtualbox					install
-vlc						install
-wget						install
-winbind						install
-wmctrl						install
-xclip						install
-xdotool						install
-zip						install
-EOF
-sudo apt-get dselect-upgrade
+# openscad inkscape blender
+
+sudo apt-get install "${pkgs[@]}"
