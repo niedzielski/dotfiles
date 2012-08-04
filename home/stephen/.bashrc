@@ -317,6 +317,7 @@ init_links()
     .inputrc \
     .profile \
     .screenrc \
+    .tmux.conf \
     .vimrc \
     opt/eclipse/eclipse.ini \
     opt/signapk \
