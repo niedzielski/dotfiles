@@ -86,14 +86,11 @@ log-ng()   { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
 # Prompt and Window Title
 
 # HACK: Bash won't read updates to PS1 made in readline.
-force_update_term_title() { echo -en "\033]0;$USER@${debian_chroot:-$HOSTNAME}:$PWD\007"; }
-force_update_term_title
-#PS1='\[\e]0;\u@\h:\w\a\]'
-
-# TODO: doesn't update on exit from chroot....
+#force_update_term_title() { echo -en "\033]0;$USER@${debian_chroot:-$HOSTNAME}:$PWD\007"; }
+PS1='\[\e]0;\u@${debian_chroot:-\h}:\w\a\]'
 
 # "$ " colored green for zero exit status, red otherwise.
-PS1='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
+PS1+='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
 
 # Colorless.
 PS1+='\$ \[\033[00m\]'
@@ -154,11 +151,11 @@ dirs()
   echo # Newline.
 }
 alias d=dirs
-c() { cd "$@"; d; force_update_term_title; }
-p() { pushd "$@" > /dev/null; d; force_update_term_title; } # Change directory.
+c() { cd "$@"; d; }
+p() { pushd "$@" > /dev/null; d; } # Change directory.
 alias pb='p +1' # Previous directory.
 alias pf='p -0' # Next directory.
-P() { popd > /dev/null; d; force_update_term_title; }
+P() { popd > /dev/null; d; }
 
 #  These don't seem to correct prior to passing to prog.
 shopt -s autocd cdable_vars # cdspell dirspell
@@ -314,6 +311,7 @@ init_links()
     .bashrc_p4 \
     .bashrc_qemu \
     bin/4tw \
+    bin/chrome \
     bin/snap \
     .gconf/apps/metacity \
     .inputrc \
@@ -391,6 +389,7 @@ reset_mouse()
 # type distinct commands to change directories. Set a-up, down, right, and left
 # to unused keys.
 # See also: http://unix.stackexchange.com/questions/9664/how-to-configure-inputrc-so-altup-has-the-effect-of-cd
+# Note: these cause a potential mismatch between PS1's \w and actual PWD.
 case "$OSTYPE" in
   cygwin)
     # HACK: I'm not sure what program to use to get key codes on Windows. I
@@ -417,16 +416,16 @@ bind -x '"\203":pf'
 bind -x '"\204":pb'
 
 # c-left, c-right.
-bind '"\e[1;5C": forward-word'
-bind '"\e[1;5D": backward-word'
+#bind '"\e[1;5C": forward-word'
+#bind '"\e[1;5D": backward-word'
 
 # TODO: investigate highlighting / marking for c-s-left, c-s-right, ...
 #"\e[1;6C": ...
 #"\e[1;6D": ...
 
 # c-del, c-] (c-bs == bs and c-\ is some kind of signal).
-bind '"\e[3;5~": kill-word'
-bind '"\C-]": backward-kill-word'
+#bind '"\e[3;5~": kill-word'
+#bind '"\C-]": backward-kill-word'
 
 # TODO: quote param.
 #"\C-xq": "\eb\"\ef\""
@@ -435,6 +434,7 @@ bind '"\C-]": backward-kill-word'
 
 #TODO: pull in old zsh
 alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
+# consider reset
 
 # shopt's huponexit is only applicable to login shells. The following covers
 # nonlogin shells too.
@@ -673,3 +673,4 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
 # iodine
 # truncate - shrink or extend the size of a file to the specified size.
 # gnome-specimen - fonts
+# at aspell, emacs completion
