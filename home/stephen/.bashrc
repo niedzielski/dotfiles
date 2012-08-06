@@ -319,6 +319,7 @@ init_links()
     .screenrc \
     .tmux.conf \
     .vimrc \
+    .xmonad \
     opt/eclipse/eclipse.ini \
     opt/signapk \
     opt/apktool \
