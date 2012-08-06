@@ -5,6 +5,7 @@ import XMonad.Util.EZConfig(additionalKeys)
 
 myKeys =
     [ ((mod4Mask, xK_g), withFocused toggleBorder) -- Toggle window focus border.
+    , ((mod4Mask, xK_p), spawn "dmenu_run")
     ]
 
 main = do
