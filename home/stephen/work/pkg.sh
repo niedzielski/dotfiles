@@ -31,7 +31,7 @@ pkgs+=(pbuilder)
 pkgs+=(python-beautifulsoup)
 pkgs+=(qemu qemu-kvm qemubuilder)
 pkgs+=(rsync)
-pkgs+=(screen)
+pkgs+=(screen tmux)
 pkgs+=(skype)
 pkgs+=(sqlitebrowser)
 pkgs+=(telnet)
@@ -42,6 +42,7 @@ pkgs+=(vlc)
 pkgs+=(winbind)
 pkgs+=(xclip)
 pkgs+=(xdotool wmctrl)
+pkgs+=(xmonad)
 
 # eagle logic
 # openscad inkscape blender
