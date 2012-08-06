@@ -11,8 +11,6 @@ se ts=4
 
 " Show typos.
 se spell
-" This otherwise defaults to a bright red background that is too distracting.
-hi spellbad cterm=underline ctermbg=none
 
 " Use Bash style file tab completion.
 se wim=list:longest
@@ -29,8 +27,8 @@ map <4-MiddleMouse> <LeftMouse>
 im  <4-MiddleMouse> <LeftMouse>
 
 " Some shortcuts for command mode.
-cm $f <c-r>=expand('%:p')<cr>
-cm $d <c-r>=expand('%:p:h').'/'<cr>
+" cm $f <c-r>=expand('%:p')<cr>
+" cm $d <c-r>=expand('%:p:h').'/'<cr>
 
 " Search.
 se hls  " Highlight matches.
@@ -53,48 +51,48 @@ se go-=T
 
 " Sourcing this file handles the lion's share. But there's some (mostly) subtle
 " supplements needed on the following lines.
-so $VIMRUNTIME/mswin.vim
+" so $VIMRUNTIME/mswin.vim
 
 " Allow cursor to position one past the last character in a line. This allows
 " for im c-s-left to work properly when positioned one past the last character.
-se ve=onemore
+" se ve=onemore
 
 " Forward word deletion.
-map <c-del> dw
-im <c-del> <c-o>dw
+" map <c-del> dw
+" im <c-del> <c-o>dw
 
 " Backward word deletion.
-map <c-bs> db
-im <c-bs> <c-o>db
+" map <c-bs> db
+" im <c-bs> <c-o>db
 
 " Backspace in visual mode deletes selection (for consistency with delete).
-nm <bs> d<left>
+" nm <bs> d<left>
 
 " Left word selection.
-vm <c-s-left> b<c-g>
-nm <c-s-left> v<c-s-left>
-im <c-s-left> <c-o><c-s-left>
+" vm <c-s-left> b<c-g>
+" nm <c-s-left> v<c-s-left>
+" im <c-s-left> <c-o><c-s-left>
 " TODO: investigate adding command mode support. I could use setpos for <c-left>
 " behavior, but not sure how to do <c-s-left> selecting. Maybe something like
 " "cmap <c-s-left> <c-\>e".
 
 " Right word selection.
-vm <c-s-right> w<c-g>
-nm <c-s-right> v<c-s-right>
-im <c-s-right> <c-o><c-s-right>
+" vm <c-s-right> w<c-g>
+" nm <c-s-right> v<c-s-right>
+" im <c-s-right> <c-o><c-s-right>
 
 " Page up selection.
-vm <s-pgup> <c-u>
-nm <s-pgup> v<s-pgup>
-im <s-pgup> <c-o><s-pgup>
+" vm <s-pgup> <c-u>
+" nm <s-pgup> v<s-pgup>
+" im <s-pgup> <c-o><s-pgup>
 
 " Tab navigation.
-map <C-tab> gt
-im  <C-tab> <C-O>gt
-map <C-S-tab> gT
-im  <C-S-tab> <C-O>gT
-map <C-t> :tabe<cr>
-im  <C-t> <C-O>:tabe<cr>
+" map <C-tab> gt
+" im  <C-tab> <C-O>gt
+" map <C-S-tab> gT
+" im  <C-S-tab> <C-O>gT
+" map <C-t> :tabe<cr>
+" im  <C-t> <C-O>:tabe<cr>
 
 
 if &term == 'xterm' || &term == 'screen'
@@ -155,7 +153,6 @@ en
 " Remove toolbar (icons) and menubar (file, edit, ...).
 "se go-=m
 
-colo desert
 
 " ------------------------------------------------------------------------------
 " Indentation
@@ -335,4 +332,8 @@ se wic
 
 " Make undo more granular when entering text.
 ino <Space> <Space><C-g>u
+
+colo desert
+" This otherwise defaults to a bright red background that is too distracting.
+hi spellbad cterm=underline ctermbg=none
 
