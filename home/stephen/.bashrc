@@ -87,6 +87,7 @@ log-ng()   { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
 
 # HACK: Bash won't read updates to PS1 made in readline.
 #force_update_term_title() { echo -en "\033]0;$USER@${debian_chroot:-$HOSTNAME}:$PWD\007"; }
+# TODO: consider the following for strapping into a CD hook: http://stackoverflow.com/questions/3276247/is-there-a-hook-in-bash-to-find-out-when-the-cwd-changes
 PS1='\[\e]0;\u@${debian_chroot:-\h}:\w\a\]'
 
 # "$ " colored green for zero exit status, red otherwise.
@@ -572,7 +573,7 @@ alias mtime='date +%s'
 # TODO: need an alias for sudo screen /dev/ttuUSB0 115200. TODO: need udev rules too.
 # git gui
 # nohup
-# netstat
+# sudo netstat -lepunt, lsof -i
 # find -exec vs xargs. which is fastest
 # awk, columns
 # getopts
@@ -676,3 +677,4 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
 # truncate - shrink or extend the size of a file to the specified size.
 # gnome-specimen - fonts
 # at aspell, emacs completion
+# google docs list -f audio
