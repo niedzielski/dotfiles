@@ -159,3 +159,44 @@ adb_grep_pkgs()
 #   do
 #     pm path \"\$i\"
 #   done' "$@"
+
+ls_apps()
+{
+  declare -i ret=0
+
+   # Get attached devices.
+  declare -ra devs=( $(adb devices|sed -nr '2,$ s_([^\t ]+).*_\1_p') ) &&
+
+  echo "${#devs[@]} device(s) detected." &&
+
+  local temp="$(mktemp)" &&
+
+  for dev in "${devs[@]}"
+  do
+    echo "Device: $dev."
+
+    # List packages and associated file.
+    mapfile -t pkgs < <(adb -s "$dev" shell pm list packages -f|
+                        sed -r 's_\r__g; s_^package:__') &&
+
+    echo "${#pkgs[@]} package(s) detected." &&
+
+    for pkg_key in "${!pkgs[@]}"
+    do
+      declare pkg_name="${pkgs[$pkg_key]##*=}"
+      declare pkg_file="${pkgs[$pkg_key]%%=*}"
+
+      # Copy the package to a temporary file on the PC.
+      adb -s "$dev" pull "$pkg_file" "$temp" &&
+
+      # Extract the application name from the APK badging dump.
+      declare app_name="$(aapt d badging "$temp"|sed -rn 's_application-label\:'"'(.*)'"'_\1_p')"
+
+      echo "Application name: $app_name; package name: $pkg_name; package file: $pkg_file."
+    done
+  done
+
+  rm -f "$temp"
+
+  return $ret
+}
