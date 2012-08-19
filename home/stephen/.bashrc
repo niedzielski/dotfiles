@@ -314,6 +314,7 @@ init_links()
     bin/4tw \
     bin/chrome \
     bin/snap \
+    ,config/touchegg \
     .gconf/apps/metacity \
     .inputrc \
     .profile \
