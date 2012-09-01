@@ -420,16 +420,16 @@ bind -x '"\203":pf'
 bind -x '"\204":pb'
 
 # c-left, c-right.
-#bind '"\e[1;5C": forward-word'
-#bind '"\e[1;5D": backward-word'
+bind '"\e[1;5C": forward-word'
+bind '"\e[1;5D": backward-word'
 
 # TODO: investigate highlighting / marking for c-s-left, c-s-right, ...
 #"\e[1;6C": ...
 #"\e[1;6D": ...
 
 # c-del, c-] (c-bs == bs and c-\ is some kind of signal).
-#bind '"\e[3;5~": kill-word'
-#bind '"\C-]": backward-kill-word'
+bind '"\e[3;5~": kill-word'
+bind '"\C-]": backward-kill-word'
 
 # TODO: quote param.
 #"\C-xq": "\eb\"\ef\""
@@ -679,3 +679,21 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
 # gnome-specimen - fonts
 # at aspell, emacs completion
 # google docs list -f audio
+# sg3-utils, lsscsi, lspci -- sg_scan, sg_ses, sg_inq /dev/sg5, dmesg, /var/log/syslog
+# pwd -P = readlink -m .
+#git --no-pager show --pretty="format:" --name-only f38f3c27d6461d8ae5a97f79c6b41bfd27675bf2
+#PWD="$(cygpath -w $(pwd))" p4 -x- edit
+#cb|xargs -rd\\n git add -n
+# pushd "$(git rev-parse --show-toplevel)" && { git status --porcelain|sed -rn 's_ M (.+)_\1_p'|xargs -rd\\n git add -n; popd; }
+
+#rdp() {
+#  # HACK: Xmonad doesn't support _NET_WORKAREA.
+#  declare -ai wh=( $(xwininfo -root|sed -nr '/^  Width: /N; s_^  Width: ([0-9]+)\n  Height: ([0-9]+)_\1 \2_p') )
+#  let wh[1]-=25 # HACK: allow for dock bar.
+#  rdesktop -g${wh[0]}x${wh[1]} -z -xm -P "$@"
+#}
+alias rdp='rdesktop -zKPxm -gworkarea'
+#iodine, pkg.sh
+#git update-index --assume-unchanged $files
+#git ls-files -v|grep '^h'
+#git update-index --no-assume-unchanged $files
