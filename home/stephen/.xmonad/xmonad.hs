@@ -8,7 +8,7 @@ import XMonad.Actions.CycleWS
 
 myKeys =
     [ ((mod4Mask, xK_g), withFocused toggleBorder) -- Toggle window focus border.
-    , ((mod4Mask, xK_p), spawn "dmenu_run")
+    , ((mod4Mask, xK_p), spawn "dmenu_run -i")
     , ((mod4Mask, xK_Left), prevWS)
     , ((mod4Mask, xK_Right), nextWS)
     , ((mod4Mask .|. shiftMask, xK_Left), shiftToPrev)
