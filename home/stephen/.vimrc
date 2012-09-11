@@ -1,6 +1,6 @@
 " ------------------------------------------------------------------------------
 " .vimrc
-" Copyright 2010 - 2011 Stephen Niedzielski. Licensed under GPLv3+.
+" Copyright 2010 - 2012 Stephen Niedzielski. Licensed under GPLv3.
 
 " ------------------------------------------------------------------------------
 " Set swap dir to some place I'll actually see.
@@ -45,6 +45,9 @@ se tpm=100
 
 " Remove the toolbar.
 se go-=T
+
+" Remove the scrollbars.
+se go-=rL
 
 " ------------------------------------------------------------------------------
 " Behave Like Windows
@@ -121,6 +124,9 @@ im <c-k> <c-o>v<c-k>
 vm <c-l> :call rc:slc(0)<cr>
 im <c-l> <c-o>v<c-l>
 
+nm <c-k> :call rc:slc(1)<cr>
+nm <c-l> :call rc:slc(0)<cr>
+
 
 
 "set expandtab
@@ -151,8 +157,10 @@ im <c-l> <c-o>v<c-l>
 "hi statuslinenc ctermbg=lightgrey ctermfg=black
 
 " Remove toolbar (icons) and menubar (file, edit, ...).
-"se go-=m
+se go-=m
 
+
+" TODO: Windows like behavior except maintain visual mode.
 
 " ------------------------------------------------------------------------------
 " Indentation
@@ -203,58 +211,68 @@ im <c-l> <c-o>v<c-l>
 
 " ------------------------------------------------------------------------------
 " Single line comment.
-"fu! rc:slc(b_comment)
-"  " TODO: s doesn't support variable interpolation. Use substitute().
-"  " TODO: get the comment character from the syntax definition.
-"  if    &syntax == 'c'
-"    if a:b_comment
-"      s_\v^([\t ]*)([^\t ])_\1//\2_e
-"    el
-"      s_\v^([\t ]*)//_\1_e
-"    en
-"  elsei &syntax == 'cpp'
-"    if a:b_comment
-"      s_\v^([\t ]*)([^\t ])_\1//\2_e
-"    el
-"      s_\v^([\t ]*)//_\1_e
-"    en
-"  elsei &syntax == 'vim'
-"    if a:b_comment
-"      s_\v^([\t ]*)([^\t ])_\1"\2_e
-"    el
-"      s_\v^([\t ]*)"_\1_e
-"    en
-"  elsei &syntax == 'txt' " TODO: need to set syntax to text on autoload.
-"    " Special case.
-"    if a:b_comment
-"      s_\v^([\t ]*)(-+)? ?(.*[^\t ])_\1-\2 \3_e
-"    el
-"      s_\v^([\t ]*)((- )|-)_\1_e
-"    en
-"  el " Default.
-"    if a:b_comment
-"      s_\v^([\t ]*)([^\t ])_\1#\2_e
-"    el
-"      s_\v^([\t ]*)#_\1_e
-"    en
-"  en
-"endf
+fu! rc:slc(b_comment)
+  " TODO: s doesn't support variable interpolation. Use substitute().
+  " TODO: get the comment character from the syntax definition.
+  if    &syntax == 'c'
+    if a:b_comment
+      s_\v^([\t ]*)([^\t ])_\1//\2_e
+    el
+      s_\v^([\t ]*)//_\1_e
+    en
+  elsei &syntax == 'cpp'
+    if a:b_comment
+      s_\v^([\t ]*)([^\t ])_\1//\2_e
+    el
+      s_\v^([\t ]*)//_\1_e
+    en
+  elsei &syntax == 'vim'
+    if a:b_comment
+      s_\v^([\t ]*)([^\t ])_\1"\2_e
+    el
+      s_\v^([\t ]*)"_\1_e
+    en
+  elsei &syntax == 'txt'
+    " Special case.
+    if a:b_comment
+      s_\v^([\t ]*)(-+)? ?(.*[^\t ])_\1-\2 \3_e
+    el
+      s_\v^([\t ]*)((- )|-)_\1_e
+    en
+  el " Default.
+    if a:b_comment
+      s_\v^([\t ]*)([^\t ])_\1#\2_e
+    el
+     s_\v^([\t ]*)#_\1_e
+    en
+  en
+endf
 
 " ------------------------------------------------------------------------------
 " Cscope
 
-" Use Cygwin Cscope.
-"se csprg=mlcscope
 
-" Use Cscope, not Ctags.
-"se cst
+" From http://cscope.sourceforge.net/cscope_maps.vim.
+if has("cscope")
+  " Search the Cscope database in addition to Ctags.
+  se cst
 
-" Notify the user when cs add fails.
-"se csverb
+  " Use cscope.out basename for path construction. TODO: this is causing a SEGV.
+  " se csre
 
-" Notes:
-" cs add cscope.out S:/b/M7630AAAEQMWSA1573_0
-" <c-]>
+  nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+  nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+
+  if filereadable("cscope.out")
+    cs add cscope.out  
+  en
+en
 
 " ------------------------------------------------------------------------------
 " Notes
@@ -315,10 +333,9 @@ im <c-l> <c-o>v<c-l>
 " ctrl-z, etc. in command mode
 " \<word\>
 
-"se gfn=Bitstream\ Vera\ Sans\ Mono\ 8
+" TODO: install bitstream
+se gfn=Bitstream\ Vera\ Sans\ Mono\ 8.5
 
-" Search the Cscope database in addition to Ctags.
-se cst
 
 " TODO: pipe region to bash column program.
 
@@ -337,3 +354,10 @@ colo desert
 " This otherwise defaults to a bright red background that is too distracting.
 hi spellbad cterm=underline ctermbg=none
 
+" TODO: vim end key should go to the very end, not one before
+
+
+
+call pathogen#infect()
+
+" TODO: fix tab indenting binding.
