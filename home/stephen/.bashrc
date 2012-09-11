@@ -502,11 +502,14 @@ antialias()
   sed -r 's%'"$1"' is aliased to `(.*)'\''%\1%'
 }
 
-index-pwd()
+index_pwd()
 {
-  udb &&
-  loc|s 's_\\_\\\\_g; s_"_\\"_g; s_^|$_"_g' >| cscope.files &&
-  cscope -eq
+  time \
+  {
+    udb &&
+    loc|sed -r '/\.git\/|\.(lst|d|o|dbo|a|so|png|jpg|pdf|map|dep|sym|exe)$/ d; s_\\_\\\\_g; s_"_\\"_g; s_^|$_"_g' >| cscope.files &&
+    echo -n|cscope -eq
+  }
 }
 
 set -o pipefail
