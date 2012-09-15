@@ -3,9 +3,10 @@
 # TODO: investigate why "sudo dpkg --set-selections" fails.
 pkgs+=(autossh ssh-import-id)
 pkgs+=(bash-completion)
+pkgs+=(ttf-bitstream-vera)
 pkgs+=(ccache)
 pkgs+=(cheese)
-pkgs+=(cscope)
+pkgs+=(cscope doxygen mscgen)
 pkgs+=(curl wget)
 pkgs+=(dmenu)
 pkgs+=(dos2unix)
