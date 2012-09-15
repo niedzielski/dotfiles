@@ -19,6 +19,7 @@
 # VBoxManage guestcontrol app stat 'C:\Windows\System32\cmd.exe' --username stephen --password stephen
 # VBoxManage guestcontrol app exec --image %ComSpec% --username stephen --password stephen --wait-exit --wait-stdout --wait-stderr --
 # VBoxManage controlvm app poweroff
+# note: host IP is 10.0.2.2
 
 # clipboard -- see http://borderworlds.dk/blog/20070224-00.htmlä
 # display resizes
