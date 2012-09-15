@@ -315,6 +315,7 @@ init_links()
     bin/chrome \
     bin/snap \
     ,config/touchegg \
+    .doxygen \
     .gconf/apps/metacity \
     .inputrc \
     .profile \
@@ -700,3 +701,4 @@ alias rdp='rdesktop -zKPxm -gworkarea'
 #git update-index --assume-unchanged $files
 #git ls-files -v|grep '^h'
 #git update-index --no-assume-unchanged $files
+#usbip
