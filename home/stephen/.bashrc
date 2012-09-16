@@ -78,9 +78,9 @@ shopt -s checkwinsize
 
 # ------------------------------------------------------------------------------
 log() { echo "$@"|tee -a ${log_file:+"$log_file"}; }
-log-ok()   {   printf '\033[22;32m'; log "$@"; printf '\033[00m';        } # Green
-log-warn() { { printf '\033[22;33m'; log "$@"; printf '\033[00m'; } >&2; } # Yellow
-log-ng()   { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
+log_ok()   {   printf '\033[22;32m'; log "$@"; printf '\033[00m';        } # Green
+log_warn() { { printf '\033[22;33m'; log "$@"; printf '\033[00m'; } >&2; } # Yellow
+log_err()  { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
 
 # ------------------------------------------------------------------------------
 # Prompt and Window Title
@@ -93,32 +93,32 @@ PS1='\[\e]0;\u@${debian_chroot:-\h}:\w\a\]'
 # "$ " colored green for zero exit status, red otherwise.
 PS1+='$( [[ $? -eq 0 ]] && echo "\[\033[22;32m\]" || echo "\[\033[22;31m\]" )'
 
-# Colorless.
+# Back to colorless.
 PS1+='\$ \[\033[00m\]'
 
 # ------------------------------------------------------------------------------
 # Simple Shell Supplements
 
-# Miscellaneous.
-alias   cp='cp -ai' # Prompt on overwrite, preserve all.
-alias    e='echo'
+alias     e='echo'
+alias    cp='cp -ai' # Prompt on overwrite, preserve all.
+alias   rsy='rsync -azv --partial-dir=.rsync-partial --partial'
 
 # Extended regex, color, skip binaries, devices, sockets, and dirs.
-alias    g='grep --color=auto -EID skip -d skip'
-alias   mv='mv -i' # Prompt on overwrite.
-alias    m='mv'
-alias   md='mkdir'
-alias   rm='rm -i' # Always prompt.
-alias    r='rm'
-#alias  sed='sed -r' # Extended regular expression... but Sed won't permit -rrrrrrrrrr.
-alias    s='sed -r'
-alias    t='touch'
-alias    x='xargs -d\\n ' # Xargs newline delimited + expansion. Use -r to not run on empty input.
+alias     g='grep --color=auto -EID skip -d skip'
+alias    mv='mv -i' # Prompt on overwrite.
+alias     m='mv'
+alias    md='mkdir'
+alias    rm='rm -i' # Always prompt.
+alias     r='rm'
+#alias   sed='sed -r' # Extended regular expression... but Sed won't permit -rrrrrrrrrr.
+alias     s='sed -r'
+alias     t='touch'
+alias     x='xargs -d\\n ' # Xargs newline delimited + expansion. Use -r to not run on empty input.
 # Notes:
 # - Copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use
 #   xargs --show-limits --no-run-if-empty < /dev/null?
-alias diff='colordiff -d --speed-large-files --suppress-common-lines -W$COLUMNS -y'
+alias  diff='colordiff -d --speed-large-files --suppress-common-lines' # -W$COLUMNS -y
 export LESS='-ir' # Smart ignore-case + output control chars.
 
 alias timestamp='date +%F-%H-%M-%S-%N'
@@ -132,8 +132,6 @@ alias lct='l -c'                   # By creation time.
 alias lmt='l -t'                   # By mod time.
 alias lat='l -u'                   # By access time.
 [[ -x /usr/bin/dircolors ]] && eval "$(dircolors -b)" # Enable color support.
-
-alias rsync='rsync -azv --partial-dir=.rsync-partial --partial'
 
 # ------------------------------------------------------------------------------
 # Less Simple Shell Supplements
@@ -296,12 +294,12 @@ init_links()
   [[ -d ~/bin ]] || mkdir ~/bin
   [[ -d ~/opt ]] || mkdir ~/opt
 
-  log-warn 'etc/default/cachefilesd requires manual linking'
-  log-warn 'etc/nsswitch.conf requires manual linking (sudo ln -s ~/work/rubadub/etc/nsswitch.conf /etc/nsswitch.conf)'
-  log-warn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/)'
-  log-warn 'etc/udev/rules.d/saleae.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/saleae.rules /etc/udev/rules.d/)'
-  log-warn 'etc/udev/rules.d/ftdi-ft232.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/ftdi-ft232.rules /etc/udev/rules.d/)'
-  log-warn 'etc/bash_completion.d/android requires manual linking (sudo ln -s ~/work/rubadub/etc/bash_completion.d/android /etc/bash_completion.d/android)'
+  log_warn 'etc/default/cachefilesd requires manual linking'
+  log_warn 'etc/nsswitch.conf requires manual linking (sudo ln -s ~/work/rubadub/etc/nsswitch.conf /etc/nsswitch.conf)'
+  log_warn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/)'
+  log_warn 'etc/udev/rules.d/saleae.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/saleae.rules /etc/udev/rules.d/)'
+  log_warn 'etc/udev/rules.d/ftdi-ft232.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/ftdi-ft232.rules /etc/udev/rules.d/)'
+  log_warn 'etc/bash_completion.d/android requires manual linking (sudo ln -s ~/work/rubadub/etc/bash_completion.d/android /etc/bash_completion.d/android)'
 
   # Link home files.
   local target_home="$rubadub_root/home/stephen"
@@ -382,6 +380,26 @@ reset_mouse()
 {
   sudo modprobe -r psmouse
   sudo modprobe psmouse
+}
+
+# $1 - VID[:PID]
+usb_id_to_bind()
+{
+  # HACK: there's gotta be away to get all this info cleanly from udev(adm).
+  declare -r dev_name="$(lsusb|sed -rn 's_^Bus ([0-9]{3}) Device ([0-9]{3}): ID '"$1"'.*_/dev/bus/usb/\1/\2_p')"
+  declare -r dev_path="$(udevadm info -q path -n"$dev_name")"
+  
+  basename "$dev_path"
+}
+
+usb_unbind()
+{
+  echo "$(usb_id_to_bind "$@")"|sudo tee /sys/bus/usb/drivers/usb/unbind
+}
+
+usb_bind()
+{
+  echo "$(usb_id_to_bind "$@")"|sudo tee /sys/bus/usb/drivers/usb/bind
 }
 
 # dic() { ! wn "$@" -over; } # Dictionary definition.
@@ -485,8 +503,8 @@ alias ps='ps -eF fe'
 xprop_pid()
 {
   # Only print the PID if it's not a dead parent.
-  ps $(xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|
-       sed -r 's_.* = ([0-9]+)_\1_')
+  \ps $(xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|
+        sed -r 's_.* = ([0-9]+)_\1_')
 }
 #pidof
 #TODO: declare / readonly / local
@@ -500,7 +518,7 @@ antialias()
 {
   # "alias" does escaping, so use "type" instead.
   type "$1"|
-  sed -r 's%'"$1"' is aliased to `(.*)'\''%\1%'
+  sed -r 's%'"$1"' is aliased to `(.*)'\''%\1%' #' # HACK: Vim highlighting gets screwed up here.
 }
 
 index_pwd()
@@ -702,3 +720,13 @@ alias rdp='rdesktop -zKPxm -gworkarea'
 #git ls-files -v|grep '^h'
 #git update-index --no-assume-unchanged $files
 #usbip
+
+youtube-dl-mp3()
+{
+  # HACK: when --extract-audio is used with -o-, avprobe doesn't seem to close
+  # the pipe. Maybe it's non-reentrant?
+  youtube-dl --audio-quality best -qo- "$1"|
+  avconv -v warning -i pipe: "$(youtube-dl -qe "$1").mp3"
+}
+# youtube-dl-mp3 "$(cb)"
+
