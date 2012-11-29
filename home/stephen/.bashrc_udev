@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# ------------------------------------------------------------------------------
+# .bashrc_udev
+# Copyright 2012 Stephen Niedzielski. Licensed under GPLv3.
+
+# ------------------------------------------------------------------------------
+# $1 - VID[:PID]
+usb_id_to_bind()
+{
+  # HACK: there's gotta be away to get all this info cleanly from udev(adm).
+  declare -r dev_name="$(lsusb|sed -rn 's_^Bus ([0-9]{3}) Device ([0-9]{3}): ID '"$1"'.*_/dev/bus/usb/\1/\2_p')"
+  declare -r dev_path="$(udevadm info -q path -n"$dev_name")"
+  
+  basename "$dev_path"
+}
+
+usb_unbind()
+{
+  echo "$(usb_id_to_bind "$@")"|sudo tee /sys/bus/usb/drivers/usb/unbind
+}
+
+usb_bind()
+{
+  echo "$(usb_id_to_bind "$@")"|sudo tee /sys/bus/usb/drivers/usb/bind
+}
+
+# ------------------------------------------------------------------------------
+# Power cycles the embedded webcam on my System76 Gazelle Professional laptop,
+# which malfunctions regularly. Since it's builtin, I can't cycle the cable
+# manually and the bus and port stay the same (2-1.6).
+# TODO: how to unbind /sys/bus/usb/drivers/uvcvideo/*?
+reset_webcam()
+{
+  echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/unbind > /dev/null
+  sleep 1
+  echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/bind  > /dev/null
+}
+# TODO: reset_usb for when the whole stack tanks.
+
+reset_mouse()
+{
+  sudo modprobe -r psmouse
+  sudo modprobe psmouse
+}
+
+# QEMU and some programs trash my USB 3 host controller.
+reset_xhci()
+{
+  ls /sys/bus/pci/drivers/xhci_hcd
+  echo '0000:00:14.0'|sudo tee /sys/bus/pci/drivers/xhci_hcd/unbind
+  ls /sys/bus/pci/drivers/xhci_hcd
+  echo '0000:00:14.0'|sudo tee /sys/bus/pci/drivers/xhci_hcd/bind
+  ls /sys/bus/pci/drivers/xhci_hcd
+}

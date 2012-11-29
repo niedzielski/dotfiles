@@ -37,3 +37,37 @@ set skip-completed-text on
 # TODO: read default shortcuts.
 # TODO: man bash.
 
+# Unlimited history.
+set history-size 0
+
+# Append a character denoting filetype to possible completion lists.
+set visible-stats on
+
+# c-left, c-right.
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+# c-del, c-] (c-bs == bs and c-\ is some kind of signal).
+"\e[3;5~": kill-word'
+"\C-]": backward-kill-word
+
+# TODO: why isn't this working?
+Control-s: forward-search-history
+#undo is ctrl_
+
+# TODO: investigate highlighting / marking for c-s-left, c-s-right, ...
+#"\e[1;6C": ...
+#"\e[1;6D": ...
+
+# TODO: quote param.
+#"\C-xq": "\eb\"\ef\""
+
+# TODO: turn on home adjustment by readline since not always using bash?
+# consider binding fxchpp|x g to ctrl-f, for ex
+
+# TODO: info rluserman
+
+# I prefer vi-style editing:
+set editing-mode vi
+
+Tab: complete

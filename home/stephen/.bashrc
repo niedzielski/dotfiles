@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ------------------------------------------------------------------------------
 # .bashrc
-# Copyright 2009 - 2011 Stephen Niedzielski. Licensed under GPLv3+.
+# Copyright 2009 - 2012 Stephen Niedzielski. Licensed under GPLv3.
 
 # ------------------------------------------------------------------------------
 # Interactive Shell Check
@@ -15,8 +15,8 @@
 HISTCONTROL=ignoredups:ignorespace
 
 # Set max commands and lines in Bash history.
-HISTSIZE=50000
-HISTFILESIZE=50000
+HISTSIZE=999999
+HISTFILESIZE=999999
 
 # Timestamp entries.
 HISTTIMEFORMAT='%F-%H-%M-%S '
@@ -29,6 +29,8 @@ shopt -s histappend
 
 # Don't replace newlines with semicolons in multi-line commands.
 shopt -s lithist
+
+shopt -s histreedit
 
 # ------------------------------------------------------------------------------
 # Globbing
@@ -77,6 +79,7 @@ shopt -s checkjobs
 shopt -s checkwinsize
 
 # ------------------------------------------------------------------------------
+# Logging
 log() { echo "$@"|tee -a ${log_file:+"$log_file"}; }
 log_ok()   {   printf '\033[22;32m'; log "$@"; printf '\033[00m';        } # Green
 log_warn() { { printf '\033[22;33m'; log "$@"; printf '\033[00m'; } >&2; } # Yellow
@@ -87,7 +90,8 @@ log_err()  { { printf '\033[22;31m'; log "$@"; printf '\033[00m'; } >&2; } # Red
 
 # HACK: Bash won't read updates to PS1 made in readline.
 #force_update_term_title() { echo -en "\033]0;$USER@${debian_chroot:-$HOSTNAME}:$PWD\007"; }
-# TODO: consider the following for strapping into a CD hook: http://stackoverflow.com/questions/3276247/is-there-a-hook-in-bash-to-find-out-when-the-cwd-changes
+# TODO: consider the following for strapping into a CD hook: 
+# http://stackoverflow.com/questions/3276247/is-there-a-hook-in-bash-to-find-out-when-the-cwd-changes
 PS1='\[\e]0;\u@${debian_chroot:-\h}:\w\a\]'
 
 # "$ " colored green for zero exit status, red otherwise.
@@ -101,28 +105,36 @@ PS1+='\$ \[\033[00m\]'
 
 alias     e='echo'
 alias    cp='cp -ai' # Prompt on overwrite, preserve all.
-alias   rsy='rsync -azv --partial-dir=.rsync-partial --partial'
+alias    rm='rm -i' # Always prompt.
+alias     t='touch'
 
-# Extended regex, color, skip binaries, devices, sockets, and dirs.
-alias     g='grep --color=auto -EID skip -d skip'
 alias    mv='mv -i' # Prompt on overwrite.
 alias     m='mv'
-alias    md='mkdir'
-alias    rm='rm -i' # Always prompt.
-alias     r='rm'
-#alias   sed='sed -r' # Extended regular expression... but Sed won't permit -rrrrrrrrrr.
+
+# Extended regex, color, line num, skip binaries, devices, sockets, and dirs.
+alias     g='grep --color=auto -nEID skip -d skip'
+# TODO: switch to GREP_OPTIONS?
+
 alias     s='sed -r'
-alias     t='touch'
-alias     x='xargs -d\\n ' # Xargs newline delimited + expansion. Use -r to not run on empty input.
+alias   rsync='rsync -azv --partial-dir=.rsync-partial --partial' # See also zsync
+
+
+
+alias     x='xargs -rd\\n ' # \n delimited, don't run on empty in, + expansion.
 # Notes:
 # - Copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use
 #   xargs --show-limits --no-run-if-empty < /dev/null?
-alias  diff='colordiff -d --speed-large-files --suppress-common-lines' # -W$COLUMNS -y
-export LESS='-ir' # Smart ignore-case + output control chars.
 
+alias dif='colordiff -d --speed-large-files --suppress-common-lines'
+alias vdif='dif -yW$COLUMNS' # Side by side (vertical) diff.
+
+export LESS='-ir' # Smart ignore-case + output control chars.
+alias pdfgrep='pdfgrep --color=auto'
 alias timestamp='date +%F-%H-%M-%S-%N'
 
+
+# TODO: visible stats.
 # Directory listing.
 alias  ls='ls -Ap --color=auto' # Alphabetically.
 alias   l=ls
@@ -251,6 +263,9 @@ fx()
   f -type f -iregex '^.*'"${rex}"'$' "$@"
 }
 
+# TODO: it would be nice if this cursed find was more easily scriptable. I need
+# to add a way to pass dirs and stuff.
+
 # C / C++.
 alias  fxcpp="fx '\.c|\.cpp'"
 alias  fxhpp="fx '\.h|\.hpp'"
@@ -262,6 +277,8 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 
 # ------------------------------------------------------------------------------
 # Misc
+
+[[ -f ~/.bashrc_udev ]] && . ~/.bashrc_udev
 
 # Source Android configuration, if present.
 [[ -f ~/.bashrc_android ]] && . ~/.bashrc_android
@@ -277,65 +294,6 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 
 # Source work configuration, if present.
 [[ -f ~/.bashrc_work ]] && . ~/.bashrc_work
-
-rubadub_root="$(readlink -e "$(dirname "$(readlink -e "$BASH_SOURCE")")/../..")"
-init_links()
-{
-  # TODO: rename function.
-  # TODO: make this pretty and maybe isolate these to files?
-  dpkg-query -l autossh vim-gnome git-all valgrind xclip build-essential samba \
-    smbfs meld openssh-server winbind gmrun gconf-editor nfs-common \
-    nfs-kernel-server cachefilesd curl ccache colordiff dos2unix gimp \
-    html2text libdevice-usb-perl lynx p7zip screen htop > /dev/null
-
-  [[ -d "$rubadub_root" ]] || return
-
-  # Make some directories.
-  [[ -d ~/bin ]] || mkdir ~/bin
-  [[ -d ~/opt ]] || mkdir ~/opt
-
-  log_warn 'etc/default/cachefilesd requires manual linking'
-  log_warn 'etc/nsswitch.conf requires manual linking (sudo ln -s ~/work/rubadub/etc/nsswitch.conf /etc/nsswitch.conf)'
-  log_warn 'etc/udev/rules.d/51-android.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/51-android.rules /etc/udev/rules.d/)'
-  log_warn 'etc/udev/rules.d/saleae.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/saleae.rules /etc/udev/rules.d/)'
-  log_warn 'etc/udev/rules.d/ftdi-ft232.rules requires manual linking and a system reboot (sudo ln -s ~/work/rubadub/etc/udev/rules.d/ftdi-ft232.rules /etc/udev/rules.d/)'
-  log_warn 'etc/bash_completion.d/android requires manual linking (sudo ln -s ~/work/rubadub/etc/bash_completion.d/android /etc/bash_completion.d/android)'
-
-  # Link home files.
-  local target_home="$rubadub_root/home/stephen"
-  for f in \
-    .android/ddms.cfg \
-    .bashrc \
-    .bashrc_android \
-    .bashrc_p4 \
-    .bashrc_qemu \
-    bin/4tw \
-    bin/chrome \
-    bin/snap \
-    ,config/touchegg \
-    .doxygen \
-    .gconf/apps/metacity \
-    .inputrc \
-    .profile \
-    .screenrc \
-    .tmux.conf \
-    .vimrc \
-    .xmonad \
-    opt/eclipse/eclipse.ini \
-    opt/signapk \
-    opt/apktool \
-    work/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.ddms.prefs \
-    .Xmodmap
-  do
-    ln -s "$target_home/$f" ~/"$(dirname $f)"
-  done
-
-  ln -s /usr/bin/google-chrome ~/bin/chrome
-  ln -s /usr/bin/gnome-terminal ~/bin/term
-  ln -s ~/opt/eclipse/eclipse ~/bin/eclipse
-  ln -s ~/opt/logic/Logic ~/bin/logic
-  ln -s ~/opt/apache-ant-1.8.4/bin/ant ~/bin/ant
-}
 
 up_file()
 {
@@ -361,46 +319,9 @@ up_file()
 alias udb='updatedb -l0 -oindex.db -U .'
 loc()
 {
-  locate -ePd"$(up_file index.db)" --regex "${@:-.}"
+  locate -d"$(up_file index.db)" --regex "${@:-.}"
 }
 
-# Power cycles the embedded webcam on my System76 Gazelle Professional laptop,
-# which malfunctions regularly. Since it's builtin, I can't cycle the cable
-# manually and the bus and port stay the same (2-1.6).
-# TODO: how to unbind /sys/bus/usb/drivers/uvcvideo/*?
-reset_webcam()
-{
-  echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/unbind > /dev/null
-  sleep 1
-  echo '2-1.6'|sudo tee /sys/bus/usb/drivers/usb/bind  > /dev/null
-}
-# TODO: reset_usb for when the whole stack tanks.
-
-reset_mouse()
-{
-  sudo modprobe -r psmouse
-  sudo modprobe psmouse
-}
-
-# $1 - VID[:PID]
-usb_id_to_bind()
-{
-  # HACK: there's gotta be away to get all this info cleanly from udev(adm).
-  declare -r dev_name="$(lsusb|sed -rn 's_^Bus ([0-9]{3}) Device ([0-9]{3}): ID '"$1"'.*_/dev/bus/usb/\1/\2_p')"
-  declare -r dev_path="$(udevadm info -q path -n"$dev_name")"
-  
-  basename "$dev_path"
-}
-
-usb_unbind()
-{
-  echo "$(usb_id_to_bind "$@")"|sudo tee /sys/bus/usb/drivers/usb/unbind
-}
-
-usb_bind()
-{
-  echo "$(usb_id_to_bind "$@")"|sudo tee /sys/bus/usb/drivers/usb/bind
-}
 
 # dic() { ! wn "$@" -over; } # Dictionary definition.
 # alias gd='aspell dump master|g -i' # Grep mediocre dictionary.
@@ -438,25 +359,10 @@ bind -x '"\202":P'
 bind -x '"\203":pf'
 bind -x '"\204":pb'
 
-# c-left, c-right.
-bind '"\e[1;5C": forward-word'
-bind '"\e[1;5D": backward-word'
-
-# TODO: investigate highlighting / marking for c-s-left, c-s-right, ...
-#"\e[1;6C": ...
-#"\e[1;6D": ...
-
-# c-del, c-] (c-bs == bs and c-\ is some kind of signal).
-bind '"\e[3;5~": kill-word'
-bind '"\C-]": backward-kill-word'
-
-# TODO: quote param.
-#"\C-xq": "\eb\"\ef\""
-
-# TODO: info rluserman
+# TODO: reverse-menu-complete
 
 #TODO: pull in old zsh
-alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
+#alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
 # consider reset
 
 # shopt's huponexit is only applicable to login shells. The following covers
@@ -526,12 +432,10 @@ index_pwd()
   time \
   {
     udb &&
-    loc|sed -r '/\.git\/|\.(lst|d|o|dbo|a|so|png|jpg|pdf|map|dep|sym|exe)$/ d; s_\\_\\\\_g; s_"_\\"_g; s_^|$_"_g' >| cscope.files &&
+    loc|sed -r '/\.git\/|doxygen\/|cscope|\.(lst|d|o|dbo|a|so|png|jpg|pdf|map|dep|sym|exe)$/ d; s_\\_\\\\_g; s_"_\\"_g; s_^|$_"_g' >| cscope.files &&
     echo -n|cscope -eq
   }
 }
-
-set -o pipefail
 
 # ------------------------------------------------------------------------------
 # Notes
@@ -686,7 +590,7 @@ envy()
 # TODO: PS for pwd on ssh / chroot / name only cd broken.
 # TODO: NDK location should link to versioned location.
 
-# From Matt Mead. Need to review.
+# From Matthew Mead. TODO: review.
 export LESS_TERMCAP_mb=$'\E[01;31m'      # begin blinking
 export LESS_TERMCAP_md=$'\E[01;34m'      # begin bold
 export LESS_TERMCAP_me=$'\E[0m'          # end mode
@@ -700,7 +604,6 @@ export LESS_TERMCAP_us=$'\E[01;32m'      # begin underline
 # truncate - shrink or extend the size of a file to the specified size.
 # gnome-specimen - fonts
 # at aspell, emacs completion
-# google docs list -f audio
 # sg3-utils, lsscsi, lspci -- sg_scan, sg_ses, sg_inq /dev/sg5, dmesg, /var/log/syslog
 # pwd -P = readlink -m .
 #git --no-pager show --pretty="format:" --name-only f38f3c27d6461d8ae5a97f79c6b41bfd27675bf2
@@ -730,3 +633,65 @@ youtube-dl-mp3()
 }
 # youtube-dl-mp3 "$(cb)"
 
+# gdb -batch -x foo.gdb
+#fxchpp -o -path ./doxygen/ -prune
+#google-chrome --user-data-dir=/tmp --incognito
+#chronic
+# f -path ./doxygen/ -prune -o -print|x g -i F22E -- why doesn't this work
+# csplit, split, cat
+# join
+#tog() { while :; do echo gpiooutput $1 $2 0 1 > /dev/ttyUSB0; sleep ${3:-.15}; echo gpiooutput $1 $2 0 0 > /dev/ttyUSB0; sleep ${3:-.15}; done; }
+
+
+# google docs list -f audio
+#declare -r user=me
+#declare -r folder=foo
+#cd "$folder"
+#sort <(google -u "$user" docs list -f "$folder"|sed -r 's_(.+),https://.+_\1_') <(ls -1 *)|
+#uniq -u|
+# HACK: google-cl doesn't handle files with unusual extensions.
+#xargs -rd\\n google -u "$user" docs upload --no-convert -f "$folder"
+#while IFS= read -r file
+#do
+#  declare tmpfile="$(mktemp tmp.XXX)" &&
+#  ln -f "$file" "$tmpfile" &&
+#
+#  time google -u "$user" docs upload --no-convert -f "$folder" --src "$tmpfile" --title "$file"
+#
+#  rm -f "$tmpfile"
+#done
+
+# at command vs cron
+# nl
+#while IFS= read -ru9 -d $'\0' file; do
+#  :
+#done 9< <(cmd)
+
+# Investigate synclient as touchegg replacement http://uselessuseofcat.com/?p=74
+# watch sensors
+# wodim vs dd
+# DISPLAY=:0.0 gnome-calculator
+# mkfs.vfat -I /dev/sdX
+# clonezilla
+# info -f grub
+# moreutils, at
+# unbuffer
+# f -path ./doxygen -prune -o -type f -iregex '.*(\.c|\.cpp|\.h|\.hpp)$' -print|x g 'Handle FW status:' -- note print is needed to avoid printing pruned dirs.
+# blkid -o value -s UUID
+
+alias ack='ack-grep --smart-case'
+alias cack='ack --ignore-dir=doxygen --cpp --cc --asm'
+
+incognito()
+{
+  google-chrome --user-data-dir=/tmp --incognito "$@" &> /dev/null&
+}
+#dislocate
+export PYTHONSTARTUP=~/.pystartup
+# PROJECT_NAME="$(basename "$PWD")" time doxygen ~/.doxygen/Doxyfile_c
+
+# echo stty cols $COLUMNS rows $LINES
+
+alias xwid="xwininfo|sed -rn '/^xwininfo: Window id: / s_^xwininfo: Window id: ([x0-9a-fA-F]+).*_\1_p'"
+# strace, nm, ldd
+# rlwrap
