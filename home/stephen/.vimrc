@@ -361,3 +361,8 @@ hi spellbad cterm=underline ctermbg=none
 call pathogen#infect()
 
 " TODO: fix tab indenting binding.
+
+
+se bin " no EOL at end of file
+" TODO: set gvim tab height, font, and bgcolor
+
