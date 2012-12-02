@@ -52,7 +52,7 @@ myfont = "-*-bitstream vera sans-medium-r-normal-*-9-*-*-*-*-*-*-*"
 myModMask = mod4Mask
 myKeys =
     [ ((myModMask              , xK_g    ), withFocused toggleBorder)
-    , ((myModMask              , xK_p    ), spawn "dmenu_run -i -fn 'Bitstream Vera Sans Mono-8' -h 19 -nb \\#d4d4d4 -nf \\#000000 -sb \\#000000 -sf \\#00fbff")
+    , ((myModMask              , xK_p    ), spawn "dmenu_run -i -nb \\#cccccc -nf \\#000000 -sb \\#0066ff -sf \\#ffffff") -- "dmenu_run -i -fn 'Bitstream Vera Sans Mono-8' -h 19 -nb \\#d4d4d4 -nf \\#000000 -sb \\#000000 -sf \\#00fbff"
     , ((myModMask              , xK_q    ), spawn "xmonad --recompile && xmonad --restart") -- killall dzen2; 
     , ((myModMask              , xK_Left ), prevWS)
     , ((myModMask              , xK_Right), nextWS)
