@@ -366,3 +366,9 @@ call pathogen#infect()
 se bin " no EOL at end of file
 " TODO: set gvim tab height, font, and bgcolor
 
+" Use very magic regex by default when searching.
+nnoremap / /\v
+vnoremap / /\v
+
+nnoremap <F4> :GundoToggle<CR>
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
