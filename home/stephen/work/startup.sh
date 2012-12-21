@@ -6,7 +6,7 @@
 xcompmgr&
 
 # TODO: investigate Ginn as a replacement if touchegg keeps chomping my CPU.
-touchegg &> /dev/null&
+#touchegg &> /dev/null&
 
 # TODO: switch to Dzen or Xmobar + Trayer when I can make these prettier and
 # more functional. Also consider using Docky if it matures some.
