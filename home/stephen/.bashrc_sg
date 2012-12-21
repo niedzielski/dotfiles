@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# ------------------------------------------------------------------------------
+# .bashrc_sg
+# Copyright 2012 Stephen Niedzielski. Licensed under GPLv3.
+
+sg_grep()
+{
+  sudo sg_scan -i|
+  grep -EB1 --no-group-separator "$@"|
+  sed -nr 's_^(/dev/sg[0-9]+).*_\1_p'
+}
+
+# $@ - sg nodes == /dev/sg0, sg0, or 0
+# Will not print duplicates.
+sg_to_sd()
+{( # Don't pollute the env. HACK: wrap in curlies so Vim will understand.
+  if [[ $# -gt 0 ]]
+  then
+    IFS=\| # Separate elements in $* with logical OR, not spaces.
+    sudo sg_map|sed -rn "s%(/dev/)?(sg)?($*) +%%p"
+  else
+    export -f "$FUNCNAME"
+
+    # Read from stdin.
+    xargs -rd\\n bash -c 'sg_to_sd "$@"' --
+  fi
+)}
+
+sd_grep() { sg_grep "$@"|sg_to_sd; }

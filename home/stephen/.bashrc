@@ -289,6 +289,9 @@ alias fxdsc='f -iname "*.dsc" -maxdepth 2'
 # Source QEMU configuration, if present.
 [[ -f ~/.bashrc_qemu ]] && . ~/.bashrc_qemu
 
+# Source SG configuration, if present.
+[[ -f ~/.bashrc_sg ]] && . ~/.bashrc_sg
+
 # Source private configuration, if present.
 [[ -f ~/.bashrc_home ]] && . ~/.bashrc_home
 
@@ -364,6 +367,7 @@ bind -x '"\204":pb'
 #TODO: pull in old zsh
 #alias cls=printf\ '\033\143' # TODO: figure out alternative sln for screen.
 # consider reset
+alias cls=reset
 
 # shopt's huponexit is only applicable to login shells. The following covers
 # nonlogin shells too.
@@ -695,3 +699,10 @@ export PYTHONSTARTUP=~/.pystartup
 alias xwid="xwininfo|sed -rn '/^xwininfo: Window id: / s_^xwininfo: Window id: ([x0-9a-fA-F]+).*_\1_p'"
 # strace, nm, ldd
 # rlwrap
+# sed 3{p;q}
+# script, readelf, objdump, gdb, ndisasm, strings -t
+# sg_map
+
+# udevadm info --query=all --name=/dev/sg21
+# mapfile -t < <(echo -e 'foo bar boo\nbaz') && echo "${MAPFILE[@]}"
+deref() { eval echo -n \$"$1"; }
