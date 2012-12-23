@@ -706,3 +706,31 @@ alias xwid="xwininfo|sed -rn '/^xwininfo: Window id: / s_^xwininfo: Window id: (
 # udevadm info --query=all --name=/dev/sg21
 # mapfile -t < <(echo -e 'foo bar boo\nbaz') && echo "${MAPFILE[@]}"
 deref() { eval echo -n \$"$1"; }
+
+gccsh() #<<EOF
+{
+  declare t="$(mktemp)"
+  {
+    gcc -xc - -o"$t"
+  } && "$t"
+  rm -f "$t"
+}
+
+# TODO: retry n "$@"
+# TODO: timeout
+retry()
+{
+  declare i=0
+  declare -r retries=10
+
+  while [[ $i -lt $retries ]] && ! "$@"
+  do
+    sleep .5
+    let i+=1
+  done
+
+  if [[ $i -eq $retries ]]
+  then
+    echo "fail: $@"
+  fi
+}
