@@ -3,7 +3,7 @@
 # Copyright 2012 Stephen Niedzielski. Licensed under GPLv3.
 
 # For transparency support.
-xcompmgr&
+#xcompmgr&
 
 # TODO: investigate Ginn as a replacement if touchegg keeps chomping my CPU.
 #touchegg &> /dev/null&
@@ -18,3 +18,5 @@ sleep 2
 xmonad --restart
 
 dropbox start -i
+
+#hamster &

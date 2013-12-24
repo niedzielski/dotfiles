@@ -1,26 +1,38 @@
+
+# Update Chrome settings. Sync chrome://plugins manually.
+
+# Install AOSP recommended pkgs from http://s.android.com/source/initializing.html
+
+#valgrind build-essential openssh-server html2text libdevice-usb-perl gnuplot autossh ssh-import-id bash-completion ttf-bitstream-vera ccache cheese cscope doxygen mscgen curl wget dmenu dos2unix g++ gcc gdb gimp git git-gui gitk git-svn gnome-specimen gparted unetbootin graphviz htop ia32-libs idle ipython imagemagick iodine iperf lrzsz lsb-release lshw lsscsi lsof lynx make meld colordiff moreutils rar unrar p7zip p7zip-rar pbuilder picard pdfgrep playonlinux idle python-pip python-beautifulsoup qemu qemu-kvm qemubuilder rsync zsync screen tmux sg3-utils sqlitebrowser telnet usbutils vim-gnome xmonad gnome-panel darcs vlc winbind xclip xdotool wmctrl youtube-dl libav-tools ubuntu-restricted-extras minicom socat cu python-django python-gpgme libqt4-dev libx11-dev libxtst-dev inkscape ack-grep fio aptitude debconf-utils ffmpeg gconf-editor ginn i2c-tools pbuilder-uml puppet python2.7-dev rake openjdk-6-jre ruby1.8-dev scsitools sdparm slirp smartmontools smp-utils spew vagrant whois myunity
+
+# Download dropbox, chrome, virtualbox (using dpkg -???), deadbeef
+#sudo adduser stephen vboxusers
+#sudo adduser stephen dialout
+#echo fs.inotify.max_user_watches=500000 | sudo tee -a /etc/sysctl.conf; sudo sysctl -p
+
+# switch to classic wm or xmonad + gnome panel
+
+#sudo apt-get purge unity-lens-shopping ubuntuone-client* python-ubuntuone-* totem deja-dup rhythmbox transmission* thunderbird
+
+sudo apt-get update
+sudo apt-get upgrade
+
+
+
 http://ubuntuforums.org/showthread.php?t=2039799 / http://pof.eslack.org/archives/files/mba42/post-install-precise.sh
 
-sudo apt-get install valgrind build-essential openssh-server html2text libdevice-usb-perl gnuplot autossh ssh-import-id bash-completion ttf-bitstream-vera ccache cheese cscope doxygen mscgen curl wget dmenu dos2unix g++ gcc gdb gimp git git-gui gitk git-svn gnome-specimen gparted unetbootin graphviz htop ia32-libs idle ipython imagemagick iodine iperf lrzsz lsb-release lshw lsscsi lsof lynx make meld colordiff moreutils rar unrar p7zip p7zip-rar pbuilder picard pdfgrep playonlinux idle python-pip python-beautifulsoup qemu qemu-kvm qemubuilder rsync zsync screen tmux sg3-utils sqlitebrowser telnet usbutils vim-gnome xmonad gnome-panel darcs vlc winbind xclip xdotool wmctrl youtube-dl libav-tools ubuntu-restricted-extras minicom socat cu python-django python-gpgme libqt4-dev libx11-dev libxtst-dev inkscape ack-grep fio aptitude debconf-utils ffmpeg gconf-editor ginn i2c-tools pbuilder-uml puppet python2.7-dev rake openjdk-6-jre ruby1.8-dev scsitools sdparm slirp smartmontools smp-utils spew vagrant whois myunity
+
 
 sudo apt-get purge rhythmbox rhythmbox-data thunderbird* evolution-data-server
 
 # Update mouse settings, power settings, background, folder settings. Change file associations for scripts to gVim.
 
-# Download Dropbox, Chrome, VirtualBox, deadbeef.
-
-# Update Chrome settings. Sync chrome://plugins manually.
-
-sudo adduser stephen vboxusers
-sudo adduser stephen dialout
-
-echo fs.inotify.max_user_watches=500000 | sudo tee -a /etc/sysctl.conf; sudo sysctl -p
-
-# Update terminal and Meld settings.
 
 
-
+# Update terminal.
 # Update gnome-panel.
-
+# Update wallpaper.
+# Copy over ~/opt, configuration fiels, etc.
 
 sg utils on vm
 
@@ -144,6 +156,11 @@ echo 'compare dpkg -l'
 #time cp -a /home/stephen /media/...
 # dropbox start -i
 # bluetooth
+
+#ghc-pkg list >| ghc-pkg_list.txt 2>&1
+#pip freeze >| pip_freeze.txt 2>&1
+#dpkg -l >| dpkgl.txt 2>&1
+
 
 # http://ubuntuforums.org/showthread.php?t=2039799
 

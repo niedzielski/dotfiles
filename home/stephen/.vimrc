@@ -1,19 +1,35 @@
 " ------------------------------------------------------------------------------
 " .vimrc
-" Copyright 2010 - 2012 Stephen Niedzielski. Licensed under GPLv3.
+" Copyright 2010 - 2013 Stephen Niedzielski. Licensed under GPLv3.
 
 " ------------------------------------------------------------------------------
 " Set swap dir to some place I'll actually see.
 se dir=~
 
-" Tabs occupy four characters.
-se ts=4
+" Tabs occupy two characters.
+se ts=2
 
 " Show typos.
 se spell
 
 " Use Bash style file tab completion.
 se wim=list:longest
+
+" http://vim.wikia.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+se completeopt=longest,menuone
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" The above mapping will change the behavior of the <Enter> key when the popup menu is visible. In that case the Enter key will simply select the highlighted menu item, just as <C-Y> does.
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+" open omni completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+" open user completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+            \ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+
 
 " Route middle mouse single, double, triple, and quadruple clicks to left click
 " instead of paste. I frequently click the middle mouse button accidentally.
@@ -128,8 +144,6 @@ nm <c-k> :call rc:slc(1)<cr>
 nm <c-l> :call rc:slc(0)<cr>
 
 
-
-"set expandtab
 
 
 "don't use .vimrc
@@ -255,22 +269,22 @@ endf
 " From http://cscope.sourceforge.net/cscope_maps.vim.
 if has("cscope")
   " Search the Cscope database in addition to Ctags.
-  se cst
+"  se cst
 
   " Use cscope.out basename for path construction. TODO: this is causing a SEGV.
   " se csre
 
-  nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
-  nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-  nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
-  nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+"  nmap <C-Space>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+"  nmap <C-Space>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+"  nmap <C-Space>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+"  nmap <C-Space>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+"  nmap <C-Space>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+"  nmap <C-Space>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+"  nmap <C-Space>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+"  nmap <C-Space>t :scs find t <C-R>=expand("<cword>")<CR><CR>
 
-  if filereadable("cscope.out")
-    cs add cscope.out  
+  if filereadable("/home/stephen/.cscope/cscope.out")
+    cs add /home/stephen/.cscope/cscope.out
   en
 en
 
@@ -334,7 +348,7 @@ en
 " \<word\>
 
 " TODO: install bitstream
-se gfn=Bitstream\ Vera\ Sans\ Mono\ 8.5
+se gfn=Bitstream\ Vera\ Sans\ Mono\ 10
 
 
 " TODO: pipe region to bash column program.
@@ -350,9 +364,9 @@ se wic
 " Make undo more granular when entering text.
 ino <Space> <Space><C-g>u
 
-colo desert
+colo herald "moria desert
 " This otherwise defaults to a bright red background that is too distracting.
-hi spellbad cterm=underline ctermbg=none
+"hi spellbad cterm=underline ctermbg=none
 
 " TODO: vim end key should go to the very end, not one before
 
@@ -363,12 +377,39 @@ call pathogen#infect()
 " TODO: fix tab indenting binding.
 
 
-se bin " no EOL at end of file
+"se bin " no EOL at end of file
 " TODO: set gvim tab height, font, and bgcolor
 
 " Use very magic regex by default when searching.
 nnoremap / /\v
 vnoremap / /\v
 
-nnoremap <F4> :GundoToggle<CR>
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
+"nnoremap <F4> :GundoToggle<CR>
+"map <Leader>n <plug>NERDTreeTabsToggle<CR>
+
+se et
+autocmd FileType make setl noet
+
+filetype plugin on
+set ofu=syntaxcomplete#Complete
+
+" http://blogs.gnome.org/lharris/2008/07/20/code-completion-with-vim-7/
+function! SuperCleverTab()
+    if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
+        return "\<Tab>"
+    else
+        if &omnifunc != ''
+            return "\<C-X>\<C-O>"
+        elseif &dictionary != ''
+            return "\<C-K>"
+        else
+            return "\<C-N>"
+        endif
+    endif
+endfunction
+
+inoremap <Tab> <C-R>=SuperCleverTab()<cr>
+
+" vim ctrl space s is broke
+" vim shortcut to alternate header and implementation
+" vim ctrl arrow in C file not working?

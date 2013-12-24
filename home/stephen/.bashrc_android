@@ -4,8 +4,11 @@
 # Stephen Niedzielski
 # Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
 
+
+# TODO: wrap adb in dos2unix
+
 # ------------------------------------------------------------------------------
-alias logcat='adb logcat -v long'
+alias logcat='adb logcat -C -v long'
 
 # ------------------------------------------------------------------------------
 dump_apk_cert() { unzip -p "$1" META-INF/CERT.RSA; }
@@ -61,6 +64,9 @@ dump_eclipse_jars()
 # TODO: use ANDROID_PRODUCT_OUT?
 # TODO: how to make classpathentry always work with rel paths, even across NFS
 # mount.
+
+
+#mount -o remount,rw /system
 
 #insert into logs values('',10);
 #seed=0
@@ -200,3 +206,58 @@ ls_apps()
 
   return $ret
 }
+
+adb_wake()
+{
+  monkeyrunner /dev/stdin <<EOF
+
+from com.android.monkeyrunner import MonkeyRunner as m
+import java.lang.RuntimeException
+
+d = m.waitForConnection()
+#d.wake()
+
+isKeyguard = False
+try:
+  isKeyguard = d.getHierarchyViewer().getFocusedWindowName() == u'Keyguard'
+except java.lang.RuntimeException:
+  # HACK: what's the preferred way to get the current activity?
+  isKeyguard = d.shell('dumpsys window windows | grep -E "mCurrentFocus=.*Keyguard"').__len__() > 0
+
+if isKeyguard is True:
+  h = int(int(d.getProperty('display.height')) * 2/3.)
+  w = int(d.getProperty('display.width'))
+  d.drag((w/2, h), (w, h), .1, 100)
+
+EOF
+}
+
+adb_sleep()
+{
+  monkeyrunner /dev/stdin <<EOF
+from com.android.monkeyrunner import MonkeyRunner as m
+
+d = m.waitForConnection()
+d.press("POWER", d.DOWN_AND_UP)
+EOF
+}
+# emulator -cpu-delay 0 -no-boot-anim -cache /tmp/foo/bar -force-32bit -avd jb-mr1
+
+adb_push_music()
+{
+  time adb push "$1" /sdcard/Music/"$1"
+}
+# TODO: diff music.
+
+alias avd=android\ avd
+
+
+#time while IFS= read -ru9 -d $'\n' line; do
+#  adb push "$line/" "/sdcard/Music/$line/" || break
+#done 9< <(ls -1)
+
+#java -jar apktool.jar b SADiscoveryActivity
+#keytool -genkey -v -keystore debug.keystore -alias debugkey -storepass android -keypass android -keyalg RSA -validity 14000
+#jarsigner -verbose -keystore debug.keystore SADiscoveryActivity.apk debugkey
+#adb -s 731709ab uninstall com.example.discoverytestappnew
+#adb -s 731709ab install SADiscoveryActivity.apk

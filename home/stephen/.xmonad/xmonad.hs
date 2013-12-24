@@ -3,23 +3,27 @@
 -- Copyright 2012 Stephen Niedzielski. Licensed under GPLv3.
 
 -- Imports
-import System.IO
+--import System.IO
 import XMonad
 import XMonad.Actions.CycleWS(prevWS, nextWS, shiftToPrev, shiftToNext)
 import XMonad.Actions.NoBorders(toggleBorder)
 import XMonad.Config.Gnome(gnomeConfig)
 -- import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.EwmhDesktops(ewmh) -- For touchegg.
-import XMonad.Hooks.FadeInactive
+--import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageHelpers(isFullscreen, doFullFloat)
---import XMonad.Layout.Gaps
-import XMonad.Layout.LayoutHints -- For gVim.
+import XMonad.Layout.Gaps
+--import XMonad.Layout.LayoutHints -- For gVim.
 import XMonad.Layout.NoBorders(smartBorders)
 import XMonad.Layout.Spacing(spacing)
 import XMonad.Util.EZConfig(additionalKeys)
-import XMonad.Util.Loggers -- (logCmd)
-import XMonad.Util.Run(spawnPipe)
-
+--import XMonad.Util.Loggers -- (logCmd)
+--import XMonad.Util.Run(spawnPipe)
+import XMonad.Hooks.SetWMName
+import XMonad.Hooks.ICCCMFocus ( takeTopFocus )
+import qualified XMonad.Actions.ConstrainedResize as Sqr
+import qualified Data.Map as M
+--import Graphics.X11.Xinerama
 
 -- Color Scheme
 -- TODO: set in Xsession.
@@ -40,28 +44,33 @@ mySColor = "#171717" -- Seperator
 myBorder = "#110E17"
 myFocusedBorder = "#780000"
 myIconDir = "/home/scott/.dzen/dzenIcons/"
-mynormalBorderColor  = "#6699cc"
-myfocusedBorderColor = "#00fbff"
+mynormalBorderColor  = "#333333" -- "#6699cc"
+myfocusedBorderColor = "#00fbff" -- myfocusedBorderColor = "#ff0000"
 
 myborderwidth = 1
-mymcspacing = 4
---myDockHeight = 14 :: Int
+mymcspacing = 2
+myDockHeight = 0 :: Int
 myfont = "-*-bitstream vera sans-medium-r-normal-*-9-*-*-*-*-*-*-*"
 
 -- Key Chords
-myModMask = mod4Mask
+modm = mod4Mask
 myKeys =
-    [ ((myModMask              , xK_g    ), withFocused toggleBorder)
-    , ((myModMask              , xK_p    ), spawn "dmenu_run -i -nb \\#cccccc -nf \\#000000 -sb \\#0066ff -sf \\#ffffff") -- "dmenu_run -i -fn 'Bitstream Vera Sans Mono-8' -h 19 -nb \\#d4d4d4 -nf \\#000000 -sb \\#000000 -sf \\#00fbff"
-    , ((myModMask              , xK_q    ), spawn "xmonad --recompile && xmonad --restart") -- killall dzen2; 
-    , ((myModMask              , xK_Left ), prevWS)
-    , ((myModMask              , xK_Right), nextWS)
-    , ((myModMask .|. shiftMask, xK_Left ), shiftToPrev)
-    , ((myModMask .|. shiftMask, xK_Right), shiftToNext)
+    [ ((modm              , xK_g    ), withFocused toggleBorder)
+    , ((modm              , xK_r    ), spawn "dmenu_run -i -nb \\#cccccc -nf \\#000000 -sb \\#0066ff -sf \\#ffffff") -- "dmenu_run -i -fn 'Bitstream Vera Sans Mono-8' -h 19 -nb \\#d4d4d4 -nf \\#000000 -sb \\#000000 -sf \\#00fbff"
+    , ((modm              , xK_q    ), spawn "xmonad --recompile && xmonad --restart") -- killall dzen2; 
+    , ((modm              , xK_Left ), prevWS)
+    , ((modm              , xK_Right), nextWS)
+    , ((modm .|. shiftMask, xK_Left ), shiftToPrev)
+    , ((modm .|. shiftMask, xK_Right), shiftToNext)
+    --, ((modm, xK_`), swapNextScreen)
     ]
 
+myMouse x  = [ ((modm .|. shiftMask, button3), (\w -> focus w >> Sqr.mouseResizeWindow w True )) ]
+
+newMouse x = M.union (mouseBindings defaultConfig x) (M.fromList (myMouse x))
+
 -- Workspaces
-myWorkspaces = ["www","dev","ref","vm","5","6","7","fm","jot"]
+myWorkspaces = ["www","dev","ref","4","vm","6","7","fm","jot"]
 
 
 -- TODO: get from WM.
@@ -93,22 +102,26 @@ myWorkspaces = ["www","dev","ref","vm","5","6","7","fm","jot"]
 --       , ppOutput          = hPutStrLn h }
 
 -- Fade inactive windows.
-myLogHook = fadeInactiveLogHook fadeAmount
-    where fadeAmount = 0.95
+--myLogHook = fadeInactiveLogHook fadeAmount
+--    where fadeAmount = 0.90
 
 -- Main
 main = do
     -- dzenizen <- spawnPipe myDock
     xmonad $ ewmh gnomeConfig
-        { modMask            = myModMask
+        { modMask            = modm
         , workspaces         = myWorkspaces
-        , layoutHook         = spacing mymcspacing $ smartBorders $ layoutHintsToCenter $ layoutHook gnomeConfig -- $ gaps [(U,myDockHeight)] 
+        , layoutHook         = smartBorders $ gaps [(U,myDockHeight)] $ layoutHook gnomeConfig -- $ spacing mymcspacing $ layoutHintsToCenter
         , normalBorderColor  = mynormalBorderColor
         , focusedBorderColor = myfocusedBorderColor
         , borderWidth        = myborderwidth
-        , logHook            = myLogHook -- >> (dynamicLogWithPP $ myDzenPP dzenizen)
+        --, logHook            = myLogHook -- >> (dynamicLogWithPP $ myDzenPP dzenizen)
         , manageHook         = composeAll
             [ manageHook gnomeConfig
             , isFullscreen --> doFullFloat]
-        , handleEventHook    = hintsEventHook
+  --      , handleEventHook    = hintsEventHook
+        , startupHook = setWMName "LG3D"
+, mouseBindings = newMouse
+  , logHook = takeTopFocus
+
         } `additionalKeys` myKeys

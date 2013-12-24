@@ -1,16 +1,24 @@
 #!/usr/bin/env zsh
 # ------------------------------------------------------------------------------
 # .zshrc
-# Stephen Niedzielski
+# Copyright 2009 - 2013 Stephen Niedzielski. Licensed under GPLv3.
 
 # ------------------------------------------------------------------------------
 # Prompt
 
-# TODO: do we need ${debian_chroot:+($debian_chroot)}?
-PROMPT='
-%K{blue}%n@%m%k%B %F{cyan}%~
-%(?.%F{white}.%F{red}) %# %b%f%k'
+setopt promptsubst
 
+# TODO: do we need ${debian_chroot:+($debian_chroot)}?
+PROMPT_PAD='────────────────────'; PROMPT_PAD+=${PROMPT_PAD//─/$PROMPT_PAD}
+PROMPT_PWD='%K{blue}%n@%m%k%B %F{cyan}%~ '
+# TODO: handle wrap around case using modulo
+print_prompt_pad() {
+  declare promptlen=$(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" <<< "${(%)PROMPT_PWD}"|wc -c)
+  echo -n ${PROMPT_PAD:0:$(($COLUMNS - $promptlen))}
+}
+PROMPT="
+$PROMPT_PWD\$(print_prompt_pad)
+%(?.%F{green}.%F{red}) %# %b%f%k"
 
 setopt histignorespace histignorealldups sharehistory histfindnodups histlexwords
 
@@ -47,6 +55,14 @@ zstyle ':completion:*' verbose true
 
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+#autoload predict-on
+#predict-on
+
+setopt dotglob
+
+# color partial completions
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==34=34}:${(s.:.)LS_COLORS}")';
 
 # ------------------------------------------------------------------------------
 
@@ -106,6 +122,7 @@ export AUTOJUMP_KEEP_SYMLINKS=1
 [[ -s ~/.autojump/etc/profile.d/autojump.zsh ]] && . ~/.autojump/etc/profile.d/autojump.zsh
 
 alias ack='ack-grep --smart-case'
+alias ag='ag -S'
 alias d2u=dos2unix
 
 
@@ -137,15 +154,40 @@ P() { popd > /dev/null; d; } # Change directory.
 pb() { p +1; } # Previous directory.
 pf() { p -0; } # Next directory.
 ..() { cd ..; }
-zle -N ..
-zle -N P
-zle -N pf
-zle -N pb
 
-bindkey "\e[1;3A" '..'
-bindkey "\e[1;3B" P
-bindkey "\e[1;3C" pf
-bindkey "\e[1;3D" pb
+
+
+setopt BRACE_CCL
+
+
+
+
+
+
+
+source ~/.zshrc_kbd
+source ~/.zshrc_android
+
+
+ncui() { cd ~/.juniper_networks/network_connect && sudo ./ncui -h ntc.remote.aol.com -c "$1" -f ~/.vpn/ssl.crt -x }
+
+targz() {
+  declare o="$1-$(timestamp).tar.gz"
+  shift
+
+  echo "output: $o"
+  echo "inputs: $*"
+
+  declare -i sz=$(du -bcs "$@"|tail -n1|cut -f1)
+  echo "size: $sz"
+
+  time {
+    tar c "$@"|
+    pv -s $sz|
+    pigz -1 > "$o"
+    sync
+  }
+}
 
 
 
@@ -162,13 +204,15 @@ f()
   # The trouble is that -regextype must appear after path but before expression.
   # HACK: "-D debugopts" unsupported and -[HLPO] options assumed to before dirs.
   a=()
-  while [[ -n "$1" ]] && ( [[ ! "${1:0:1}" =~ [-\!\(\),] ]] || [[ "${1:0:2}" =~ -[HLPO] ]] )
-  do
-    a+=("$1")
+  if [[ ${+1} -ne 0 ]]; then
+    while [[ "${1:0:1}" =~ '[^-!(),]' ]] || [[ "${1:0:2}" =~ -[HLPO] ]]
+    do
+      a+=("$1")
 
-    # Eliminate arg from @.
-    shift
-  done
+      # Eliminate arg from @.
+      shift
+    done
+  fi
 
   find -O3 ${a:+"${a[@]}"} -nowarn -regextype egrep ${@:+"$@"}
 }
@@ -274,5 +318,10 @@ xpid() {
   ps $(xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|
         sed -r 's_.* = ([0-9]+)_\1_')
 }
-
+alias timestamp='date +%F-%H-%M-%S-%N'
 source /etc/zsh_command_not_found
+
+
+
+
+# ldd ./BCompare|grep 'not found'
