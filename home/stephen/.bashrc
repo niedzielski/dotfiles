@@ -77,7 +77,7 @@ prompt_pad="${prompt_pad//─/$prompt_pad}"
 print_prompt_pad() {
   # TODO: clean up
   declare -i prompt_stat_len="$(python -c 'import re, sys; sys.stdout.write(str(len(re.sub("\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]", "", sys.stdin.read(), 0))))' <<< "$PWD")"
-  echo ${prompt_pad:0:$(($COLUMNS - $prompt_stat_len % $COLUMNS))}
+  echo ${prompt_pad:0:$(($COLUMNS - $prompt_stat_len % ${COLUMNS:-1}))}
 }
 
 PS1='\n'
