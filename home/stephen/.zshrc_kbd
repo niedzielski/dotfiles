@@ -164,6 +164,10 @@ bindkey '^L'      clear-screen                                # c-l
 # TODO: s-enter is next line down.
 # TODO: mouse interaction
 
+#if (( $+isMac )); then
+#  bindkey '[1~' beginning-of-line # cmd-left
+#  bindkey '[4~' end-of-line # cmd-right
+#fi
 
 
 # Stop on error.

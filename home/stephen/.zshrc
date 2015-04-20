@@ -3,6 +3,23 @@
 # .zshrc
 # Copyright 2009 - 2013 Stephen Niedzielski. Licensed under GPLv3.
 
+source ~/.profile
+
+# ------------------------------------------------------------------------------
+if is_mac; then
+  alias sed=gsed
+  alias grep=ggrep
+  alias find=gfind
+  alias locate=glocate
+  alias updatedb=gupdatedb
+  alias xargs=gxargs
+  alias tar=gtar
+  alias awk=gawk
+  alias du=gdu
+  alias ls=gls
+  alias parallel=gparallel
+fi
+
 # ------------------------------------------------------------------------------
 # Prompt
 
@@ -13,8 +30,8 @@ PROMPT_PAD='────────────────────'; PROMP
 PROMPT_PWD='%K{blue}%n@%m%k%B %F{cyan}%~ '
 # TODO: handle wrap around case using modulo
 print_prompt_pad() {
-  declare promptlen=$(sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" <<< "${(%)PROMPT_PWD}"|wc -c)
-  echo -n ${PROMPT_PAD:0:$(($COLUMNS - $promptlen))}
+  declare -i promptlen="$(python -c 'import re, sys; sys.stdout.write(str(len(re.sub("\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]", "", sys.stdin.read(), 0))))' <<< "${(%)PROMPT_PWD}")" # |wc -m
+  echo -n ${PROMPT_PAD:0:$(($COLUMNS - $promptlen % $COLUMNS))}
 }
 PROMPT="
 $PROMPT_PWD\$(print_prompt_pad)
@@ -30,8 +47,8 @@ setopt autocd
 bindkey -e
 
 # Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=10000000
-SAVEHIST=10000000
+HISTSIZE=100000000
+SAVEHIST=100000000
 HISTFILE=~/.zsh_history
 
 # Use modern completion system
@@ -43,7 +60,7 @@ zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
+#eval "$(dircolors -b)"
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
@@ -86,18 +103,20 @@ alias e=echo
 # poorly written scripts.
 alias g='grep --color=auto -nEID skip -d skip'
 
+
 # Use extended regex. Again use a silly alias to avoid wrecking poorly written
 # scripts. Also, Sed doesn't handle repeated "-r" flags gracefully.
 alias s='sed -r'
 
 alias x='xargs -rd\\n ' # \n delimited, don't run on empty in, + expansion.
                    # ^--- This space is for expanding a subsequent alias arg.
+
 # Copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use
 #   xargs --show-limits -r < /dev/null? See also ulimit builtin?
 
 # Directory listing. See also: lsattr -a, getfattr.
-alias  ls='ls -Ap --color=auto' # Alphabetically.
+alias  ls='ls -ApG' # Alphabetically.
 alias   l=ls
 
 alias rsync='rsync -azv --partial-dir=.rsync-partial --partial' # See also zsync
@@ -108,9 +127,25 @@ cb()
 {
   if [[ ! -t 0 ]] && [[ $# -eq 0 ]]
   then
-    xclip -sel c
+    # No stdin and no call for --help, blow away the current clipboard and copy.
+    if is_mac; then
+      pbcopy
+    elif is_win; then
+      putclip
+    else
+      # Several options here... Xclip seems to work.
+      xclip -sel c
+    fi
   else
-    xclip -sel c -o
+    # Paste
+    if is_mac; then
+      pbpaste
+    elif is_win; then
+      getclip
+    else
+      # Several options here... Xclip seems to work.
+      xclip -sel c -o
+    fi
   fi
 }
 
@@ -121,7 +156,7 @@ export AUTOJUMP_IGNORE_CASE=1
 export AUTOJUMP_KEEP_SYMLINKS=1
 [[ -s ~/.autojump/etc/profile.d/autojump.zsh ]] && . ~/.autojump/etc/profile.d/autojump.zsh
 
-alias ack='ack-grep --smart-case'
+alias ack='ack --smart-case'
 alias ag='ag -S'
 alias d2u=dos2unix
 
@@ -178,7 +213,13 @@ targz() {
   echo "output: $o"
   echo "inputs: $*"
 
-  declare -i sz=$(du -bcs "$@"|tail -n1|cut -f1)
+  declare -i sz=0
+#  if (( $+isMac )); then
+#    sz=$(BLOCKSIZE=512 du -cs "$@"|tail -n1|cut -f1)
+#    sz=$(( $sz * 512 ))
+#  else
+    sz=$(du -bcs "$@"|tail -n1|cut -f1)
+#  fi
   echo "size: $sz"
 
   time {
@@ -192,11 +233,7 @@ targz() {
 
 
 
-
-
-
 # TODO: suppress jump chdir msg.
-
 
 # Find with a couple defaults.
 f()
@@ -204,17 +241,29 @@ f()
   # The trouble is that -regextype must appear after path but before expression.
   # HACK: "-D debugopts" unsupported and -[HLPO] options assumed to before dirs.
   a=()
-  if [[ ${+1} -ne 0 ]]; then
-    while [[ "${1:0:1}" =~ '[^-!(),]' ]] || [[ "${1:0:2}" =~ -[HLPO] ]]
-    do
-      a+=("$1")
+  while [[ ${+1} -ne 0 ]] &&
+        ( [[ "${1:0:1}" =~ '[^-!(),]' ]] || [[ "${1:0:2}" =~ -[HLPO] ]] )
+  do
+    a+=("$1")
 
-      # Eliminate arg from @.
-      shift
-    done
+    if [[ -d "$1" ]]; then
+      local prependDirNotNeeded=1
+    fi
+
+    # Eliminate arg from @.
+    shift
+  done
+
+  if ! (( $+prependDirNotNeeded )); then
+    # PWD is not implied on older versions of find.
+    a+=(.)
   fi
 
-  find -O3 ${a:+"${a[@]}"} -nowarn -regextype egrep ${@:+"$@"}
+#  if (( $+isMac )); then
+#    find ${a:+"${a[@]}"} ${@:+"$@"}
+#  else
+    find -O3 ${a:+"${a[@]}"} -nowarn -regextype egrep ${@:+"$@"}
+#  fi
 }
 
 up_file()
@@ -305,7 +354,12 @@ incognito()
 
 # TODO: checkwinsize
 
-gui() { nautilus "${@:-.}"; }
+case "$OSTYPE" in
+     cygwin) gui() { explorer "${1:-.}"; } ;;
+  linux-gnu) gui() { nautilus "${1:-.}"; } ;;
+    darwin*) gui() { open     "${1:-.}"; } ;;
+          *) echo 'Unknown file manager.' >&2 ;;
+esac
 
 setopt extendedglob
 unsetopt caseglob
@@ -319,9 +373,43 @@ xpid() {
         sed -r 's_.* = ([0-9]+)_\1_')
 }
 alias timestamp='date +%F-%H-%M-%S-%N'
-source /etc/zsh_command_not_found
+
+if is_tux; then
+  source /etc/zsh_command_not_found
+fi
+
+fpath=(/usr/local/share/zsh-completions /usr/local/share/zsh/site-functions $fpath)
+
+autoload bashcompinit
+bashcompinit
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion 2> /dev/null
+fi
 
 
+#dashes over underscores. not available for varaibles or is that dash only?
+
+. /usr/local/etc/bash_completion.d
+
+[[ -s `brew --prefix`/etc/autojump.zsh ]] && XDG_DATA_HOME="$HOME/.local/share" . `brew --prefix`/etc/autojump.zsh
 
 
 # ldd ./BCompare|grep 'not found'
+
+
+#declare commonName="src/com/mapquest/android/guidance"
+#files=("ACEPrototypeTest/$commonName"
+#"AceTest/$commonName")
+
+#for file in "${files[@]}"; do
+#  git --no-pager log --follow --find-copies-harder --pretty=tformat:%H -- "$file"|
+#  while read i; do
+#    echo "$i"
+#  done|
+#  tail -r|
+#  while read commit; do
+#    git --no-pager format-patch --stdout --pretty=email --patch-with-stat -1 $commit -- "$file"
+#  done
+#done|cb
+#git difftool -C -M
+#nmap -sP 172.17.44.0-255
