@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-# HACK: latest Flash release is bogus. Without this switch, we'll get warnings
-# for using the old version on every page we visit that uses Flash.
-google-chrome --allow-outdated-plugins "$@"
