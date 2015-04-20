@@ -1,94 +1,181 @@
-# ~/.profile: executed by the command interpreter for login shells.
-# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
-# exists.
-# see /usr/share/doc/bash/examples/startup-files for examples.
-# the files are located in the bash-doc package.
-
-# the default umask is set in /etc/profile; for setting the umask
-# for ssh logins, install and configure the libpam-umask package.
-#umask 022
+# .profile, stephen@niedzielski.com
+# for dash, bash3, bash4, and zsh. ~/.profile is sourced for login shells when
+# ~/.bash_profile and ~/.bash_login do not exist
 
 # ------------------------------------------------------------------------------
-# if running bash
-#if [ -n "$BASH_VERSION" ]; then
-#    # include .bashrc if it exists
-#    if [ -f "$HOME/.bashrc" ]; then
-#	. "$HOME/.bashrc"
-#    fi
-#fi
+# os utils
+
+case "$OSTYPE$(uname)" in
+  [lL]inux*) export TUX_OS=1 ;;
+    [dD]arwin*) export MAC_OS=1 ;;
+     [cC]ygwin) export WIN_OS=1 ;;
+          *) echo "unknown os=\"$OSTYPE$(uname)\"" >&2 ;;
+esac
+
+is_tux() { [ ${TUX_OS-0} -ne 0 ]; }
+is_mac() { [ ${MAC_OS-0} -ne 0 ]; }
+is_win() { [ ${WIN_OS-0} -ne 0 ]; }
 
 # ------------------------------------------------------------------------------
-if [ -d "$HOME/bin" ]; then
-  PATH="$HOME/bin:$PATH"
-  export PATH
-fi
+# search path utils
 
-if [ -d "$HOME/opt/android-sdk" ]; then
-  ANDROID_HOME="$HOME/opt/android-sdk"; export ANDROID_HOME
-  ANDROID_SDK_ROOT="$ANDROID_HOME"; export ANDROID_SDK_ROOT
+# $1 path
+# $@ dirs
+prepend_dirs_to_search_path() {
+  local ret="$1"
+  shift
+  for i; do
+    ret="$(trim_search_path "$i:$(remove_dir_in_search_path "$ret" "$i")")"
+    #if ! is_dir_in_search_path "$ret" "$i"; then
+    #  ret="$i${ret:+":$ret"}"
+    #fi
+  done
+  echo "$ret"
+}
 
-  PATH="$PATH:$ANDROID_HOME/tools"
-  PATH="$PATH:$ANDROID_HOME/platform-tools"
-  PATH="$PATH:$ANDROID_HOME/build-tools/latest"
-  export PATH
-fi
+# $1 path
+# $@ dirs
+append_dirs_to_search_path() {
+  local ret="$1"
+  shift
+  for i; do
+    ret="$(trim_search_path "$(remove_dir_in_search_path "$ret" "$i")"):$i"
+    #if ! is_dir_in_search_path "$ret" "$i"; then
+    #  ret="${ret:+"$ret:"}$i"
+    #fi
+  done
+  echo "$ret"
+}
 
-if [ -d "$HOME/opt/jdk1.6-64b" ]; then
-  JAVA_HOME="$HOME/opt/jdk1.6-64b"; export JAVA_HOME
-  PATH="$JAVA_HOME/bin:$PATH"
-  export PATH
-fi
+# $1 path
+# $2 dir
+# ex: is_dir_in_search_path "$PATH" "$SDK_DIR"
+is_dir_in_search_path() {
+  #[[ ":$1:" == *":$2:"* ]]
+  is_substr ":$1:" ":$2:"
+}
 
-if [ -d "$HOME/opt/android-ndk" ]; then
-  ANDROID_NDK_HOME="$HOME/opt/android-ndk"; export ANDROID_NDK_HOME
-  NDK_HOME="$ANDROID_NDK_HOME"; export NDK_HOME
-  NDK_PATH="$ANDROID_NDK_HOME"; export NDK_PATH
-  PATH="$PATH:$ANDROID_NDK_HOME"
-  export PATH
-fi
+# $1 path
+# $2 dir
+remove_dir_in_search_path() {
+  trim_search_path "$(repl_str ":$1:" ":$2:" :)"
+}
 
-if [ -d "$HOME/opt/ant" ]; then
-  ANT_HOME="$HOME/opt/ant"; export ANT_HOME
-  PATH="$ANT_HOME/bin:$PATH"
-  export PATH
-fi
+# $1 path
+# $2 paths to prepend
+prepend_path_to_search_paths() (
+  local search_path="$1"
+  shift
+  IFS=:
+  set -f $@
+  prepend_dirs_to_search_path "$search_path" "$@"
+)
 
-if [ -d "$HOME/opt/groovy/bin" ]; then
-  PATH="$HOME/opt/groovy/bin:$PATH"
-  export PATH
-fi
+# $1 path
+# $2 paths to append
+append_path_to_search_paths() (
+  local search_path="$1"
+  shift
+  IFS=:
+  set -f $@
+  append_dirs_to_search_path "$search_path" "$@"
+)
 
-if [ -d "$HOME/opt/gradle" ]; then
-  GRADLE_HOME="$HOME/opt/gradle"; export GRADLE_HOME
-  PATH="$GRADLE_HOME/bin:$PATH"
-  export PATH
-fi
+# $1 path
+trim_search_path() {
+  local ret="$*"
+  ret="${ret#"${1%%[![:space:]:]*}"}"
+  ret="${ret%"${1##*[![:space:]:]}"}"
+  echo "$ret"
+}
 
-#[ -d "$HOME/.android" ] && ANDROID_SDK_HOME="$HOME/.android" && export ANDROID_SDK_HOME ||:
-
-NDK_CCACHE=ccache   ; export NDK_CCACHE
-USE_CCACHE=1        ; export USE_CCACHE
-CCACHE_DIR=~/.ccache; export CCACHE_DIR
-
+# $1 path
+print_search_path() {
+  trim_search_path "$1"|sed -r 's%:%\n%g'
+}
 
 # ------------------------------------------------------------------------------
-# Magic for Remote Android Debugging
+# path utils
 
-# Use or create ADB server. Needed by ADB, DDMS, and ADT / Eclipse.
-#idu=2048 # $(id -u)
-#export ANDROID_ADB_SERVER_PORT=$((10000 + $idu))
-#export ADBHOST=$ANDROID_ADB_SERVER_PORT
+# $1 dirs
+set_path_prepend_dirs() {
+  export PATH="$(prepend_dirs_to_search_path "$PATH" "$@")"
+}
 
-# Note: for Eclipse, modify or add .metadata/.plugins/org.eclipse.core.runtime/
-# .settings/com.android.ide.eclipse.ddms.prefs:
-# - com.android.ide.eclipse.ddms.adbDebugBasePort=ADT_BASE_PORT
-# - com.android.ide.eclipse.ddms.debugSelectedPort=ADT_SELECTED_PORT
-# Also modify for DDMS in .android/ddms.cfg:
-# - adbDebugBasePort=ADT_BASE_PORT
-# - debugSelectedPort=ADT_SELECTED_PORT
-# TODO: can I use setprop?
-# TODO: remove when env var support is available.
-# HACK: wouldn't need to export either of these if we kept them in .bashrc.
-#export ADT_BASE_PORT=$((13000 + ($idu - 2048) * 200)) # Eclipse base port.
-#export ADT_SELECTED_PORT=$(($ADT_BASE_PORT + 100)) # Eclipse VM port.
-#unset idu
+# $1 dirs
+set_path_append_dirs() {
+  export PATH="$(append_dirs_to_search_path "$PATH" "$@")"
+}
+
+# $1 paths to prepend
+set_paths_prepend_path() {
+  export PATH="$(prepend_path_to_search_paths "$PATH" "$@")"
+}
+
+# $1 paths to append
+set_path_append_paths() {
+  export PATH="$(append_path_to_search_paths "$PATH" "$@")"
+}
+
+print_path() {
+  print_search_path "$PATH"
+}
+
+# ------------------------------------------------------------------------------
+# misc utils
+
+deref() { eval echo \"\${$1}\"; }
+
+# $1 str
+# $2 substr
+# $3 repl
+repl_str() {
+  is_substr "$1" "$2" && echo "${1%%$2*}$3${1#*$2}" || echo "$1"
+}
+
+# $1 str
+# $2 substr
+is_substr() {
+  case "$1" in
+    *"$2"*) : ;;
+    *) ! : ;;
+  esac
+}
+
+glob_last() {
+  ls -1 "$@"|tail -n1
+}
+
+glob_last_dir() {
+  ls -1d "$@"|tail -n1
+}
+
+is_bash() { is_substr "$-" i; }
+
+# ------------------------------------------------------------------------------
+# dart
+
+if [ -d ~/opt/dart/dart-sdk/bin ]; then
+  export DART_SDK="$HOME/opt/dart/dart-sdk"
+  set_path_prepend_dirs "$DART_SDK/bin"
+fi
+
+# ------------------------------------------------------------------------------
+# android
+
+if [ -f ~/.profile_android ]; then
+  . ~/.profile_android
+fi
+
+# ------------------------------------------------------------------------------
+# java
+export JAVA_HOME=/usr/lib/jvm/default-java
+
+# ------------------------------------------------------------------------------
+# path
+set_path_prepend_dirs ~/bin
+
+# ------------------------------------------------------------------------------
+if is_bash && [ -f "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi

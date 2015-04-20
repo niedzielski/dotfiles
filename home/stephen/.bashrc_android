@@ -1,263 +1,32 @@
-#!/usr/bin/env bash
-# ------------------------------------------------------------------------------
-# .bashrc_android
-# Stephen Niedzielski
-# Copyright 2011 Stephen Niedzielski. Licensed under GPLv3+.
-
-
-# TODO: wrap adb in dos2unix
+# .bashrc_android, stephen@niedzielski.com
 
 # ------------------------------------------------------------------------------
-alias logcat='adb logcat -C -v long'
+# adb
+# spaces in aliases are for expanding a subsequent dev alias
+
+# use fb-adb instead of adb
+adb() { fb-adb "$@"; }
+alias adb='adb '
+
+adb-snap() {
+  adb "$@" rcmd screencap -p  > screenshot-$(timestamp).png
+}
+alias adb-snap='adb-snap '
+
+alias pidcat='pidcat -W 32767 '
 
 # ------------------------------------------------------------------------------
-dump_apk_cert() { unzip -p "$1" META-INF/CERT.RSA; }
-# TODO: support keystore.
-# platform.x509.pem
-# $(gettop)/extension/security
-# $(gettop)/build/target/product/security
-check_apk_cert()
-{
-  local pem="$1"
-  local apk="$2"
+# devs
 
-  dump_apk_cert "$apk"|
-  openssl pkcs7 -inform DER -outform PEM -print_certs|
-  diff "$pem" -
+alias emu='-e'
+alias galaxy-nexus='-s 0149A4481500E008'
+alias nexus7='-s 015d2994ed200409'
+alias note2='-s 42f7300bd9119f15'
+alias ultimate2='-s LGL41C4a28550'
+
+# ------------------------------------------------------------------------------
+gradlew() {
+  declare wrapper
+  wrapper="$(upfile gradlew)" || wrapper=gradle
+  "$wrapper" "$@"
 }
-# TODO: dumpapk
-#jarsigner -verbose -verify -certs
-export USE_CCACHE=1
-export CCACHE_DIR=~/.ccache
-# NDK CCACHE?
-
-alias apktool='java -jar ~/opt/apktool/apktool.jar'
-alias signapk='java -jar ~/opt/signapk/signapk.jar' # TODO: i need to add some more files here.
-
-
-
-# TODO: Eclipse minimal platform debugging setup. Add debug recur, search for mult.
-dump_eclipse_jars()
-{
-  {
-    for dir in \
-      out/target/common/obj/JAVA_LIBRARIES/* \
-      out/target/common/obj/APPS/* \
-      out/target/product/*/obj/JAVA_LIBRARIES/*
-    do
-      # TODO: best preference?
-      for jar in \
-        classes-full-debug.jar \
-        javalib.jar \
-        noproguard.classes.jar \
-        classes.jar \
-        classes-jarjar.jar \
-        "$dir/"*.jar
-      do
-        local dirjar="$dir/$jar"
-        [[ -e "$dirjar" ]] && echo "$dirjar" && break
-      done
-    done
-    find out/target/product/*/system/framework -name \*.jar
-  }|sed 's%.*%\t<classpathentry kind="lib" path="\0" sourcepath="android"/>%'
-}
-# TODO: use ANDROID_PRODUCT_OUT?
-# TODO: how to make classpathentry always work with rel paths, even across NFS
-# mount.
-
-
-#mount -o remount,rw /system
-
-#insert into logs values('',10);
-#seed=0
-#rnd_num()
-#{
-#  printf '%01d%03d%03d%04d' $(( $RANDOM % 10 )) $(( $RANDOM % 1000 )) $(( $RANDOM % 1000 )) $(( $RANDOM % 10000 ))
-#}
-#local db="/data/data/com.sec.android.provider.logsprovider/databases/logs.db"
-#local table=logs
-#local id=0
-#local rows=200
-#local info=echo
-#while [[ $id -lt $rows ]]
-#do
-  # 8|4255622792||695588723805|0|3|0||||||US|Washington||||0|||100|1|0||||||||||||0|||||||
-#  $(info) adb shell sqlite3 "$db" "insert into $table values($id,'$(rnd_num)',,);"
-#insert into logs values(8,'4253582792',,'695588723805','0','3','0',,,,,,'US','Washington',,,,'0',,,'100','1','0',,,,,,,,,,,,'0',,,,,,,);
-#adb shell
-#su
-#ash
-#cd /data
-#cp /dbdata/databases/com.sec.android.provider.logsprovider/logs.db kenny.loggins
-#chown 2000.2000 kenny.loggins # shell.shell
-#exit
-#exit
-#exit
-#adb pull /data/kenny.loggins
-# TODO: aapt colorize warnings and errors.
-# TODO: study how to enable view server in app when platform doesn't support it.
-
-# update logs set foo = 'The quick brown fox jumped over the lazy dog, WA' where _ID = 110;
-
-# export from keystore
-# keytool -exportcert -alias exportkey -keystore keystore.ExportKey
-
-
-# see http://www.kandroid.org/online-pdk/guide/release_keys.html
-# platform: a key for packages that are part of the core platform.
-# shared: a key for packages that are shared in the home/contacts process.
-# media: a key for packages that are part of the media/download system.
-# testkey / releasekey: the default key to sign with if not otherwise specified.
-
-to_keystore()
-{
-  openssl x509 -in $1.x509.pem -text -out $1.txt
-  openssl pkcs8 -inform DER -in $1.pk8 -nocrypt -out $1.pem
-  openssl pkcs12 -export -in $1.txt -inkey $1.pem -password pass:foobar -name $1 -out $1.pkcs12
-  keytool -importkeystore -destkeystore keystore.debug -deststorepass foobar -srckeystore $1.pkcs12 -srcstoretype PKCS12 -srcstorepass foobar
-}
-
-#sign apk with keystore
-#jarsigner -verbose -keystore keystore.debug foo.apk platform
-
-#key used by some web APIs
-# openssl sha1 -binary shared.pem|openssl base64 -out shared.x509.sha1b64
-
-
-# $1 is actually a regex.
-adb_killall()
-{
-  adb shell ps|sed -rn "/ $1"'\r$/s_([^ ]+ +){2}([^ ]+).*_\1_p'|
-              #sed -rn 's_^[^ ]+ +([^ ]+) +([^ ]+ +){6}'"$1"'\r$_\1_p'
-  xargs -rd\\n adb shell su -c kill
-}
-
-adb_basename2pkg()
-{
-  adb shell pm list packages -f|
-  sed -rn 's_\r__; s%^package:.*'"$1"'=(.+)%\1%p'|
-  command grep . # Error return status if empty.
-}
-
-adb_pkg2file()
-{
-  adb shell pm path "$1"|sed -r 's_^package:(.+)\r_\1_'|command grep .
-}
-
-adb_grep_pkgs()
-{
-  adb shell pm list packages|g "$@"|sed -r 's_^package:(.+)\r_\1_'
-}
-#TODO: fix grep, xargs, ? in packages.
-
-#adb remount && {
-#  # TODO: supply package name to ps directly?
-#  adb shell su -c kill $(adb shell ps|sed -rn '/com.android.phone/s_([^ ]+ +){2}([^ ]+).*_\1_p')
-#  adb push out/target/product/*/system/app/Phone.apk /system/app/ &&
-#  adb push out/target/product/*/system/app/Contacts.apk /system/app/
-#} && adb reboot
-# sqlitebrowser
-
-# HACK: it isn't clear to my why I have to wrap to wrap the shell command in
-# another shell.
-# xargs -s1024 -rd\\n adb shell sh -c '
-#   for i in \"\$@\"
-#   do
-#     pm path \"\$i\"
-#   done' "$@"
-
-ls_apps()
-{
-  declare -i ret=0
-
-   # Get attached devices.
-  declare -ra devs=( $(adb devices|sed -nr '2,$ s_([^\t ]+).*_\1_p') ) &&
-
-  echo "${#devs[@]} device(s) detected." &&
-
-  local temp="$(mktemp)" &&
-
-  for dev in "${devs[@]}"
-  do
-    echo "Device: $dev."
-
-    # List packages and associated file.
-    mapfile -t pkgs < <(adb -s "$dev" shell pm list packages -f|
-                        sed -r 's_\r__g; s_^package:__') &&
-
-    echo "${#pkgs[@]} package(s) detected." &&
-
-    for pkg_key in "${!pkgs[@]}"
-    do
-      declare pkg_name="${pkgs[$pkg_key]##*=}"
-      declare pkg_file="${pkgs[$pkg_key]%%=*}"
-
-      # Copy the package to a temporary file on the PC.
-      adb -s "$dev" pull "$pkg_file" "$temp" &&
-
-      # Extract the application name from the APK badging dump.
-      declare app_name="$(aapt d badging "$temp"|sed -rn 's_application-label\:'"'(.*)'"'_\1_p')"
-
-      echo "Application name: $app_name; package name: $pkg_name; package file: $pkg_file."
-    done
-  done
-
-  rm -f "$temp"
-
-  return $ret
-}
-
-adb_wake()
-{
-  monkeyrunner /dev/stdin <<EOF
-
-from com.android.monkeyrunner import MonkeyRunner as m
-import java.lang.RuntimeException
-
-d = m.waitForConnection()
-#d.wake()
-
-isKeyguard = False
-try:
-  isKeyguard = d.getHierarchyViewer().getFocusedWindowName() == u'Keyguard'
-except java.lang.RuntimeException:
-  # HACK: what's the preferred way to get the current activity?
-  isKeyguard = d.shell('dumpsys window windows | grep -E "mCurrentFocus=.*Keyguard"').__len__() > 0
-
-if isKeyguard is True:
-  h = int(int(d.getProperty('display.height')) * 2/3.)
-  w = int(d.getProperty('display.width'))
-  d.drag((w/2, h), (w, h), .1, 100)
-
-EOF
-}
-
-adb_sleep()
-{
-  monkeyrunner /dev/stdin <<EOF
-from com.android.monkeyrunner import MonkeyRunner as m
-
-d = m.waitForConnection()
-d.press("POWER", d.DOWN_AND_UP)
-EOF
-}
-# emulator -cpu-delay 0 -no-boot-anim -cache /tmp/foo/bar -force-32bit -avd jb-mr1
-
-adb_push_music()
-{
-  time adb push "$1" /sdcard/Music/"$1"
-}
-# TODO: diff music.
-
-alias avd=android\ avd
-
-
-#time while IFS= read -ru9 -d $'\n' line; do
-#  adb push "$line/" "/sdcard/Music/$line/" || break
-#done 9< <(ls -1)
-
-#java -jar apktool.jar b SADiscoveryActivity
-#keytool -genkey -v -keystore debug.keystore -alias debugkey -storepass android -keypass android -keyalg RSA -validity 14000
-#jarsigner -verbose -keystore debug.keystore SADiscoveryActivity.apk debugkey
-#adb -s 731709ab uninstall com.example.discoverytestappnew
-#adb -s 731709ab install SADiscoveryActivity.apk

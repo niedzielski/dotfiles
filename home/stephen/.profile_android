@@ -1,0 +1,34 @@
+# .profile_android, stephen@niedzielski.com
+# configures environment for android dev
+
+# ------------------------------------------------------------------------------
+# sdk
+
+export ANDROID="$HOME/opt/android/sdk"
+export ANDROID_SDK_HOME="$ANDROID"
+export ANDROID_SDK_ROOT="$ANDROID"
+export ANDROID_SDK="$ANDROID"
+export ANDROID_HOME="$ANDROID"
+
+set_path_append_dirs "$ANDROID/tools" \
+                     "$ANDROID/platform-tools" \
+                     "$(glob_last_dir "$ANDROID/build-tools/"*)"
+
+export LD_LIBRARY_PATH="$(append_path_to_search_paths "$LD_LIBRARY_PATH" "$ANDROID/tools/lib")"
+
+# ------------------------------------------------------------------------------
+# ndk
+
+export ANDROID_NDK="$HOME/opt/android/ndk"
+export ANDROID_NDK_HOME="$ANDROID_NDK"
+export ANDROID_NDK_ROOT="$ANDROID_NDK"
+export NDK_HOME="$ANDROID_NDK"
+export NDK_PATH="$ANDROID_NDK"
+
+set_path_append_dirs "$ANDROID_NDK"
+
+# ------------------------------------------------------------------------------
+# ccache
+
+export NDK_CCACHE="$(which ccache)"
+export USE_CCACHE=1
