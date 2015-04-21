@@ -1,2 +1,2 @@
 # .shrc, stephen@niedzielski.com
-. ~/.sh_util
+[ -f ~/.sh_util ] && . ~/.sh_util

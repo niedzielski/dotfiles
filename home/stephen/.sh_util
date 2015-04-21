@@ -7,9 +7,10 @@
 
 is_sh_util_init() { [ ${sh_util_init-0} -ne 0 ]; }
 
-if is_sh_util_init; then
-  return
-fi
+is_sh_util_init && return
+
+# do not export. this variable is used to check whether the functions defined in
+# this script are available
 sh_util_init=1
 
 # ------------------------------------------------------------------------------
