@@ -1,0 +1,5 @@
+# .bash_login, stephen@niedzielski
+
+if [ -f "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi
