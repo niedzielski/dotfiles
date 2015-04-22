@@ -171,31 +171,6 @@ upfile() {
 }
 
 # ------------------------------------------------------------------------------
-# clipboard
-
-cb() {
-  if [[ ! -t 0 ]] && [[ $# -eq 0 ]]; then
-    # no stdin and no call for --help, blow away the current clipboard and copy
-    if is_mac; then
-      pbcopy
-    elif is_win; then
-      putclip
-    else
-      xclip -sel c
-    fi
-  else
-    # paste
-    if is_mac; then
-      pbpaste
-    elif is_win; then
-      getclip
-    else
-      xclip -sel c -o
-    fi
-  fi
-}
-
-# ------------------------------------------------------------------------------
 # android
 
 if [[ -f ~/.bashrc_android ]]; then
