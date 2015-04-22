@@ -1,6 +1,16 @@
 # .profile, stephen@niedzielski.com
 
 # ------------------------------------------------------------------------------
+# os
+
+case "$OSTYPE$(uname)" in
+  [lL]inux*) export TUX_OS=1 ;;
+ [dD]arwin*) export MAC_OS=1 ;;
+  [cC]ygwin) export WIN_OS=1 ;;
+          *) echo "unknown os=\"$OSTYPE$(uname)\"" >&2 ;;
+esac
+
+# ------------------------------------------------------------------------------
 # util
 
 [ -f ~/.sh_util ] && . ~/.sh_util

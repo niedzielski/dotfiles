@@ -16,13 +16,6 @@ sh_util_init=1
 # ------------------------------------------------------------------------------
 # os utils
 
-case "$OSTYPE$(uname)" in
-  [lL]inux*) export TUX_OS=1 ;;
-    [dD]arwin*) export MAC_OS=1 ;;
-     [cC]ygwin) export WIN_OS=1 ;;
-          *) echo "unknown os=\"$OSTYPE$(uname)\"" >&2 ;;
-esac
-
 is_tux() { [ ${TUX_OS-0} -ne 0 ]; }
 is_mac() { [ ${MAC_OS-0} -ne 0 ]; }
 is_win() { [ ${WIN_OS-0} -ne 0 ]; }
