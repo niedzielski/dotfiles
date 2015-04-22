@@ -94,11 +94,11 @@ PS1+='\[\e[0m\]'
 # ------------------------------------------------------------------------------
 # simple supplements
 
-alias cp='cp -ai' # prompt on overwrite, preserve all
+alias cp=cp\ -ai # prompt on overwrite, preserve all
 
-alias rm='rm -i' # always prompt
+alias rm=rm\ -i # always prompt
 
-alias mv='mv -i' # prompt on overwrite
+alias mv=mv\ -i # prompt on overwrite
 alias m=mv
 
 alias c=cd
@@ -133,22 +133,23 @@ f() {
 }
 
 # smart-case
-alias ag='ag -S'
+alias ag=ag\ -S
 
 # extended regex
-alias s='sed -r'
+alias s=sed\ -r
 
 alias x='xargs -rd\\n ' # \n delimited, don't run on empty in, + expansion
 #                    ^-- this space is for expanding a subsequent alias
 # copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use
 #   xargs --show-limits -r < /dev/null? See also ulimit builtin?
+alias map=x\ -I{}
 
 alias rsync='rsync -azv --partial-dir=.rsync-partial --partial' # see also zsync
 
 alias abspath=realpath\ -ms
 
-alias v='gvim -p'
+alias v=gvim\ -p
 
 alias d2u=dos2unix
 
@@ -168,15 +169,6 @@ upfile() {
   done
   return 1
 }
-
-# ------------------------------------------------------------------------------
-# program exports
-export LESS=-ir # smart ignore-case + output control chars
-export SPARK_TICKS=' _▁▂▃▄▅▆▇█'
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # ------------------------------------------------------------------------------
 # clipboard
