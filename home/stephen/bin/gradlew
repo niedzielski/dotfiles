@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# gradlew, stephen@niedzielski.com
+# use gradlew if available in current or upper directory, otherwise use gradle.
+# depends on upfile
+
+# ------------------------------------------------------------------------------
+gradlew() {
+  declare wrapper
+  wrapper="$(upfile gradlew)" || wrapper=gradle
+  "$wrapper" "$@"
+}
+
+# ------------------------------------------------------------------------------
+if ! return 2>/dev/null; then
+  gradlew "$@"
+fi

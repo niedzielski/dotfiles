@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# adb-snap, stephen@niedzielski.com
+# save a screenshot from an android device locally. depends on fb-adb and
+# timestamp
+
+# ------------------------------------------------------------------------------
+adb-snap() {
+  fb-adb "$@" rcmd screencap -p  > screenshot-$(timestamp).png
+}
+
+# ------------------------------------------------------------------------------
+if ! return 2>/dev/null; then
+  adb-snap "$@"
+fi

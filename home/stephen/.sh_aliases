@@ -1,0 +1,16 @@
+# .sh_aliases, stephen@niedzielski.com
+# aliases compatible with dash, bash3, bash4, zsh, and fish
+
+alias cp=cp\ -ai # prompt on overwrite, preserve all
+
+alias rm=rm\ -i # always prompt
+
+alias mv=mv\ -i # prompt on overwrite
+alias m=mv
+
+alias c=cd
+
+alias rsync='rsync -azv --partial-dir=.rsync-partial --partial' # see also zsync
+
+# smart-case
+alias ag=ag\ -S

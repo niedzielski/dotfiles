@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# timestamp, stephen@niedzielski.com
+exec date +%F-%H-%M-%S-%N "$@"

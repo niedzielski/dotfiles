@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# upfile, stephen@niedzielski.com
+# find file in pwd or upwards
+# $1 - file
+
+# ------------------------------------------------------------------------------
+upfile() {
+  declare dir="$PWD"
+  while :; do
+    declare file="$dir/$1"
+    if [[ -e "$file" ]]; then
+      echo "$file"
+      return 0
+    elif [[ "$dir" == / ]]; then
+      return 1
+    fi
+    dir="$(dirname "$dir")"
+  done
+  return 1
+}
+
+# ------------------------------------------------------------------------------
+if ! return 2>/dev/null; then
+  upfile "$@"
+fi

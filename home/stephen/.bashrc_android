@@ -8,9 +8,6 @@
 adb() { fb-adb "$@"; }
 alias adb='adb '
 
-adb-snap() {
-  adb "$@" rcmd screencap -p  > screenshot-$(timestamp).png
-}
 alias adb-snap='adb-snap '
 
 alias pidcat='pidcat -W 32767 '
@@ -23,10 +20,3 @@ alias galaxy-nexus='-s 0149A4481500E008'
 alias nexus7='-s 015d2994ed200409'
 alias note2='-s 42f7300bd9119f15'
 alias ultimate2='-s LGL41C4a28550'
-
-# ------------------------------------------------------------------------------
-gradlew() {
-  declare wrapper
-  wrapper="$(upfile gradlew)" || wrapper=gradle
-  "$wrapper" "$@"
-}

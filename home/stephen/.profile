@@ -35,9 +35,12 @@ fi
 
 # ------------------------------------------------------------------------------
 # other program exports
+
 export JAVA_HOME=/usr/lib/jvm/default-java
 export LESS=-ir # smart ignore-case + output control chars
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export AUTOJUMP_IGNORE_CASE=1
+export AUTOJUMP_KEEP_SYMLINKS=1
 export SPARK_TICKS=' _▁▂▃▄▅▆▇█'
 
 # make less more friendly for non-text input files, see lesspipe(1)
@@ -45,4 +48,5 @@ export SPARK_TICKS=' _▁▂▃▄▅▆▇█'
 
 # ------------------------------------------------------------------------------
 # path
+
 set_path_prepend_dirs ~/bin

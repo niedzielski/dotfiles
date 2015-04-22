@@ -2,4 +2,4 @@
 # drun, stephen@niedzielski.com
 # requires dmenu_run with patched xft font support. see
 # http://askubuntu.com/questions/326907/custom-font-with-dmenu
-dmenu_run -i -fn DejaVuSansMono-11 -nb \#d4d4d4 -nf \#000000 -sb \#000000 -sf \#00fbff
+exec dmenu_run -i -fn DejaVuSansMono-11 -nb \#d4d4d4 -nf \#000000 -sb \#000000 -sf \#00fbff

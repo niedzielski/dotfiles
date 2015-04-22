@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# abspath, stephen@niedzielski.com
+exec realpath -ms "$@"

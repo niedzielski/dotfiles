@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# s, stephen@niedzielski.com
+exec sed -r "$@"

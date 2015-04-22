@@ -3,7 +3,8 @@
 # ------------------------------------------------------------------------------
 # util
 
-[ -f ~/.sh_util ] && . ~/.sh_util
+[[ -f ~/.sh_util ]] && . ~/.sh_util
+[[ -f ~/.sh_aliases ]] && . ~/.sh_aliases
 
 # ------------------------------------------------------------------------------
 # globbing
@@ -92,85 +93,6 @@ PS1+='\$ '
 PS1+='\[\e[0m\]'
 
 # ------------------------------------------------------------------------------
-# simple supplements
-
-alias cp=cp\ -ai # prompt on overwrite, preserve all
-
-alias rm=rm\ -i # always prompt
-
-alias mv=mv\ -i # prompt on overwrite
-alias m=mv
-
-alias c=cd
-
-alias t=touch
-
-alias e=echo
-
-# alphabetical, do not list . & .., mark directories with a trailing slash, &
-# colored
-alias l='ls -Ap --color=auto'
-
-alias timestamp=date\ +%F-%H-%M-%S-%N
-
-# extended regex, skip binaries, devices, sockets, & dirs, colored, & line
-# -buffered. use a non- canonical alias instead of GREP_OPTIONS which may wreck
-# poorly written scripts
-alias g='grep -EID skip -d skip --color=auto --line-buffered'
-
-# TODO: clean up
-f() {
-  # the trouble is that -regextype must appear after path but before expression
-  # HACK: "-D debugopts" unsupported and -[HLPO] options assumed to before dirs
-  local a=()
-  while [[ -n "$1" ]] &&
-        ( [[ ! "${1:0:1}" =~ [-!(),] ]] || [[ "${1:0:2}" =~ -[HLPO] ]] ); do
-    a+=("$1")
-    shift
-  done
-
-  find -O3 ${a:+"${a[@]}"} -nowarn -regextype egrep ${@:+"$@"}
-}
-
-# smart-case
-alias ag=ag\ -S
-
-# extended regex
-alias s=sed\ -r
-
-alias x='xargs -rd\\n ' # \n delimited, don't run on empty in, + expansion
-#                    ^-- this space is for expanding a subsequent alias
-# copy ex: x cp --parents -t"$dst"
-# - TODO: Figure out general case. x -i implies -L1. Use
-#   xargs --show-limits -r < /dev/null? See also ulimit builtin?
-alias map=x\ -I{}
-
-alias rsync='rsync -azv --partial-dir=.rsync-partial --partial' # see also zsync
-
-alias abspath=realpath\ -ms
-
-alias v=gvim\ -p
-
-alias d2u=dos2unix
-
-# find file in pwd or upwards
-# $1 - file
-upfile() {
-  declare dir="$PWD"
-  while :; do
-    declare file="$dir/$1"
-    if [[ -e "$file" ]]; then
-      echo "$file"
-      return 0
-    elif [[ "$dir" == / ]]; then
-      return 1
-    fi
-    dir="$(dirname "$dir")"
-  done
-  return 1
-}
-
-# ------------------------------------------------------------------------------
 # android
 
 if [[ -f ~/.bashrc_android ]]; then
@@ -187,15 +109,9 @@ shopt -s no_empty_cmd_completion
 # complete host names
 shopt -s hostcomplete
 
-if [[ -f /etc/bash_completion ]]; then
-  . /etc/bash_completion
-fi
+[[ -f /etc/bash_completion ]] && . /etc/bash_completion
 
 # ------------------------------------------------------------------------------
 # autojump
 
-if [[ -f /usr/share/autojump/autojump.bash ]]; then
-  export AUTOJUMP_IGNORE_CASE=1
-  export AUTOJUMP_KEEP_SYMLINKS=1
-  . /usr/share/autojump/autojump.bash
-fi
+[[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash

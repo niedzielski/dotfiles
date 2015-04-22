@@ -1,4 +1,4 @@
-#.sh_util, stephen@niedzielski.com
+# .sh_util, stephen@niedzielski.com
 # dash, bash3, bash4, and zsh compatible. note: sourced twice for login Almquist
 # shells (once by .profile, once by .shrc)
 

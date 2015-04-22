@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# map, stephen@niedzielski.com
+# depends on x
+exec x -I{} "$@"
