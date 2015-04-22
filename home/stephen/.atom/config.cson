@@ -1,0 +1,33 @@
+"*":
+  "exception-reporting":
+    userId: "7d815892-1d43-fd28-bf3c-d96d6f724acd"
+  welcome:
+    showOnStartup: false
+  core:
+    themes: [
+      "soda-light-ui"
+      "one-light-syntax"
+    ]
+    disabledPackages: [
+      "tree-view"
+      "tabs"
+    ]
+    autoHideMenuBar: true
+  editor:
+    invisibles: {}
+    showInvisibles: true
+  hidpi: {}
+  autosave: {}
+  "spell-check": {}
+  tabs:
+    showIcons: true
+  whitespace:
+    ensureSingleTrailingNewline: false
+  "tree-view":
+    hideVcsIgnoredFiles: true
+    hideIgnoredNames: true
+    showOnRightSide: false
+    sortFoldersBeforeFiles: true
+  "sublime-tabs":
+    hideVcsIgnoredFiles: true
+    hideIgnoredNames: true
