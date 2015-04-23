@@ -67,30 +67,8 @@ shopt -s checkwinsize
 # if a command is unrecognized but matches a directory, cd into it
 shopt -s autocd
 
-# ------------------------------------------------------------------------------
 # prompt
-# "
-# /home/stephen ────────────────────────────────────────────────────────────────
-# $ "
-
-# padding is 32 dashes long initially
-prompt_pad='────────────────────────────────'
-
-# effectively multiply padding by 32 = 1024 dashes, which should be sufficiently
-# long enough for most terminals
-prompt_pad="${prompt_pad//─/$prompt_pad}"
-
-print_prompt_pad() {
-  # TODO: clean up
-  declare -i prompt_stat_len="$(python -c 'import re, sys; sys.stdout.write(str(len(re.sub("\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]", "", sys.stdin.read(), 0))))' <<< "$PWD")"
-  echo ${prompt_pad:0:$(($COLUMNS - $prompt_stat_len % ${COLUMNS:-1}))}
-}
-
-PS1='\n'
-PS1+='\[\e[0;104m\]$PWD\[\e[0m\] '
-PS1+='$(declare -i status=$?; print_prompt_pad; [[ $status -eq 0 ]] && echo "\[\e[22;32m\]" || echo "\[\e[22;31m\]")'
-PS1+='\$ '
-PS1+='\[\e[0m\]'
+PS1='$(prompt $? ${COLUMNS:-1})'
 
 # ------------------------------------------------------------------------------
 # android
