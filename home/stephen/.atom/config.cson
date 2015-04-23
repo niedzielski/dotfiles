@@ -23,6 +23,8 @@
     showIcons: true
   whitespace:
     ensureSingleTrailingNewline: false
+    removeTrailingWhitespace: false
+    ignoreWhitespaceOnCurrentLine: false
   "tree-view":
     hideVcsIgnoredFiles: true
     hideIgnoredNames: true
