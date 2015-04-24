@@ -8,14 +8,18 @@ pad() {
   repeat ─ $((($1 - 2) - ${#PWD} % $1))
 }
 
+esc_tput() {
+  printf '\001%s\002' $(tput "$@")
+}
+
 prompt() {
   # "
   # /home/stephen ─────────────────────────────────────────────────────────────────
   # $ "
 
   printf '\n'
-  printf '%s%s%s %s\n' "$(tput setab 4)" "$PWD" "$(tput sgr0)" "$(pad $2)"
-  printf '%s$%s ' "$([[ $1 -eq 0 ]] && tput setaf 2 || tput setaf 1)" "$(tput sgr0)"
+  printf '%s%s%s %s\n' "$(esc_tput setab 4)" "$PWD" "$(esc_tput sgr0)" "$(pad $2)"
+  printf '%s$%s ' "$([[ $1 -eq 0 ]] && esc_tput setaf 2 || esc_tput setaf 1)" "$(esc_tput sgr0)"
 }
 
 # ------------------------------------------------------------------------------
