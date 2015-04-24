@@ -4,20 +4,13 @@
 # $1 - file
 
 # ------------------------------------------------------------------------------
-upfile() {
-  declare dir="$PWD"
+upfile() (
   while :; do
-    declare file="$dir/$1"
-    if [[ -e "$file" ]]; then
-      echo "$file"
-      return 0
-    elif [[ "$dir" == / ]]; then
-      return 1
-    fi
-    dir="$(dirname "$dir")"
+    declare file="$PWD/$1"
+    [[ -e "$file" ]] && echo "$file" && return 0
+    [[ "$PWD" != / ]] && cd .. || return 1
   done
-  return 1
-}
+)
 
 # ------------------------------------------------------------------------------
 if ! return 2>/dev/null; then
