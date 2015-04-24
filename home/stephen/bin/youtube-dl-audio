@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# youtube-dl-audio, stephen@niedzielski.com
+
+youtube-dl-audio() {
+  youtube-dl --audio-quality 0 -qxo "$(youtube-dl -qe "$1").mp3" "$1"
+}
+
+# ------------------------------------------------------------------------------
+if ! return 2>/dev/null; then
+  youtube-dl-audio "$@"
+fi
