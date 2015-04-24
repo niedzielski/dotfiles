@@ -10,7 +10,7 @@ alias adb='adb '
 
 alias adb-snap='adb-snap '
 
-alias pidcat='pidcat -i eglCodecCommon -W 32767 '
+alias pidcat='pidcat -i EGL_emulation -i OpenGLRenderer -i eglCodecCommon -W 32767 '
 
 # ------------------------------------------------------------------------------
 # devs
