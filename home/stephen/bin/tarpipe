@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# tarpipe, stephen@niedzielski.com
+# multithreaded backups. depends on pv, pigz, timestamp.
+# $1 output
+# ... inputs
+# ex:
+#   cd / && tarpipe /media/stephen/garden/neptune home
+
+tarpipe() {
+  declare o="$1-$(timestamp).tar.gz"
+  shift
+
+  echo "output: $o"
+  echo "inputs: $*"
+
+  declare -i sz=0
+  sz=$(du -bcs "$@"|tail -n1|cut -f1)
+  echo "size: $sz"
+
+  time {
+    tar c "$@"|
+    pv -s $sz|
+    pigz -1 > "$o"
+    sync
+  }
+}
+
+# ------------------------------------------------------------------------------
+if ! return 2>/dev/null; then
+  tarpipe "$@"
+fi
