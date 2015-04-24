@@ -25,9 +25,9 @@ shopt -s nocaseglob
 # don't record adjacent duplicates or lines starting with a space
 HISTCONTROL=ignoredups:ignorespace
 
-# set max commands and lines in Bash history
-unset HISTSIZE
-unset HISTFILESIZE
+# unlimited history
+HISTSIZE=999999
+HISTFILESIZE=999999
 
 # timestamp entries
 HISTTIMEFORMAT='%F-%H-%M-%S '
