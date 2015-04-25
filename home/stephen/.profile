@@ -36,6 +36,7 @@ fi
 # ------------------------------------------------------------------------------
 # other program exports
 
+export TERM=xterm-256color
 export JAVA_HOME=/usr/lib/jvm/default-java
 export LESS=-ir # smart ignore-case + output control chars
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
