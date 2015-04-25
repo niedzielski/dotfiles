@@ -16,3 +16,11 @@ set visible-stats on
 set colored-stats on
 
 set history-size -1
+
+# c-left and c-right
+"\e[1;5C":forward-word
+"\e[1;5D":backward-word
+
+# c-del, c-] (c-bs == bs and c-\ is some kind of signal)
+"\e[3;5~": kill-word
+"\C-]": backward-kill-word

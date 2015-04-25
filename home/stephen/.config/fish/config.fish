@@ -11,6 +11,15 @@ function fish_prompt -d "Prints the command prompt."
   prompt $status $COLUMNS
 end
 
+# fish doesn't seem to fully support readline
+function fish_user_key_bindings
+  # ctrl-del
+  bind \e\[3\;5~ kill-word
+
+  # ctrl-]
+  bind \c] backward-kill-word
+end
+
 complete -c chromium --wraps chromium-browser
 complete -c f --wraps find
 complete -c g --wraps grep
