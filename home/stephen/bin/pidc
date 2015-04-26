@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# pidc, stephen@niedzielski.com
+exec pidcat -i EGL_emulation -i OpenGLRenderer -i eglCodecCommon -W 32767 "$@"
