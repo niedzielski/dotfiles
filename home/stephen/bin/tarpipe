@@ -6,22 +6,44 @@
 # ex:
 #   cd / && tarpipe /media/stephen/garden/neptune home
 
+# ------------------------------------------------------------------------------
+set -euo pipefail
+
+# ------------------------------------------------------------------------------
+dep_chk() {
+  declare -i err=0
+  dpkg-query -l pv pigz > /dev/null || err=1
+  type timestamp > /dev/null || err=1
+  return $err
+}
+
 tarpipe() {
+  dep_chk
+
   declare o="$1-$(timestamp).tar.gz"
   shift
 
   echo "output: $o"
   echo "inputs: $*"
 
-  declare -i sz=0
-  sz=$(du -bcs "$@"|tail -n1|cut -f1)
+  declare -i sz
+  sz=$(du -bcs "$@"|tail -n1|cut -f1) || sz=0
   echo "size: $sz"
 
   time {
     tar c "$@"|
     pv -s $sz|
-    pigz -1 > "$o"
+    pigz -1 > "$o" || :
     sync
+  }
+
+  echo
+  verify "$o"
+}
+
+verify() {
+  time {
+    printf '%s file(s) compressed to %s.' "$(tar tf "$1"|wc -l)" "$(du -h "$1"|cut -f1)"
   }
 }
 
