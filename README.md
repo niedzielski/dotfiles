@@ -83,10 +83,10 @@ Use the following under Vimium -> Options -> Show advanced options... -> CSS for
 
     div > .vimiumHintMarker span {
     color: black;
-    font-weight: normal;
-    font-size: 8pt;
-    text-transform: lowercase;
     font-family: tahoma;
+    font-size: 9pt;
+    font-weight: 500;
+    text-transform: lowercase;
     }
 
     div > .vimiumHintMarker > .matchingCharacter {
