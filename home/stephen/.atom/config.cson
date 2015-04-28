@@ -8,10 +8,6 @@
       "soda-light-ui"
       "one-light-syntax"
     ]
-    disabledPackages: [
-      "tree-view"
-      "tabs"
-    ]
     autoHideMenuBar: true
   editor:
     invisibles: {}
@@ -28,7 +24,6 @@
   "tree-view":
     hideVcsIgnoredFiles: true
     hideIgnoredNames: true
-    showOnRightSide: false
     sortFoldersBeforeFiles: true
   "sublime-tabs":
     hideVcsIgnoredFiles: true
