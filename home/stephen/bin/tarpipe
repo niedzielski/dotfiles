@@ -26,8 +26,8 @@ tarpipe() {
   echo "output: $o"
   echo "inputs: $*"
 
-  declare -i sz
-  sz=$(du -bcs "$@"|tail -n1|cut -f1) || sz=0
+  declare -i sz=0
+  sz=$(du -bcs "$@"|tail -n1|cut -f1) || :
   echo "size: $sz"
 
   time {
@@ -37,7 +37,7 @@ tarpipe() {
     sync
   }
 
-  echo
+  echo 'back up complete. verifying...'
   verify "$o"
 }
 
