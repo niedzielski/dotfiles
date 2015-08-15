@@ -1,3 +1,2 @@
-#!/usr/bin/env sh
-# pidc, stephen@niedzielski.com
-exec pidcat -i EGL_emulation -i OpenGLRenderer -i eglCodecCommon -W 32767 "$@"
+#!/usr/bin/env bash
+exec pidcat -i{EGL_emulation,OpenGLRenderer,eglCodecCommon,ShaderProgram,libEGL,dalvikvm,dalvikvm-heap} -W 32767 "$@"
