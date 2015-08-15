@@ -1,3 +1,3 @@
-# .shrc, stephen@niedzielski.com
+#!/usr/bin/env sh
 [ -f ~/.sh_util ] && . ~/.sh_util
 [ -f ~/.sh_aliases ] && . ~/.sh_aliases

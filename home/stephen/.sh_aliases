@@ -1,4 +1,3 @@
-# .sh_aliases, stephen@niedzielski.com
 # aliases compatible with dash, bash3, bash4, zsh, and fish
 
 alias cp=cp\ -ai # prompt on overwrite, preserve all
