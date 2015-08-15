@@ -1,4 +1,4 @@
-# .profile, stephen@niedzielski.com
+#!/usr/bin/env sh
 
 # ------------------------------------------------------------------------------
 # os
@@ -21,10 +21,46 @@ esac
 [ -f ~/.shrc ] && export ENV="$HOME/.shrc"
 
 # ------------------------------------------------------------------------------
+# ruby
+
+ruby_dir="$HOME/.gem/ruby"
+if [ -d "$ruby_dir" ]; then
+  set_path_prepend_dirs "$ruby_dir/"*"/bin"
+fi
+
+# ------------------------------------------------------------------------------
+# go
+
+GOROOT="$HOME/opt/go"
+if [ -d "$GOROOT" ]; then
+  export GOROOT
+  export GOBIN=$GOROOT/bin
+  export GOPATH=$HOME/golang
+  set_path_prepend_dirs "$GOBIN"
+fi
+
+# ------------------------------------------------------------------------------
+# python (pip)
+
+local_bin="$HOME/.local/bin"
+if [ -d "$local_bin" ]; then
+  set_path_prepend_dirs "$local_bin/bin"
+fi
+
+# ------------------------------------------------------------------------------
+# node
+
+node_root="$HOME/.node"
+if [ -d "$node_root" ]; then
+  set_path_prepend_dirs "$node_root/bin"
+fi
+
+# ------------------------------------------------------------------------------
 # dart
 
-if [ -d ~/opt/dart/dart-sdk/bin ]; then
-  export DART_SDK="$HOME/opt/dart/dart-sdk"
+DART_SDK="$HOME/opt/dart/dart-sdk"
+if [ -d "$DART_SDK" ]; then
+  export DART_SDK
   set_path_prepend_dirs "$DART_SDK/bin"
 fi
 
