@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
-# gradlew, stephen@niedzielski.com
 # use gradlew if available in current or upper directory, otherwise use gradle.
+# also source private properties if they exist
 # depends on upfile
+
+case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
+
+# ------------------------------------------------------------------------------
+PRIVATE_PROPS_FILE=~/.gradle/private.properties
+
+# ------------------------------------------------------------------------------
+get_private_gradle_props() {
+  ! [[ -f "$PRIVATE_PROPS_FILE" ]] ||
+  sed -r '/^\s*$/d; s%^%-P%' "$PRIVATE_PROPS_FILE"
+}
 
 # ------------------------------------------------------------------------------
 gradlew() {
   declare wrapper
   wrapper="$(upfile gradlew)" || wrapper=gradle
-  "$wrapper" "$@"
+  #unset JAVA_TOOL_OPTIONS
+  "$wrapper" $(get_private_gradle_props) "$@"
 }
 
 # ------------------------------------------------------------------------------
-if ! return 2>/dev/null; then
-  gradlew "$@"
-fi
+case $- in *i*) :;; *) gradlew "$@";; esac
