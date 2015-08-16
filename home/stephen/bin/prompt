@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# prompt, stephen@niedzielski.com
 # $1 status
 # $2 columns
+# $3 escape non-printing characters
+
+case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
 
 # ------------------------------------------------------------------------------
 pad() {
@@ -9,7 +11,12 @@ pad() {
 }
 
 esc_tput() {
-  printf '\001%s\002' $(tput "$@")
+  declare format=%s
+  if [[ ${1-0} -ne 0 ]]; then
+    format="\001$format\002"
+  fi
+  shift
+  printf "$format" "$(tput "$@")"
 }
 
 prompt() {
@@ -18,11 +25,9 @@ prompt() {
   # $ "
 
   printf '\n'
-  printf '%s%s%s %s\n' "$(esc_tput setab 4)" "$PWD" "$(esc_tput sgr0)" "$(pad $2)"
-  printf '%s$%s ' "$([[ $1 -eq 0 ]] && esc_tput setaf 2 || esc_tput setaf 1)" "$(esc_tput sgr0)"
+  printf '%s%s%s %s\n' "$(esc_tput $3 setab 4)" "$PWD" "$(esc_tput $3 sgr0)" "$(pad $2)"
+  printf '%s$%s ' "$([[ $1 -eq 0 ]] && esc_tput $3 setaf 2 || esc_tput $3 setaf 1)" "$(esc_tput $3 sgr0)"
 }
 
 # ------------------------------------------------------------------------------
-if ! return 2>/dev/null; then
-  prompt "$@"
-fi
+case $- in *i*) :;; *) prompt "$@";; esac

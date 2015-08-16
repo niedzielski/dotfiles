@@ -1,14 +1,12 @@
-# config.fish, stephen@niedzielski.com
-
 [ -f ~/.sh_aliases ]; and . ~/.sh_aliases
-[ -f /usr/share/autojump/autojump.fish ]; and . /usr/share/autojump/autojump.fish
+[ -f ~/.autojump/share/autojump/autojump.fish ]; and . ~/.autojump/share/autojump/autojump.fish
 
 # no welcome message
 set -e fish_greeting
 
 # prompt
 function fish_prompt -d "Prints the command prompt."
-  prompt $status $COLUMNS
+  prompt $status $COLUMNS 0
 end
 
 # fish doesn't seem to fully support readline

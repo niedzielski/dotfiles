@@ -1,5 +1,3 @@
-# .bashrc, stephen@niedzielski.com
-
 # ------------------------------------------------------------------------------
 # util
 
@@ -68,7 +66,7 @@ shopt -s checkwinsize
 shopt -s autocd
 
 # prompt
-PS1='$(prompt $? ${COLUMNS:-1})'
+PS1='$(prompt $? ${COLUMNS:-1} 1)'
 
 # ------------------------------------------------------------------------------
 # android
@@ -92,4 +90,4 @@ shopt -s hostcomplete
 # ------------------------------------------------------------------------------
 # autojump
 
-[[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
+[[ -f ~/.autojump/share/autojump/autojump.bash ]] && . ~/.autojump/share/autojump/autojump.bash
