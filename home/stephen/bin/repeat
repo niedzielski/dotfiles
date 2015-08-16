@@ -2,11 +2,11 @@
 # $1 str
 # $2 n
 
+case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
+
 repeat() {
   printf "$1%.0s" $(eval echo {1..$2})
 }
 
 # ------------------------------------------------------------------------------
-if ! return 2>/dev/null; then
-  repeat "$@"
-fi
+case $- in *i*) :;; *) repeat "$@";; esac

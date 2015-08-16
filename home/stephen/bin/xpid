@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
+case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
+
 xpid() {
   xprop -f _NET_WM_PID 0c ' = $0\n' _NET_WM_PID|sed -r 's%.* = %%'
 }
 
 # ------------------------------------------------------------------------------
-if ! return 2>/dev/null; then
-  xpid "$@"
-fi
+case $- in *i*) :;; *) xpid "$@";; esac

@@ -2,6 +2,8 @@
 # find file in pwd or upwards
 # $1 - file
 
+case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
+
 # ------------------------------------------------------------------------------
 upfile() (
   while :; do
@@ -12,6 +14,4 @@ upfile() (
 )
 
 # ------------------------------------------------------------------------------
-if ! return 2>/dev/null; then
-  upfile "$@"
-fi
+case $- in *i*) :;; *) upfile "$@";; esac

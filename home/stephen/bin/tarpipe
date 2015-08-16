@@ -5,8 +5,7 @@
 # ex:
 #   cd / && tarpipe /media/stephen/garden/neptune home
 
-# ------------------------------------------------------------------------------
-set -euo pipefail
+case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
 
 # ------------------------------------------------------------------------------
 dep_chk() {
@@ -47,6 +46,4 @@ verify() {
 }
 
 # ------------------------------------------------------------------------------
-if ! return 2>/dev/null; then
-  tarpipe "$@"
-fi
+case $- in *i*) :;; *) tarpipe "$@";; esac
