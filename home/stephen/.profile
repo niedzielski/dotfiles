@@ -22,6 +22,7 @@ esac
 
 # ------------------------------------------------------------------------------
 # ruby
+# gem install --user-install jekyll
 
 ruby_dir="$HOME/.gem/ruby"
 if [ -d "$ruby_dir" ]; then
@@ -41,6 +42,7 @@ fi
 
 # ------------------------------------------------------------------------------
 # python (pip)
+# pip install --user sh
 
 local_bin="$HOME/.local/bin"
 if [ -d "$local_bin" ]; then
@@ -49,6 +51,7 @@ fi
 
 # ------------------------------------------------------------------------------
 # node
+# npm install -g gulp
 
 node_root="$HOME/.node"
 if [ -d "$node_root" ]; then
