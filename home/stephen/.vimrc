@@ -1,5 +1,3 @@
-" .vimrc, stephen@niedzielski.com
-
 " Set the swap dir to a prominent place.
 se dir=~
 
@@ -45,6 +43,9 @@ se go-=T
 
 " Remove the scrollbars.
 se go-=rL
+
+" Don't force newlines at end of files.
+se noeol
 
 " ------------------------------------------------------------------------------
 " Behave Like Windows
