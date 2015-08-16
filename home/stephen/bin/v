@@ -1,3 +1,2 @@
 #!/usr/bin/env sh
-# v, stephen@niedzielski.com
 exec gvim -p "$@"

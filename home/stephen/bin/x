@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-# x, stephen@niedzielski.com
 exec xargs -rd\\n "$@" # \n delimited, don't run on empty in, + expansion
 # copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use

@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# tarpipe, stephen@niedzielski.com
 # multithreaded backups. depends on pv, pigz, timestamp.
 # $1 output
 # ... inputs

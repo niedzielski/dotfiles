@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# upfile, stephen@niedzielski.com
 # find file in pwd or upwards
 # $1 - file
 
