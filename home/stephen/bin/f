@@ -8,7 +8,7 @@ f() {
   # the trouble is that -regextype must appear after path but before expression
   # HACK: "-D debugopts" unsupported and -[HLPO] options assumed to before dirs
   local a=()
-  while [[ -n "$1" ]] &&
+  while [[ -n "${1:-}" ]] &&
         ( [[ ! "${1:0:1}" =~ [-!(),] ]] || [[ "${1:0:2}" =~ -[HLPO] ]] ); do
     a+=("$1")
     shift
