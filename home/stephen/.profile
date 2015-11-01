@@ -41,6 +41,14 @@ if [ -d "$GOROOT" ]; then
 fi
 
 # ------------------------------------------------------------------------------
+# haskell (cabal)
+
+cabal_bin="$HOME/.cabal/bin"
+if [ -d "$cabal_bin" ]; then
+  set_path_prepend_dirs "$cabal_bin"
+fi
+
+# ------------------------------------------------------------------------------
 # python (pip)
 # pip install --user sh
 
