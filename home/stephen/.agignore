@@ -1,0 +1,9 @@
+license
+LICENSE
+license.txt
+LICENSE.txt
+
+# TODO: remove once Ag respects .gitignore.
+build/
+
+*.min.js
