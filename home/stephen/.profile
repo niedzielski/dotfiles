@@ -32,11 +32,11 @@ fi
 # ------------------------------------------------------------------------------
 # go
 
-GOROOT="$HOME/opt/go"
+GOROOT="/usr/lib/go"
 if [ -d "$GOROOT" ]; then
   export GOROOT
-  export GOBIN=$GOROOT/bin
-  export GOPATH=$HOME/golang
+  export GOBIN="$GOROOT/bin"
+  export GOPATH="$HOME/.go"
   set_path_prepend_dirs "$GOBIN"
 fi
 
