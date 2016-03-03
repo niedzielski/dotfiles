@@ -1,5 +1,5 @@
 [ -f ~/.sh_aliases ]; and . ~/.sh_aliases
-[ -f ~/.autojump/share/autojump/autojump.fish ]; and . ~/.autojump/share/autojump/autojump.fish
+[ -f /usr/share/autojump/autojump.fish ]; and . /usr/share/autojump/autojump.fish
 
 # no welcome message
 set -e fish_greeting
