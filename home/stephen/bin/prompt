@@ -7,7 +7,7 @@ case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
 
 # ------------------------------------------------------------------------------
 pad() {
-  [[ $1 -gt 0 ]] && repeat ─ $((($1 - 2) - ${#PWD} % $1))
+  [[ $1 -gt 0 ]] && repeat ― $((($1 - 1) - ${#PWD} % $1))
 }
 
 esc_tput() {
@@ -25,8 +25,8 @@ prompt() {
   # $ "
 
   printf '\n'
-  printf '%s%s%s %s\n' "$(esc_tput $3 setab 4)" "$PWD" "$(esc_tput $3 sgr0)" "$(pad $2)"
-  printf '%s$%s ' "$([[ $1 -eq 0 ]] && esc_tput $3 setaf 2 || esc_tput $3 setaf 1)" "$(esc_tput $3 sgr0)"
+  printf '%s%s%s %s\n' "" "$PWD" "" "$(pad $2)"
+  printf '%s$%s ' "$([[ $1 -eq 0 ]] && esc_tput $3 setaf 4 || esc_tput $3 setaf 1)" "$(esc_tput $3 sgr0)"
 }
 
 # ------------------------------------------------------------------------------
