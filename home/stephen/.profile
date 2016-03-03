@@ -55,6 +55,7 @@ fi
 local_bin="$HOME/.local/bin"
 if [ -d "$local_bin" ]; then
   set_path_prepend_dirs "$local_bin"
+  export PYTHONPATH="$(prepend_path_to_search_paths "$PYTHONPATH" "$HOME/.local/lib/"*"/site-packages")"
 fi
 
 # ------------------------------------------------------------------------------
