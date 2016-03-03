@@ -13,8 +13,6 @@ set_path_append_dirs "$ANDROID/tools" \
                      "$ANDROID/platform-tools" \
                      "$(glob_last_dir "$ANDROID/build-tools/"*)"
 
-export LD_LIBRARY_PATH="$(append_path_to_search_paths "$LD_LIBRARY_PATH" "$ANDROID/tools/lib")"
-
 # ------------------------------------------------------------------------------
 # ndk
 
