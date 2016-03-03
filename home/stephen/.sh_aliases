@@ -1,5 +1,9 @@
 # aliases compatible with dash, bash3, bash4, zsh, and fish
 
+# alphabetical, do not list . & .., mark directories with a trailing slash, &
+# colored
+alias l=ls\ -Ap\ --color=auto
+
 alias cp=cp\ -ai # prompt on overwrite, preserve all
 
 alias rm=rm\ -i # always prompt
@@ -10,6 +14,8 @@ alias m=mv
 alias c=cd
 
 alias rsync='rsync -azv --partial-dir=.rsync-partial --partial' # see also zsync
+
+alias p=parallel
 
 # smart-case
 alias ag=ag\ -S
