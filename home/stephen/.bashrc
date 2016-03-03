@@ -90,4 +90,4 @@ shopt -s hostcomplete
 # ------------------------------------------------------------------------------
 # autojump
 
-[[ -f ~/.autojump/share/autojump/autojump.bash ]] && . ~/.autojump/share/autojump/autojump.bash
+[[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
