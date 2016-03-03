@@ -7,3 +7,4 @@ LICENSE.txt
 build/
 
 *.min.js
+node_modules
