@@ -76,6 +76,15 @@ if [ -d "$DART_SDK" ]; then
 fi
 
 # ------------------------------------------------------------------------------
+# pebble
+
+PEBBLE="$HOME/opt/pebble"
+if [ -d "$PEBBLE" ]; then
+  export PEBBLE
+  set_path_prepend_dirs "$PEBBLE/arm-cs-tools/bin" "$PEBBLE/Pebble" "$PEBBLE/bin"
+fi
+
+# ------------------------------------------------------------------------------
 # android
 
 [ -f ~/.profile_android ] && . ~/.profile_android
