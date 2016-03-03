@@ -42,6 +42,9 @@ shopt -s histreedit
 # don't escape variables
 shopt -s direxpand
 
+# record each line as it is entered
+PROMPT_COMMAND='history -a'
+
 # ------------------------------------------------------------------------------
 # misc options
 
