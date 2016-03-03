@@ -59,11 +59,11 @@ fi
 
 # ------------------------------------------------------------------------------
 # node
-# npm install -g gulp
 
 node_root="$HOME/.node"
 if [ -d "$node_root" ]; then
-  set_path_prepend_dirs "$node_root/bin"
+  export NODE_PATH="$node_root/lib/node_modules:$HOME/opt/node/lib/node_modules"
+  set_path_prepend_dirs "$node_root/bin" "node_modules/.bin"
 fi
 
 # ------------------------------------------------------------------------------
