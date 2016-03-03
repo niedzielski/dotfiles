@@ -1,4 +1,0 @@
-#!/usr/bin/env sh
-# alphabetical, do not list . & .., mark directories with a trailing slash, &
-# colored
-exec ls -Ap --color=auto "$@"

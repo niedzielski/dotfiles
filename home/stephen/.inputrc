@@ -22,3 +22,9 @@ set history-size -1
 # c-del, c-] (c-bs == bs and c-\ is some kind of signal)
 "\e[3;5~": kill-word
 "\C-]": backward-kill-word
+
+# http://www.ukuug.org/events/linux2003/papers/bash_tips/
+# https://news.ycombinator.com/item?id=11211344
+# incremental searching with up and down. e.g., type "ls" and press up to search all ls invocations
+"\e[A": history-search-backward
+"\e[B": history-search-forward
