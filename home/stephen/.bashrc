@@ -72,13 +72,6 @@ shopt -s autocd
 PS1='$(prompt $? ${COLUMNS:-1} 1)'
 
 # ------------------------------------------------------------------------------
-# android
-
-if [[ -f ~/.bashrc_android ]]; then
-  . ~/.bashrc_android
-fi
-
-# ------------------------------------------------------------------------------
 # completion
 
 # don't attempt to complete empty command lines otherwise it'll hang the prompt
