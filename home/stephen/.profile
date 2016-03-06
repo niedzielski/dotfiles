@@ -68,6 +68,15 @@ if [ -d "$node_root" ]; then
 fi
 
 # ------------------------------------------------------------------------------
+# flutter
+
+FLUTTER_ROOT="$HOME/opt/flutter"
+if [ -d "$FLUTTER_ROOT" ]; then
+  export FLUTTER_ROOT
+  set_path_prepend_dirs "$FLUTTER_ROOT/bin"
+fi
+
+# ------------------------------------------------------------------------------
 # pebble
 
 PEBBLE="$HOME/opt/pebble"
