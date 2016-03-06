@@ -68,15 +68,6 @@ if [ -d "$node_root" ]; then
 fi
 
 # ------------------------------------------------------------------------------
-# dart
-
-DART_SDK="$HOME/opt/dart/dart-sdk"
-if [ -d "$DART_SDK" ]; then
-  export DART_SDK
-  set_path_prepend_dirs "$DART_SDK/bin"
-fi
-
-# ------------------------------------------------------------------------------
 # pebble
 
 PEBBLE="$HOME/opt/pebble"
