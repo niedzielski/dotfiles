@@ -78,6 +78,12 @@ export PEBBLE="$HOME/opt/pebble"
 set_path_prepend_dirs "$PEBBLE/arm-cs-tools/bin" "$PEBBLE/Pebble" "$PEBBLE/bin"
 
 # ------------------------------------------------------------------------------
+# racket
+
+export RACKET="$HOME/opt/racket"
+set_path_prepend_dirs "$RACKET/bin"
+
+# ------------------------------------------------------------------------------
 # android
 
 [ -f ~/.profile_android ] && . ~/.profile_android
