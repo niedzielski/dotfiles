@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
 # extended regex, skip binaries, devices, sockets, & dirs, colored, & line
-# -buffered. use a non- canonical alias instead of GREP_OPTIONS which may wreck
+# -buffered. use a non-canonical alias instead of GREP_OPTIONS which may wreck
 # poorly written scripts
 exec grep -EID skip -d skip --color=auto --line-buffered "$@"
