@@ -25,47 +25,33 @@ esac
 # gem install --user-install jekyll
 
 ruby_dir="$HOME/.gem/ruby"
-if [ -d "$ruby_dir" ]; then
-  set_path_prepend_dirs "$ruby_dir/"*"/bin"
-fi
+set_path_prepend_dirs "$ruby_dir/"*"/bin"
 
 # ------------------------------------------------------------------------------
 # go
 
-GOROOT="/usr/lib/go"
-if [ -d "$GOROOT" ]; then
-  export GOROOT
-  export GOBIN="$GOROOT/bin"
-  export GOPATH="$HOME/.go"
-  set_path_prepend_dirs "$GOBIN"
-fi
+export GOROOT="/usr/lib/go"
+export GOBIN="$GOROOT/bin"
+export GOPATH="$HOME/.go"
+set_path_prepend_dirs "$GOBIN"
 
 # ------------------------------------------------------------------------------
 # haskell (cabal)
 
-cabal_bin="$HOME/.cabal/bin"
-if [ -d "$cabal_bin" ]; then
-  set_path_prepend_dirs "$cabal_bin"
-fi
+set_path_prepend_dirs "$HOME/.cabal/bin"
 
 # ------------------------------------------------------------------------------
 # python (pip)
 # pip install --user sh
 
-local_bin="$HOME/.local/bin"
-if [ -d "$local_bin" ]; then
-  set_path_prepend_dirs "$local_bin"
-  export PYTHONPATH="$(prepend_path_to_search_paths "$PYTHONPATH" "$HOME/.local/lib/"*"/site-packages")"
-fi
+set_path_prepend_dirs "$HOME/.local/bin"
+export PYTHONPATH="$(prepend_path_to_search_paths "$PYTHONPATH" "$HOME/.local/lib/"*"/site-packages")"
 
 # ------------------------------------------------------------------------------
 # node
 
-node_root="$HOME/.node"
-if [ -d "$node_root" ]; then
-  export NODE_PATH="$node_root/lib/node_modules:$HOME/opt/node/lib/node_modules"
-  set_path_prepend_dirs "$node_root/bin" "node_modules/.bin"
-fi
+export NODE_PATH="$node_root/lib/node_modules:$HOME/opt/node/lib/node_modules"
+set_path_prepend_dirs "$HOME/.node/bin" "node_modules/.bin"
 
 # ------------------------------------------------------------------------------
 # emscripten
@@ -82,20 +68,14 @@ set_path_prepend_dirs \
 # ------------------------------------------------------------------------------
 # flutter
 
-FLUTTER_ROOT="$HOME/opt/flutter"
-if [ -d "$FLUTTER_ROOT" ]; then
-  export FLUTTER_ROOT
-  set_path_prepend_dirs "$FLUTTER_ROOT/bin"
-fi
+export FLUTTER_ROOT="$HOME/opt/flutter"
+set_path_prepend_dirs "$FLUTTER_ROOT/bin"
 
 # ------------------------------------------------------------------------------
 # pebble
 
-PEBBLE="$HOME/opt/pebble"
-if [ -d "$PEBBLE" ]; then
-  export PEBBLE
-  set_path_prepend_dirs "$PEBBLE/arm-cs-tools/bin" "$PEBBLE/Pebble" "$PEBBLE/bin"
-fi
+export PEBBLE="$HOME/opt/pebble"
+set_path_prepend_dirs "$PEBBLE/arm-cs-tools/bin" "$PEBBLE/Pebble" "$PEBBLE/bin"
 
 # ------------------------------------------------------------------------------
 # android
