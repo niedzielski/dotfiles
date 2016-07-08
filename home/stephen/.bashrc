@@ -81,9 +81,9 @@ shopt -s no_empty_cmd_completion
 # complete host names
 shopt -s hostcomplete
 
+# ------------------------------------------------------------------------------
 [[ -f /etc/bash_completion ]] && . /etc/bash_completion
 
-# ------------------------------------------------------------------------------
-# autojump
-
 [[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
+
+[[ -f ~/.dircolors ]] && eval "$(dircolors ~/.dircolors)"

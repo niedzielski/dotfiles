@@ -1,6 +1,6 @@
 # generated from https://github.com/seebi/dircolors-solarized/blob/master/dircolors.ansi-light
 # and replacing aliases with http://www.bigsoft.co.uk/blog/index.php/2008/04/11/configuring-ls_colors
-# since they didn't seem to work otherwise in fish (still don't work in bash :()
+# since they didn't seem to work otherwise in fish
 NORMAL 00
 FILE 00
 DIR 36
