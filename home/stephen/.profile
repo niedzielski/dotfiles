@@ -107,4 +107,4 @@ export AUTOJUMP_KEEP_SYMLINKS=1
 # ------------------------------------------------------------------------------
 # path
 
-set_path_prepend_dirs ~/bin
+set_path_prepend_dirs "$HOME/bin"
