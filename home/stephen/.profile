@@ -93,6 +93,7 @@ fi
 # ------------------------------------------------------------------------------
 # other program exports
 
+export EDITOR=vim
 export TERM=xterm-256color
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 export LESS=-ir # smart ignore-case + output control chars
