@@ -68,6 +68,18 @@ if [ -d "$node_root" ]; then
 fi
 
 # ------------------------------------------------------------------------------
+# emscripten
+# variables as reported by $EMSDK/emsdk activate latest
+# http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html
+
+export EMSDK="$HOME/opt/emsdk"
+set_path_prepend_dirs \
+  "$EMSDK/emscripten/master" \
+  "$EMSDK/node/4.1.1_64bit/bin" \
+  "$EMSDK/clang/fastcomp/build_master_64/bin" \
+  "$EMSDK"
+
+# ------------------------------------------------------------------------------
 # flutter
 
 FLUTTER_ROOT="$HOME/opt/flutter"
