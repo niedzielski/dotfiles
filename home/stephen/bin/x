@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-exec xargs -rd\\n "$@" # \n delimited, don't run on empty in, + expansion
+exec xargs -rd\\n "$@" # \n delimited, don't run on empty in
 # copy ex: x cp --parents -t"$dst"
 # - TODO: Figure out general case. x -i implies -L1. Use
 #   xargs --show-limits -r < /dev/null? See also ulimit builtin?
