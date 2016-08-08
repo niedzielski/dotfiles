@@ -21,6 +21,12 @@ esac
 [ -f ~/.shrc ] && export ENV="$HOME/.shrc"
 
 # ------------------------------------------------------------------------------
+# mediawiki
+export MW_INSTALL_PATH="$HOME/dev/wmf/vagrant/mediawiki"
+export MW_SERVER=http://localhost:8080
+export MW_SCRIPT_PATH=/w
+
+# ------------------------------------------------------------------------------
 # ruby
 # gem install --user-install jekyll
 
