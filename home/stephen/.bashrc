@@ -82,7 +82,11 @@ shopt -s no_empty_cmd_completion
 shopt -s hostcomplete
 
 # ------------------------------------------------------------------------------
-[[ -f /etc/bash_completion ]] && . /etc/bash_completion
+if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+  . /usr/share/bash-completion/bash_completion
+elif [[ -f /etc/bash_completion ]]; then
+  . /etc/bash_completion
+fi
 
 [[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
 
