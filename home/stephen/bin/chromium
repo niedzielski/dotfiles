@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-# launch chromium for high dpi / retina resolution display
-exec chromium-browser --force-device-scale-factor=2 "$@" > /dev/null 2> /dev/null &
