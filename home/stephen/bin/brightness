@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+read bright < /sys/class/backlight/acpi_video0/brightness
+let bright+="$15"
+echo $bright > /sys/class/backlight/acpi_video0/brightness
