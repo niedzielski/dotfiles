@@ -4,7 +4,6 @@ import XMonad.Actions.NoBorders(toggleBorder)
 import XMonad.Hooks.ICCCMFocus(takeTopFocus)
 import XMonad.Hooks.ManageHelpers(doFullFloat, isFullscreen)
 import XMonad.Layout.NoBorders(smartBorders)
-import XMonad.Layout.Spacing(smartSpacing)
 import XMonad.Util.EZConfig(additionalKeysP)
 
 import XMonad.Hooks.DynamicLog(dynamicLog, xmobar)
@@ -19,8 +18,7 @@ cfg = defaultConfig {
   normalBorderColor  = "#333",
   focusedBorderColor = "#00fbff",
   borderWidth = 2,
-  layoutHook = smartSpacing 4 -- spacing between windows
-             $ smartBorders -- don't show window focus on maximized windows
+  layoutHook = smartBorders -- don't show window focus on maximized windows
              $ layoutHook defaultConfig,
   logHook = dynamicLog -- xmobar
           <+> takeTopFocus -- android studio
