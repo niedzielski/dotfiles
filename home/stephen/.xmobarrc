@@ -1,0 +1,13 @@
+Config {
+  font = "xft:DejaVu Sans Mono:size=9:bold:antialias=true",
+  fgColor = "#fff",
+  overrideRedirect = False,
+  template = " %StdinReader% }{ %battery% %date% ",
+  commands = [
+    Run Battery [ "--template" , "<left>%",
+                  "--Low"      , "15",
+                  "--low"      , "red" ] 50,
+    Run Date "%l:%M" "date" 10,
+    Run StdinReader
+  ]
+}
