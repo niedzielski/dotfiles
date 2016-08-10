@@ -1,8 +1,8 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-demo 5.34 for stephen on Mon Aug  8 22:15:44 2016.
+# Written by xscreensaver-demo 5.34 for stephen on Wed Aug 10 13:49:04 2016.
 # http://www.jwz.org/xscreensaver/
 
-timeout:	0:10:00
+timeout:	0:07:00
 cycle:		0:10:00
 lock:		True
 lockTimeout:	0:07:00
@@ -24,17 +24,17 @@ fadeTicks:	20
 captureStderr:	True
 ignoreUninstalledPrograms:False
 font:		*-medium-r-*-140-*-m-*
-dpmsEnabled:	False
+dpmsEnabled:	True
 dpmsQuickOff:	True
-dpmsStandby:	2:00:00
-dpmsSuspend:	2:00:00
-dpmsOff:	4:00:00
+dpmsStandby:	0:07:00
+dpmsSuspend:	0:07:00
+dpmsOff:	0:07:00
 grabDesktopImages:  False
 grabVideoFrames:    False
 chooseRandomImages: False
 imageDirectory:	
 
-mode:		random
+mode:		blank
 selected:	-1
 
 textMode:	url
