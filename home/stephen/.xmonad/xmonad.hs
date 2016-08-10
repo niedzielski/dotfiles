@@ -45,7 +45,7 @@ main = do
     ("M-<Right>", nextWS),
     ("M-S-<Left>", shiftToPrev),
     ("M-S-<Right>", shiftToNext),
-    ("M-l", spawn "xscreensaver-command --lock"),
+    ("M-S-l", spawn "xscreensaver-command --lock"),
     ("M-r", spawn "dmenu_run"),
     ("<XF86AudioLowerVolume>", spawn "amixer set Master 10%- && paplay .vol.wav"),
     ("<XF86AudioRaiseVolume>", spawn "amixer set Master 10%+ && paplay .vol.wav"),
