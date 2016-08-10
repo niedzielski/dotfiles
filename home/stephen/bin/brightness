@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+read max < /sys/class/backlight/acpi_video0/max_brightness
 read bright < /sys/class/backlight/acpi_video0/brightness
 let bright+="$15"
+bright=$((bright > max ? max : bright))
+bright=$((bright < 0 ? 0 : bright))
 echo $bright > /sys/class/backlight/acpi_video0/brightness
