@@ -8,7 +8,7 @@ import XMonad.Actions.CycleWS(nextWS, prevWS, shiftToNext, shiftToPrev)
 import XMonad.Actions.NoBorders(toggleBorder)
 import XMonad.Hooks.DynamicLog(dynamicLogWithPP, ppCurrent, ppHidden,
   ppHiddenNoWindows, ppLayout, ppOutput, ppSep, ppTitle, ppUrgent, xmobar,
-  xmobarColor, xmobarPP, wrap)
+  xmobarColor, xmobarPP)
 import XMonad.Hooks.ICCCMFocus(takeTopFocus)
 import XMonad.Hooks.ManageDocks(avoidStruts, manageDocks)
 import XMonad.Hooks.ManageHelpers(doFullFloat, isFullscreen)
@@ -40,7 +40,7 @@ main = do
                $ layoutHook defaultConfig,
     logHook = dynamicLogWithPP xmobarPP {
       ppOutput = hPutStrLn xmproc,
-      ppTitle = xmobarColor "#ddd" "" . wrap " " "",
+      ppTitle = xmobarColor "#ddd" "",
       ppCurrent = xmobarColor "#0ff" "",
       ppHidden = xmobarColor "#ff0" "",
       ppHiddenNoWindows = xmobarColor "#666" "",
