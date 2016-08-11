@@ -1,5 +1,5 @@
 Config {
-  font = "xft:DejaVu Sans:size=9:antialias=true",
+  font = "xft:DejaVu Sans Mono:size=9:antialias=true",
   fgColor = "#fff",
   overrideRedirect = False,
   template = " %StdinReader% }{ %battery% %date% ",

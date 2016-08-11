@@ -31,9 +31,9 @@ main = do
     manageHook = manageDocks
                <+> (isFullscreen --> doFullFloat)
                <+> manageHook defaultConfig,
-    workspaces = ["☎", "☕", "☂", "♥", "☠", "⚅", "♕", "♫", "✎"],
+    workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
     normalBorderColor  = "#333",
-    focusedBorderColor = "#00fbff",
+    focusedBorderColor = "#0ff",
     borderWidth = 2,
     layoutHook = avoidStruts -- xmobar
                . smartBorders -- don't show window focus on maximized windows
@@ -41,8 +41,8 @@ main = do
     logHook = dynamicLogWithPP xmobarPP {
       ppOutput = hPutStrLn xmproc,
       ppTitle = xmobarColor "#ddd" "" . wrap " " "",
-      ppCurrent = xmobarColor "#fff" "",
-      ppHidden = xmobarColor "#eee" "",
+      ppCurrent = xmobarColor "#0ff" "",
+      ppHidden = xmobarColor "#ff0" "",
       ppHiddenNoWindows = xmobarColor "#666" "",
       ppLayout = (\layout -> ""),
       ppUrgent = xmobarColor "#f00" "",
