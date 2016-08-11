@@ -1,7 +1,7 @@
 import Control.Monad(when)
 import System.Exit(exitSuccess)
 import System.IO(hPutStrLn)
-import XMonad((-->), (<+>), borderWidth, composeAll, defaultConfig,
+import XMonad((-->), (<+>), borderWidth, defaultConfig,
   focusedBorderColor, io, layoutHook, logHook, manageHook, mod4Mask, modMask,
   normalBorderColor, spawn, withFocused, workspaces, X, xmonad)
 import XMonad.Actions.CycleWS(nextWS, prevWS, shiftToNext, shiftToPrev)
@@ -28,15 +28,15 @@ main = do
 
   xmonad $ defaultConfig {
     modMask = mod4Mask,
-    manageHook = manageDocks <+> composeAll [
-      manageHook defaultConfig,
-      isFullscreen --> doFullFloat],
+    manageHook = manageDocks
+               <+> (isFullscreen --> doFullFloat)
+               <+> manageHook defaultConfig,
     workspaces = ["☎", "☕", "☂", "♥", "☠", "⚅", "♕", "♫", "✎"],
     normalBorderColor  = "#333",
     focusedBorderColor = "#00fbff",
     borderWidth = 2,
     layoutHook = avoidStruts -- xmobar
-               $ smartBorders -- don't show window focus on maximized windows
+               . smartBorders -- don't show window focus on maximized windows
                $ layoutHook defaultConfig,
     logHook = dynamicLogWithPP xmobarPP {
       ppOutput = hPutStrLn xmproc,
