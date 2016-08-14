@@ -1,7 +1,6 @@
 Config {
   font = "xft:DejaVu Sans Mono:size=6:antialias=true",
   fgColor = "#fff",
-  overrideRedirect = False,
   template = " %StdinReader% }{ %battery% %date% ",
   commands = [
     Run Battery [ "--template" , "<left>%",
