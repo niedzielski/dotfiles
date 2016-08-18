@@ -63,9 +63,12 @@ main = do
     ("M-S-q", quitPrompt),
     ("M-r", spawn "dmenu_run_history"),
     ("M-<F3>", spawn "snap"),
-    ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%- && paplay .vol.wav"),
-    ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ && paplay .vol.wav"),
-    ("<XF86AudioMute>", spawn "amixer set Master toggle"),
-    ("<XF86MonBrightnessUp>", spawn "brightness +"),
+    ("M-b", sendMessage ToggleStruts),
     ("<XF86MonBrightnessDown>", spawn "brightness -"),
-    ("M-b", sendMessage ToggleStruts)]
+    ("<XF86MonBrightnessUp>", spawn "brightness +"),
+    ("<XF86AudioPrev>", spawn "deadbeef --prev"),
+    ("<XF86AudioPlay>", spawn "deadbeef --play-pause"),
+    ("<XF86AudioNext>", spawn "deadbeef --next"),
+    ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%- && paplay .vol.wav"),
+    ("<XF86AudioMute>", spawn "amixer set Master toggle"),
+    ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ && paplay .vol.wav")]
