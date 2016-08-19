@@ -35,7 +35,7 @@ main = do
                <+> (isFullscreen --> doFullFloat)
                <+> manageHook defaultConfig,
     workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
-    normalBorderColor  = "#333",
+    normalBorderColor  = "#aaa",
     focusedBorderColor = "#0ff",
     borderWidth = 2,
     layoutHook = avoidStruts -- xmobar
@@ -47,7 +47,7 @@ main = do
       ppOutput = hPutStrLn xmproc,
       ppTitle = xmobarColor "#ddd" "",
       ppCurrent = xmobarColor "#0ff" "",
-      ppHidden = xmobarColor "#ff0" "",
+      ppHidden = xmobarColor "#aaa" "",
       ppHiddenNoWindows = xmobarColor "#666" "",
       ppLayout = (\layout -> ""),
       ppUrgent = xmobarColor "#f00" "",
