@@ -36,7 +36,6 @@ main = do
                <+> manageHook defaultConfig,
     workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
     normalBorderColor  = "#aaa",
-    focusedBorderColor = "#0ff",
     borderWidth = 2,
     layoutHook = avoidStruts -- xmobar
                . smartBorders -- don't show window focus on maximized windows
@@ -45,10 +44,10 @@ main = do
                     <+> handleEventHook defaultConfig,
     logHook = dynamicLogWithPP xmobarPP {
       ppOutput = hPutStrLn xmproc,
-      ppTitle = xmobarColor "#ddd" "",
-      ppCurrent = xmobarColor "#0ff" "",
-      ppHidden = xmobarColor "#aaa" "",
-      ppHiddenNoWindows = xmobarColor "#666" "",
+      ppTitle = xmobarColor "#fff" "",
+      ppCurrent = xmobarColor "#f00" "",
+      ppHidden = xmobarColor "#fff" "",
+      ppHiddenNoWindows = xmobarColor "#aaa" "",
       ppLayout = (\layout -> ""),
       ppUrgent = xmobarColor "#f00" "",
       ppSep = xmobarColor "#000" "" " "
