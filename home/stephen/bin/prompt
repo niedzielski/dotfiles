@@ -1,17 +1,10 @@
 #!/usr/bin/env bash
 # $1 status
-# $2 columns
-# $3 escape non-printing characters
-
-case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
-
-# ------------------------------------------------------------------------------
-pad() {
-  [[ $1 -gt 0 ]] && repeat ― $((($1 - 1) - ${#PWD} % $1))
-}
+# $2 escape nonprinting chars
+set -euo pipefail
 
 esc_tput() {
-  declare format=%s
+  local format=%s
   if [[ ${1-0} -ne 0 ]]; then
     format="\001$format\002"
   fi
@@ -19,15 +12,6 @@ esc_tput() {
   printf "$format" "$(tput "$@")"
 }
 
-prompt() {
-  # "
-  # /home/stephen ─────────────────────────────────────────────────────────────────
-  # $ "
-
-  printf '\n'
-  printf '%s%s%s %s\n' "" "$PWD" "" "$(pad $2)"
-  printf '%s$%s ' "$([[ $1 -eq 0 ]] && esc_tput $3 setaf 4 || esc_tput $3 setaf 1)" "$(esc_tput $3 sgr0)"
-}
-
-# ------------------------------------------------------------------------------
-case $- in *i*) :;; *) prompt "$@";; esac
+# "bin$ "
+echo "$(basename "$PWD")$(esc_tput "$2" setaf $(($1 ? 1 : 2)))\$ $(esc_tput "$2" sgr0)"
+exit "$1"

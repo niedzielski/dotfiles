@@ -69,7 +69,7 @@ shopt -s checkwinsize
 shopt -s autocd
 
 # prompt
-PS1='$(prompt $? ${COLUMNS:-1} 1)'
+PS1='$(prompt $? 1)'
 
 # ------------------------------------------------------------------------------
 # completion

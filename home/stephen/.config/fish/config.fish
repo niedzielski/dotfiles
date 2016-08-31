@@ -6,7 +6,7 @@ set -e fish_greeting
 
 # prompt
 function fish_prompt -d "Prints the command prompt."
-  prompt $status $COLUMNS 0
+  prompt $status 0
 end
 
 # fish doesn't seem to fully support readline
