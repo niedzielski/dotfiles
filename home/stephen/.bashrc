@@ -42,8 +42,10 @@ shopt -s histreedit
 # don't escape variables
 shopt -s direxpand
 
+[[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
+
 # record each line as it is entered
-PROMPT_COMMAND='history -a'
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a"
 
 # ------------------------------------------------------------------------------
 # misc options
@@ -87,7 +89,5 @@ if [[ -f /usr/share/bash-completion/bash_completion ]]; then
 elif [[ -f /etc/bash_completion ]]; then
   . /etc/bash_completion
 fi
-
-[[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
 
 [[ -f ~/.dircolors ]] && eval "$(dircolors ~/.dircolors)"
