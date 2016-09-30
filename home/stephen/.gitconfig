@@ -1,0 +1,80 @@
+[advice]
+  statusHints = false
+  detachedHead = false
+[core]
+  attributesfile = ~/.gitattributes
+  excludesfile = ~/.gitignore
+  pager = diff-so-fancy | less -RFXx2 #'+/^(Date|added|deleted|modified): '
+  whitespace = tabwidth=2
+[alias]
+  co = checkout
+  s = status
+  d = diff -C -C
+  short = rev-parse --short
+  # don't use !pwd here since that works whether in a repo or not
+  root = rev-parse --show-toplevel
+[color]
+  grep = auto
+  interactive = auto
+  showBranch = auto
+  status = auto
+[color "diff"]
+  meta = yellow bold
+  commit = green bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+  whitespace = red reverse
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+[color "grep"]
+  filename = green
+[column]
+  ui = auto dense
+[credential]
+  helper = /usr/share/doc/git/contrib/credential/gnome-keyring/git-credential-gnome-keyring
+[diff]
+  renames = copies
+  tool = meld
+  compactionHeuristic = true
+  algorithm = histogram
+[diff "img"]
+  textconv = exiftool \
+    -x ExifToolVersion \
+    -x FileName \
+    -x Directory \
+    -x FileTypeExtension \
+    -x FileCreateDate \
+    -x FileModifyDate \
+    -x FileAccessDate \
+    -x FileInodeChangeDate
+  cachetextconv = true
+[grep]
+  extendedRegexp = true
+[gui]
+  commitMsgWidth = 72
+[log]
+  decorate = auto
+  follow = true
+  #log.abbrevCommit = true
+[merge]
+  tool = meld
+  #conflictstyle = diff3
+[mergetool]
+  keepBackup = false
+[mergetool "meld"]
+  cmd = meld --auto-merge --output $MERGED $LOCAL $BASE $REMOTE
+[status]
+  short = true
+  branch = true
+[submodule]
+  fetchJobs = 0
+
+[diff-so-fancy]
+  markEmptyLines = false
+
+[include]
+  path = ~/.gitconfig-private
