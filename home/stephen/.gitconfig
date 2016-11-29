@@ -52,6 +52,8 @@
     -x FileAccessDate \
     -x FileInodeChangeDate
   cachetextconv = true
+[difftool "meld"]
+  cmd = meld $LOCAL $REMOTE
 [grep]
   extendedRegexp = true
 [gui]
