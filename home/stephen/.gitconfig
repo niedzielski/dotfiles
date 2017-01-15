@@ -53,7 +53,7 @@
     -x FileInodeChangeDate
   cachetextconv = true
 [difftool "meld"]
-  cmd = meld $LOCAL $REMOTE
+  cmd = meld "$LOCAL" "$REMOTE"
 [grep]
   extendedRegexp = true
 [gui]
@@ -68,7 +68,7 @@
 [mergetool]
   keepBackup = false
 [mergetool "meld"]
-  cmd = meld --auto-merge --output $MERGED $LOCAL $BASE $REMOTE
+  cmd = meld --auto-merge --output "$MERGED" "$LOCAL" "$BASE" "$REMOTE"
 [status]
   short = true
   branch = true
