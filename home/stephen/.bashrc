@@ -90,4 +90,4 @@ elif [[ -f /etc/bash_completion ]]; then
   . /etc/bash_completion
 fi
 
-[[ -f ~/.dircolors ]] && eval "$(dircolors ~/.dircolors)"
+if [[ -f ~/.dir_colors/dircolors ]]; then eval "$(dircolors ~/.dir_colors/dircolors)"; fi
