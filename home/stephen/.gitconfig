@@ -4,7 +4,7 @@
 [core]
   attributesfile = ~/.gitattributes
   excludesfile = ~/.gitignore
-  pager = diff-so-fancy | less -RFXx2 #'+/^(Date|added|deleted|modified): '
+  pager = diff-so-fancy | less -RFXx2 '+/^(commit|added:|deleted:|modified:) '
   whitespace = tabwidth=2
 [alias]
   co = checkout
