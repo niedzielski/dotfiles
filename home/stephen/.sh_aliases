@@ -18,5 +18,4 @@ alias rsync='rsync -azv --partial-dir=.rsync-partial --partial' # see also zsync
 alias p=parallel
 
 # smart-case
-alias ag=ag\ -S
-alias rg=rg\ -S
+alias rg='rg -S --ignore-file ~/.rgignore'
