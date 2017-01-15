@@ -50,7 +50,6 @@ set_path_prepend_dirs "$HOME/.cabal/bin"
 # python (pip)
 # pip install sh
 
-set_path_prepend_dirs "$HOME/.local/bin"
 export PYTHONPATH="$(prepend_path_to_search_paths "$PYTHONPATH" "$HOME/.local/lib/"*"/site-packages")"
 
 # ------------------------------------------------------------------------------
@@ -111,4 +110,4 @@ export AUTOJUMP_KEEP_SYMLINKS=1
 # ------------------------------------------------------------------------------
 # path
 
-set_path_prepend_dirs "$HOME/bin"
+set_path_prepend_dirs "$HOME/.local/bin" "$HOME/bin"
