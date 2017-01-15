@@ -24,8 +24,8 @@ shopt -s nocaseglob
 HISTCONTROL=ignoredups:ignorespace
 
 # unlimited history
-HISTSIZE=999999
-HISTFILESIZE=999999
+HISTSIZE=
+HISTFILESIZE=
 
 # timestamp entries
 HISTTIMEFORMAT='%F-%H-%M-%S '
