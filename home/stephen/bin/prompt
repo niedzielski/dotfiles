@@ -13,5 +13,5 @@ esc_tput() {
 }
 
 # "bin$ "
-echo "$(esc_tput "$2" setaf $(($1 ? 1 : 2)))\$ $(esc_tput "$2" sgr0)"
+echo "$(basename "$PWD")$(esc_tput "$2" setaf $(($1 ? 1 : 2)))\$ $(esc_tput "$2" sgr0)"
 exit "$1"
