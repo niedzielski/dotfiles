@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+err=0
+time {
+  rsnapshot -c ~/.rsnapshot sync || err=$?
+  [[ err -eq 0 || err -eq 2 ]] && rsnapshot -c ~/.rsnapshot "$@" || err=$?
+}
+exit $err
