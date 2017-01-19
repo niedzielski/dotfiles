@@ -1,0 +1,37 @@
+config_version	1.2
+
+snapshot_root	/media/stephen/0834c569-fd9a-43ba-b107-636d78d55c39/archive/
+no_create_root	1
+
+cmd_cp	/bin/cp
+cmd_rm	/bin/rm
+cmd_rsync	/usr/bin/rsync
+cmd_logger	/usr/bin/logger
+cmd_du	/usr/bin/du
+cmd_rsnapshot_diff	/usr/bin/rsnapshot-diff
+
+retain	alpha	6
+retain	beta	7
+retain	gamma	4
+retain	delta	3
+
+logfile	/tmp/rsnapshot.log
+loglevel	5
+
+lockfile	/tmp/rsnapshot.pid
+
+link_dest	1
+
+sync_first	1
+
+use_lazy_deletes	1
+
+backup	/home/	localhost/
+backup	/etc/	localhost/
+backup	/usr/local/	localhost/
+
+exclude	/home/*/.local/share/Trash/
+
+backup_script	/home/stephen/bin/mk-pkg-mgr-list	pkg
+backup_script	/home/stephen/bin/mk-desktop-screenshot	screenshot
+backup_exec	/home/stephen/audio/sync

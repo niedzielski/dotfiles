@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+exec import -screen -window unity-launcher launcher.png

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+dpkg -l &> dpkg.txt
+ghc-pkg list &> ghc-pkg.txt || :
+pip freeze &> pip.txt || :
+gem list -a &> gem.txt || :
+npm -g ls --depth=0 &> npm.txt || :
+apm list &> apm.txt || :
+cabal list --installed &> cabal.txt || :
+go list ... &> go.txt || :
