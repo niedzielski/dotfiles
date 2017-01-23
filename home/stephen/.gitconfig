@@ -61,7 +61,7 @@
 [log]
   decorate = auto
   follow = true
-  #log.abbrevCommit = true
+  abbrevCommit = true
 [merge]
   tool = meld
   #conflictstyle = diff3
