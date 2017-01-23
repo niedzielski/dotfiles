@@ -91,7 +91,12 @@ set_path_prepend_dirs "$RACKET/bin"
 # ------------------------------------------------------------------------------
 # android
 
-[ -f ~/.profile_android ] && . ~/.profile_android
+export ANDROID="$HOME/opt/android/sdk"
+export ANDROID_SDK="$ANDROID"
+
+set_path_append_dirs "$ANDROID/tools" \
+                     "$ANDROID/platform-tools" \
+                     "$(glob_last_dir "$ANDROID/build-tools/"*)"
 
 # ------------------------------------------------------------------------------
 # other program exports
