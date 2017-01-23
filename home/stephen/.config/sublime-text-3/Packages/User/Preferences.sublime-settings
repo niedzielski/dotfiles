@@ -1,5 +1,6 @@
 {
 	"color_scheme": "Packages/User/Espresso Soda.tmTheme",
+	"dpi_scale": 1.5,
 	"draw_white_space": "all",
 	"folder_exclude_patterns":
 	[
@@ -11,8 +12,8 @@
 		".gradle",
 		".idea"
 	],
-	"font_face": "Hack",
-	"font_size": 11,
+	"font_face": "DejaVu Sans Mono",
+	"font_size": 10,
 	"ignored_packages":
 	[
 		"Vintage"
