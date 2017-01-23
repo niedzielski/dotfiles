@@ -80,4 +80,4 @@
   markEmptyLines = false
 
 [include]
-  path = ~/.gitconfig-private
+  path = ~/.gitconfig_private
