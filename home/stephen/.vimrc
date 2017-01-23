@@ -46,6 +46,7 @@ se go-=rL
 
 " Don't force newlines at end of files.
 se noeol
+se binary " this is lame
 
 " ------------------------------------------------------------------------------
 " Behave Like Windows
