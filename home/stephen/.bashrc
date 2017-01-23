@@ -83,14 +83,8 @@ shopt -s no_empty_cmd_completion
 # complete host names
 shopt -s hostcomplete
 
-# ------------------------------------------------------------------------------
 if [[ -f /usr/share/bash-completion/bash_completion ]]; then
   . /usr/share/bash-completion/bash_completion
 elif [[ -f /etc/bash_completion ]]; then
   . /etc/bash_completion
 fi
-
-if [[ -f ~/.dir_colors/dircolors ]]; then eval "$(dircolors ~/.dir_colors/dircolors)"; fi
-
-# make less understand some binary inputs such as tar
-if which lesspipe &> /dev/null; then eval "$(SHELL=/bin/sh lesspipe)"; fi

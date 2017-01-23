@@ -73,13 +73,17 @@ set_path_append_dirs "$ANDROID/tools" \
 export EDITOR=vim
 export TERM=xterm-256color
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export LESS=-ir # smart ignore-case + output control chars
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export AUTOJUMP_IGNORE_CASE=1
 export AUTOJUMP_KEEP_SYMLINKS=1
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# ls
+if [[ -f ~/.dir_colors/dircolors ]]; then eval "$(dircolors ~/.dir_colors/dircolors)"; fi
+
+# less
+# make less understand some binary inputs such as tar
+if which lesspipe > /dev/null; then eval "$(SHELL=/bin/sh lesspipe)"; fi
+export LESS=-ir # smart ignore-case + output control chars
 
 # ------------------------------------------------------------------------------
 # path
