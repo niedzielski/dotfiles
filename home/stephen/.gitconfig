@@ -13,6 +13,7 @@
   short = rev-parse --short
   # don't use !pwd here since that works whether in a repo or not
   root = rev-parse --show-toplevel
+  diff-img = difftool -x 'compare \"$LOCAL\" \"$REMOTE\" png:- | montage -mode concatenate \"$LOCAL\" png:- \"$REMOTE\" png:- | display -title \"$BASE: Local | Diff | Remote\" png:-'
 [color]
   grep = auto
   interactive = auto
