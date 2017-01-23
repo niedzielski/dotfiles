@@ -13,7 +13,7 @@ alias m=mv
 
 alias c=cd
 
-alias rsync='rsync -azv --partial-dir=.rsync-partial --partial' # see also zsync
+alias rsync='rsync -aiz --partial-dir=.rsync-partial --partial'
 
 alias p=parallel
 
