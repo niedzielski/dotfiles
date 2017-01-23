@@ -1,0 +1,9 @@
+{
+  "editor.tabSize": 2,
+  "editor.fontSize": 15,
+  "editor.insertSpaces": true,
+  "editor.renderWhitespace": "all",
+  "workbench.statusBar.visible": true,
+  "window.zoomLevel": 0,
+  "workbench.activityBar.visible": true
+}
