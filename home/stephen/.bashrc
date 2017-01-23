@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------------
 # util
 
-[[ -f ~/.sh_util ]] && . ~/.sh_util
-[[ -f ~/.sh_aliases ]] && . ~/.sh_aliases
+if [[ -f ~/.sh_util ]]; then . ~/.sh_util; fi
+if [[ -f ~/.sh_aliases ]]; then . ~/.sh_aliases; fi
 
 # ------------------------------------------------------------------------------
 # globbing
@@ -42,7 +42,8 @@ shopt -s histreedit
 # don't escape variables
 shopt -s direxpand
 
-[[ -f /usr/share/autojump/autojump.bash ]] && . /usr/share/autojump/autojump.bash
+# must appear before PROMPT_COMMAND
+if [[ -f /usr/share/autojump/autojump.bash ]]; then . /usr/share/autojump/autojump.bash; fi
 
 # record each line as it is entered
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a"
