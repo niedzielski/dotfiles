@@ -69,3 +69,5 @@ export TERM=xterm-256color
 
 # path
 set_path_prepend_dirs "$HOME/.local/bin" "$HOME/bin"
+
+if [ -f "$HOME/.profile_private" ]; then . "$HOME/.profile_private"; fi
