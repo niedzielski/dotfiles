@@ -1,8 +1,4 @@
-#!/usr/bin/env sh
-
-# ------------------------------------------------------------------------------
 # os
-
 case "$OSTYPE$(uname)" in
   [lL]inux*) export TUX_OS=1 ;;
  [dD]arwin*) export MAC_OS=1 ;;
@@ -10,17 +6,12 @@ case "$OSTYPE$(uname)" in
           *) echo "unknown os=\"$OSTYPE$(uname)\"" >&2 ;;
 esac
 
-# ------------------------------------------------------------------------------
 # util
+if [ -f ~/.sh_util ]; then . ~/.sh_util; fi
 
-[ -f ~/.sh_util ] && . ~/.sh_util
-
-# ------------------------------------------------------------------------------
 # sh
+if [ -f ~/.shrc ]; then export ENV="$HOME/.shrc"; fi
 
-[ -f ~/.shrc ] && export ENV="$HOME/.shrc"
-
-# ------------------------------------------------------------------------------
 # mediawiki
 export MW_INSTALL_PATH="$HOME/dev/wmf/vagrant/mediawiki"
 export MW_SERVER=http://localhost:8080
