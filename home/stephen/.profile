@@ -59,9 +59,6 @@ export LESS=-ir # smart ignore-case + output control chars
 
 export EDITOR=vim
 
-# ls
-if [[ -f "$HOME/.dir_colors/dircolors" ]]; then eval "$(dircolors "$HOME/.dir_colors/dircolors")"; fi
-
 export AUTOJUMP_IGNORE_CASE=1
 export AUTOJUMP_KEEP_SYMLINKS=1
 

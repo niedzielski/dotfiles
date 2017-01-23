@@ -1,3 +1,6 @@
 #!/usr/bin/env sh
 [ -f ~/.sh_util ] && . ~/.sh_util
 [ -f ~/.sh_aliases ] && . ~/.sh_aliases
+
+# ls
+if [ -f "$HOME/.dir_colors/dircolors" ]; then eval "$(dircolors "$HOME/.dir_colors/dircolors")"; fi
