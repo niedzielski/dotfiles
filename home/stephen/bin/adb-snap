@@ -1,17 +1,2 @@
-#!/usr/bin/env bash
-# save a screenshot from an android device locally. depends on fb-adb and
-# timestamp
-
-case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
-
-# ------------------------------------------------------------------------------
-adb-snap() {
-  fb-adb "$@" rcmd screencap -p  > ~/Desktop/screenshot-$(timestamp).png
-  # fb-adb seems compatible with more devices but more prone to deprecation.
-  # in the future switch to the following. in the present, consider a guard,
-  # "adb shell getprop ro.build.version.sdk" -gt min_lvl
-  #adb "$@" exec-out screencap -p > ~/Desktop/screenshot-$(timestamp).png
-}
-
-# ------------------------------------------------------------------------------
-case $- in *i*) :;; *) adb-snap "$@";; esac
+#!/usr/bin/env sh
+exec adb "$@" exec-out screencap -p > ~/Desktop/screenshot-$(timestamp).png
