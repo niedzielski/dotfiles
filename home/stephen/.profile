@@ -24,23 +24,16 @@ if which ruby gem >/dev/null; then
   set_path_prepend_dirs "$GEM_HOME/bin"
 fi
 
-# ------------------------------------------------------------------------------
-# python (pip)
-# pip install sh
-
+# python & pip
 export PYTHONPATH="$(prepend_path_to_search_paths "$PYTHONPATH" "$HOME/.local/lib/"*"/site-packages")"
 
-# ------------------------------------------------------------------------------
 # node
-
 export NODE_PATH="$node_root/lib/node_modules:$HOME/opt/node/lib/node_modules"
 set_path_prepend_dirs "$HOME/.node/bin" "node_modules/.bin"
 
-# ------------------------------------------------------------------------------
 # emscripten
 # variables as reported by $EMSDK/emsdk activate latest
 # http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html
-
 export EMSDK="$HOME/opt/emsdk"
 set_path_prepend_dirs \
   "$EMSDK/emscripten/master" \
@@ -48,35 +41,31 @@ set_path_prepend_dirs \
   "$EMSDK/clang/fastcomp/build_master_64/bin" \
   "$EMSDK"
 
-# ------------------------------------------------------------------------------
 # android
-
 export ANDROID="$HOME/opt/android/sdk"
 export ANDROID_SDK="$ANDROID"
-
 set_path_append_dirs "$ANDROID/tools" \
                      "$ANDROID/platform-tools" \
                      "$(glob_last_dir "$ANDROID/build-tools/"*)"
 
-# ------------------------------------------------------------------------------
-# other program exports
-
-export EDITOR=vim
-export TERM=xterm-256color
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export AUTOJUMP_IGNORE_CASE=1
-export AUTOJUMP_KEEP_SYMLINKS=1
 
-# ls
-if [[ -f ~/.dir_colors/dircolors ]]; then eval "$(dircolors ~/.dir_colors/dircolors)"; fi
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # less
 # make less understand some binary inputs such as tar
 if which lesspipe > /dev/null; then eval "$(SHELL=/bin/sh lesspipe)"; fi
 export LESS=-ir # smart ignore-case + output control chars
 
-# ------------------------------------------------------------------------------
-# path
+export EDITOR=vim
 
+# ls
+if [[ -f "$HOME/.dir_colors/dircolors" ]]; then eval "$(dircolors "$HOME/.dir_colors/dircolors")"; fi
+
+export AUTOJUMP_IGNORE_CASE=1
+export AUTOJUMP_KEEP_SYMLINKS=1
+
+export TERM=xterm-256color
+
+# path
 set_path_prepend_dirs "$HOME/.local/bin" "$HOME/bin"
