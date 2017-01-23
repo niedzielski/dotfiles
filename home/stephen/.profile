@@ -17,12 +17,12 @@ export MW_INSTALL_PATH="$HOME/dev/wmf/vagrant/mediawiki"
 export MW_SERVER=http://localhost:8080
 export MW_SCRIPT_PATH=/w
 
-# ------------------------------------------------------------------------------
-# ruby
-# gem install --user-install jekyll
-
-ruby_dir="$HOME/.gem/ruby"
-set_path_prepend_dirs "$ruby_dir/"*"/bin"
+# ruby & gem
+if which ruby gem >/dev/null; then
+  export GEM_HOME="$(ruby -rubygems -e 'puts Gem.user_dir')"
+  PATH="$(ruby -rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+  set_path_prepend_dirs "$GEM_HOME/bin"
+fi
 
 # ------------------------------------------------------------------------------
 # python (pip)
