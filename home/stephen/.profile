@@ -34,19 +34,6 @@ ruby_dir="$HOME/.gem/ruby"
 set_path_prepend_dirs "$ruby_dir/"*"/bin"
 
 # ------------------------------------------------------------------------------
-# go
-
-export GOROOT="/usr/lib/go"
-export GOBIN="$GOROOT/bin"
-export GOPATH="$HOME/.go"
-set_path_prepend_dirs "$GOBIN"
-
-# ------------------------------------------------------------------------------
-# haskell (cabal)
-
-set_path_prepend_dirs "$HOME/.cabal/bin"
-
-# ------------------------------------------------------------------------------
 # python (pip)
 # pip install sh
 
@@ -69,24 +56,6 @@ set_path_prepend_dirs \
   "$EMSDK/node/4.1.1_64bit/bin" \
   "$EMSDK/clang/fastcomp/build_master_64/bin" \
   "$EMSDK"
-
-# ------------------------------------------------------------------------------
-# flutter
-
-export FLUTTER_ROOT="$HOME/opt/flutter"
-set_path_prepend_dirs "$FLUTTER_ROOT/bin"
-
-# ------------------------------------------------------------------------------
-# pebble
-
-export PEBBLE="$HOME/opt/pebble"
-set_path_prepend_dirs "$PEBBLE/arm-cs-tools/bin" "$PEBBLE/Pebble" "$PEBBLE/bin"
-
-# ------------------------------------------------------------------------------
-# racket
-
-export RACKET="$HOME/opt/racket"
-set_path_prepend_dirs "$RACKET/bin"
 
 # ------------------------------------------------------------------------------
 # android
