@@ -7,10 +7,10 @@ case "$OSTYPE$(uname)" in
 esac
 
 # util
-if [ -f ~/.sh_util ]; then . ~/.sh_util; fi
+if [ -f "$HOME/.sh_util" ]; then . "$HOME/.sh_util"; fi
 
 # sh
-if [ -f ~/.shrc ]; then export ENV="$HOME/.shrc"; fi
+if [ -f "$HOME/.shrc" ]; then export ENV="$HOME/.shrc"; fi
 
 # mediawiki
 export MW_INSTALL_PATH="$HOME/dev/wmf/vagrant/mediawiki"
