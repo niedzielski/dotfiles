@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-# force tmux to use 256 colors
-exec tmux -2 "$@"
