@@ -91,3 +91,6 @@ elif [[ -f /etc/bash_completion ]]; then
 fi
 
 if [[ -f ~/.dir_colors/dircolors ]]; then eval "$(dircolors ~/.dir_colors/dircolors)"; fi
+
+# make less understand some binary inputs such as tar
+if which lesspipe &> /dev/null; then eval "$(SHELL=/bin/sh lesspipe)"; fi
