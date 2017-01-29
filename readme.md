@@ -1,100 +1,164 @@
-Dotfiles
-========
+# Dotfiles
+My Ubuntu system configuration
 
-Back Up
--------
-1. Empty trash.
-1. Copy `/home` with tarpipe.
-1. Back up browser tabs and unsaved editor files.
-1. Back up packages (and check contents):
-  1. `dpkg -l &> dpkg.txt`
-  1. `ghc-pkg list &> ghc-pkg.txt`
-  1. `pip freeze &> pip.txt`
-  1. `gem list -a &> gem.list`
-  1. `npm ls --global=true &> npm.ls`
-  1. `apm list > apm.list`
-  1. TODO: Sublime Text 3.
-1. Download the latest Ubuntu 64b beta or release and check `md5sum`.
-1. Build Ubuntu boot disk with UNetbootin.
+## Back Up
+1. Empty trash; consider dumping Steam and Wine games
+1. Copy files: `cd / && tarpipe /media/stephen/disk/home home`
+1. Backup with rsnapshot too: `backup alpha`
+1. Back up browser tabs, unsaved editor files (check Sublime Text and deadbeef)
+1. Back up packages and verify contents (see rsnapshot config)
+1. Download the latest Ubuntu release and check `md5sum`
+1. Copy to USB thumbdrive (not SD Card): `mkfs.fat -I -n FOO /dev/sdX && time dd bs=4M if=foo.iso of=/dev/sdX`
+1. Take screenshot of launcher
 
-Ubuntu Set Up
--------------
+## Restore
 
-1. If Wi-Fi support is unavailable, obtain a USB to Ethernet adapter.
-1. Install Wi-Fi driver for MacBook Pro: `sudo apt-get update && sudo apt-get install bcmwl-kernel-source`
-1. Install browser: `sudo apt-get install chromium-browser`
-1. Upgrade to the latest packages and release: `sudo apt-get upgrade && sudo apt-get dist-upgrade`
-1. Install a big pile of packages:
+### Miscellaneous
+- Decompress backup: `time tar xf /media/stephen/disk/home-2016-01-01-00-00-00-000000000.tar.gz -I pigz`
+- Enable all proprietary drivers
+- Link system dotfiles
+- Update launcher to screenshot
 
-        sudo add-apt-repository ppa:webupd8team/atom
-        sudo apt-add-repository ppa:numix/ppa
-        sudo apt-get update
-        sudo apt-get install acpi ant aptitude aspell atom audacious audacious-plugins audacity autojump automake autossh bash-completion bc blender build-essential bzip2 calibre cachefilesd ccache cheese cmake colordiff command-not-found compiz-plugins compizconfig-settings-manager cool-retro-term cscope cu curl debconf-utils docker dos2unix doxygen edgy-wallpapers ethtool exuberant-ctags espeak fbreader feisty-wallpapers ffmpeg fio fish fonts-cantarell fonts-droid fonts-tuffy g++ gcc gconf-editor gdb gimp ginn git-all git-review gnome-session-flashback gnome-specimen gnuplot gparted gpick gradle graphviz groovy gutsy-wallpapers gzip hdparm hfsprogs html2text htop i2c-tools idle imagemagick indent inkscape iodine iperf ipython jq libav-tools librsvg2-bin libsox-fmt-all lmodern lrzsz lsb-release lshw lsof lsscsi luakit lynx make makehuman mame maven meld mercurial mess minicom mosh mscgen nfs-common nfs-kernel-server nmap nodejs npm numix-icon-theme-circle nvidia-346 openjdk-7-jdk openssh-server p7zip p7zip-rar pandoc pbuilder pbuilder-uml pdfgrep perl picard pigz playonlinux pngcrush powertop puppet pv python-beautifulsoup python-demjson python-dev python-django python-pip qemu qemubuilder qemu-kvm radare2 rake rsync ruby samba scsitools sdparm sed sg3-utils silversearcher-ag slirp smartmontools smp-utils socat sox spew sqlitebrowser ssh-import-id steam suckless-tools surf telnet tig tmux toilet tree ttf-aenigma ttf-bitstream-vera ttf-georgewilliams ttf-sjfonts tv-fonts ubuntu-restricted-extras ubuntustudio-font-meta ubuntu-wallpapers-\* udisks unetbootin unrar-free usbutils vagrant valgrind vim vim-gnome virtualbox virtualbox-guest-additions-iso vlc weechat wget whereami whois winbind wine wmctrl wordnet xclip xdotool xmonad xsane xubuntu-wallpapers youtube-dl zsh zsync
+### Packages
 
-1. Remove some broken packages: `sudo apt-get purge runit git-daemon-run`
-1. Approxmiate the decruft instructions [here](https://fixubuntu.com/).
-1. Add login to VirtualBox group: `sudo adduser stephen vboxusers`
-1. Reboot.
-1. Test suspend, resume, virtual machines, and OpenGL.
+#### APT
+```bash
+sudo add-apt-repository ppa:webupd8team/atom &&
+sudo add-apt-repository ppa:wine/wine-builds &&
+sudo apt update &&
 
-Apple Keyboard
---------------
-Invert the function key:
+sudo apt dist-upgrade &&
+sudo apt upgrade &&
 
-    echo options hid_apple fnmode=2 | sudo tee -a /etc/modprobe.d/hid_apple.conf
-    sudo update-initramfs -u
-    # sudo shutdown -r 0
+sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld pigz puredata pv qemu rsnapshot sg3-utils unity-tweak-tool vim vim-gnome xclip xvfb &&
 
-From [Change Function Key Behavior](https://help.ubuntu.com/community/AppleKeyboard#Change_Function_Key_behavior).
+sudo apt install dolphin-emu mess retroarch winehq-staging
+```
 
-Chromium
---------
+#### Manual Downloads
+- [Blender](https://www.blender.org/download/)
+- [Chrome](https://www.google.com/chrome/browser/desktop/)
+- [deadbeef](https://sourceforge.net/projects/deadbeef/files/travis/linux/master/)
+- [itch](https://itch.io/app)
+- [Node.js](https://nodejs.org/en/)
+- [ripgrep](https://github.com/BurntSushi/ripgrep/releases)
+- [Steam](http://store.steampowered.com/about/)
+- [Sublime Text](https://www.sublimetext.com/3)
+- [Vagrant](https://www.vagrantup.com/downloads.html)
+- [VirtualBox + extensions](https://www.virtualbox.org/wiki/Downloads)
+- [Visual Studio Code](https://code.visualstudio.com/download)
 
-### chrome://settings
+#### Compare Packages
+```bash
+alias strip='sed -r "1,5 d; s%^(ii|rc)\s+([^ ]+).*%\2%"' &&
+meld <(strip dpkg.txt|sort) <(dpkg -l|strip|sort)
+# other comparisons are manual
+```
+
+### Appearance
+```bash
+# disable input source indicator
+gsettings get com.canonical.indicator.keyboard visible &&
+gsettings set com.canonical.indicator.keyboard visible false
+
+# don't autohide the menu bar
+gsettings get com.canonical.Unity always-show-menus &&
+gsettings set com.canonical.Unity always-show-menus true
+
+# show the menu bar in the window not in the top panel
+gsettings get com.canonical.Unity integrated-menus &&
+gsettings set com.canonical.Unity integrated-menus true
+
+# autohide the launcher
+gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode &&
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
+
+# move the launcher to the bottom
+gsettings get com.canonical.Unity.Launcher launcher-position &&
+gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+
+# background
+gsettings get org.gnome.desktop.background picture-uri &&
+gsettings set org.gnome.desktop.background picture-uri file:///home/stephen/.bg
+
+# change theme to Radiance:
+gsettings get org.gnome.desktop.wm.preferences theme &&
+gsettings get org.gnome.desktop.interface gtk-theme &&
+gsettings set org.gnome.desktop.wm.preferences theme Radiance &&
+gsettings set org.gnome.desktop.interface gtk-theme Radiance
+gsettings get org.gnome.desktop.interface icon-theme &&
+gsettings set org.gnome.desktop.interface ubuntu-mono-light
+
+# enable ui scaling
+gsettings get org.gnome.desktop.interface text-scaling-factor &&
+gsettings set org.gnome.desktop.interface text-scaling-factor 1.75
+
+# enable lo graphics mode
+gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode &&
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode true
+
+# minimize shadows
+gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ override-decoration-theme &&
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ override-decoration-theme true
+```
+
+### Keybindings
+```bash
+# screenshot
+gsettings get org.compiz.integrated command-1 &&
+gsettings set org.compiz.integrated command-1 'snap'
+gsettings get org.compiz.integrated run-command-1 &&
+gsettings set org.compiz.integrated run-command-1 "['<Control><Alt>p']"
+
+# alt is not a system key, super is
+# command dialog
+gsettings get org.compiz.integrated show-hud &&
+gsettings set org.compiz.integrated show-hud "['<Alt><Super>']"
+# mouse
+gsettings get org.gnome.desktop.wm.preferences mouse-button-modifier &&
+gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
+
+# long pressing super should show launcher not hint overlay
+gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ shortcut-overlay &&
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ shortcut-overlay false
+
+# disable tap to click
+gsettings get org.gnome.desktop.peripherals.touchpad tap-to-click &&
+gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click false
+
+# super-d toggles shows desktop
+gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ show-desktop-key &&
+gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ show-desktop-key '<Super>d'
+```
+
+#### Replace Application Switcher with Static Application Switcher
+1. Open CompizConfig Settings Manager (this will likely crash Compiz)
+1. Disable Application Switcher (this will likely crash Compiz)
+1. Enable Static Application Switcher
+1. Set Bindings->Next and Prev window to <Alt>Tab and <Alt><Shift>Tab
+1. Set Bindings->Next and Prev window (All windows) to <Super>Tab and <Super><Shift>Tab
+1. Set Behaviour->Popup Window Delay to 0.08
+1. Set Appearance->Show icon only
+1. Set Appearance->Selected Window Highlight->Highlight Mode to Bring Selected to Front
+1. Set Appearance->Selected Window Highlight->Minimized Window Highlight Rectangle to Original Window Position
+
+### Terminal
+Set scrollback to unlimited
+
+### Chromium
+#### about://settings
+- Sign in.
 - Check On startup -> Continue where you left off
-- Check Appearance -> Use Classic theme
 - Uncheck Appearance -> Use system title bar and borders
 - Make Chromium the default.
-- Uncheck Use hardware acceleration when available (causes high CPU usage).
 
-### chrome://extensions
-- [Android SDK Search](https://chrome.google.com/webstore/detail/android-sdk-search/hgcbffeicehlpmgmnhnkjbjoldkfhoin)
-- [ARC Welder](https://chrome.google.com/webstore/detail/arc-welder/emfinbmielocnlhgmfkkmkngdoccbadn)
-- [Chrome Apps & Extensions Developer Tools](https://chrome.google.com/webstore/detail/chrome-apps-extensions-de/ohmmkhmmmpcnpikjeljgnaoabkaalbgc)
-- [Chrome Dev Editor](https://chrome.google.com/webstore/detail/chrome-dev-editor-develop/pnoffddplpippgcfjdhbmhkofpnaalpg)
-- [EditThisCookie](https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg)
-- [Google Dictionary](https://chrome.google.com/webstore/detail/google-dictionary-by-goog/mgijmajocgfcbeboacabfgobmjgjcoja)
-- [Hacker News Enhancement Suite](https://chrome.google.com/webstore/detail/hacker-news-enhancement-s/bappiabcodbpphnojdiaddhnilfnjmpm)
-- [Postman REST Client](https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm)
-- [Reddit Enhancement Suite](https://chrome.google.com/webstore/detail/reddit-enhancement-suite/kbmfpngjjgdllneeigpgjifpgocmfgmb)
+#### chrome://extensions
 - [uBlock](https://chrome.google.com/webstore/detail/ublock/cjpalhdlnbpafiamejdnhcphjbkeiagm)
-- [Vimium](https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb)
-- [Web Cache](https://chrome.google.com/webstore/detail/web-cache/coblegoildgpecccijneplifmeghcgip)
-- [Web Developer](https://chrome.google.com/webstore/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm)
+- [Postman - REST Client (Packaged App)](https://chrome.google.com/webstore/detail/postman-rest-client-packa/fhbjgbiflinjbdggehcddcbncdddomop)
 
-#### Vimium
-
-Use the following under Vimium -> Options -> Show advanced options... -> CSS for link hints*:
-
-    div > .vimiumHintMarker {
-    background: white;
-    border: none;
-    }
-
-    div > .vimiumHintMarker span {
-    color: black;
-    font-family: tahoma;
-    font-size: 9pt;
-    font-weight: 500;
-    text-transform: lowercase;
-    }
-
-    div > .vimiumHintMarker > .matchingCharacter {
-    color: green;
-    }
-
-    div > .vimiumHintMarker > .matching {
-    background: pink;
-    }
-
-*Note: indentation seems to break the override.
+### Git
+```bash
+sudo apt install libgnome-keyring-dev &&
+cd /usr/share/doc/git/contrib/credential/gnome-keyring &&
+sudo make
+```
