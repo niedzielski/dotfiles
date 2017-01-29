@@ -23,6 +23,7 @@ My Ubuntu system configuration
 
 #### APT
 ```bash
+sudo add-apt-repository ppa:graphics-drivers/ppa &&
 sudo add-apt-repository ppa:webupd8team/atom &&
 sudo add-apt-repository ppa:wine/wine-builds &&
 sudo apt update &&
@@ -30,7 +31,7 @@ sudo apt update &&
 sudo apt dist-upgrade &&
 sudo apt upgrade &&
 
-sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld pigz puredata pv qemu rsnapshot sg3-utils unity-tweak-tool vim vim-gnome xclip xvfb &&
+sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld nmap nvidia-settings pigz puredata pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome wmctrl xclip xdotool xvfb &&
 
 sudo apt install dolphin-emu mess retroarch winehq-staging
 ```
