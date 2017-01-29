@@ -1,6 +1,8 @@
 # Dotfiles
 My Ubuntu system configuration
 
+![Screenshot](desktop.png)
+
 ## Back Up
 1. Empty trash; consider dumping Steam and Wine games
 1. Copy files: `cd / && tarpipe /media/stephen/disk/home home`
