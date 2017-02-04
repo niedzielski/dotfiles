@@ -33,7 +33,7 @@ sudo apt update &&
 sudo apt dist-upgrade &&
 sudo apt upgrade &&
 
-sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld nmap nvidia-settings pigz puredata pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome wmctrl xclip xdotool xvfb &&
+sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz puredata pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
 
 sudo apt install dolphin-emu mess retroarch winehq-staging
 ```
@@ -150,10 +150,10 @@ Set scrollback to unlimited
 
 ### Chromium
 #### about://settings
-- Sign in.
+- Sign in
 - Check On startup -> Continue where you left off
 - Uncheck Appearance -> Use system title bar and borders
-- Make Chromium the default.
+- Make Chromium the default
 
 #### chrome://extensions
 - [uBlock](https://chrome.google.com/webstore/detail/ublock/cjpalhdlnbpafiamejdnhcphjbkeiagm)
