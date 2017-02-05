@@ -100,10 +100,6 @@ gsettings set org.gnome.desktop.interface text-scaling-factor 1.75
 # enable lo graphics mode
 gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode &&
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode true
-
-# minimize shadows
-gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ override-decoration-theme &&
-gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ override-decoration-theme true
 ```
 
 ### Keybindings
