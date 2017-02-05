@@ -37,6 +37,8 @@ sudo apt upgrade &&
 sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz puredata pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
 
 sudo apt install dolphin-emu mame retroarch winehq-staging
+
+sudo apt purge rhythmbox thunderbird
 ```
 
 #### Manual Downloads
@@ -104,6 +106,10 @@ gsettings set org.gnome.desktop.interface icon-theme ubuntu-mono-light
 # enable lo graphics mode
 gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode &&
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode true
+
+# disable unity online and file searches
+# Disable Unity Tweak Tool -> Search -> Show "More Suggestions" and Enable
+# search of your files
 ```
 
 ### Keybindings
