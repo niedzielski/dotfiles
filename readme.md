@@ -93,9 +93,10 @@ gsettings set org.gnome.desktop.interface gtk-theme Radiance
 gsettings get org.gnome.desktop.interface icon-theme &&
 gsettings set org.gnome.desktop.interface icon-theme ubuntu-mono-light
 
+# todo: fix
 # enable ui scaling
-gsettings get org.gnome.desktop.interface text-scaling-factor &&
-gsettings set org.gnome.desktop.interface text-scaling-factor 1.75
+# gsettings get org.gnome.desktop.interface text-scaling-factor &&
+# gsettings set org.gnome.desktop.interface text-scaling-factor 1.75
 
 # enable lo graphics mode
 gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode &&
