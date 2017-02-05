@@ -110,7 +110,7 @@ gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshel
 ```bash
 # screenshot
 gsettings get org.compiz.integrated command-1 &&
-gsettings set org.compiz.integrated command-1 'snap'
+gsettings set org.compiz.integrated command-1 'gnome-screenshot'
 gsettings get org.compiz.integrated run-command-1 &&
 gsettings set org.compiz.integrated run-command-1 "['<Control><Alt>p']"
 
