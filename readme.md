@@ -133,6 +133,10 @@ gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click false
 # super-d toggles shows desktop
 gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ show-desktop-key &&
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ show-desktop-key '<Super>d'
+
+# invert scroll
+gsettings get org.gnome.desktop.peripherals.touchpad natural-scroll &&
+gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
 ```
 
 ### Terminal
