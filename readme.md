@@ -7,7 +7,7 @@ My Ubuntu system configuration
 1. Empty trash; consider dumping Steam and Wine games
 1. Copy files: `cd / && tarpipe /media/stephen/disk/home home`
 1. Backup with rsnapshot too: `backup alpha`
-1. Back up browser tabs, unsaved editor files (check Sublime Text and deadbeef)
+1. Back up browser tabs, unsaved editor files (check Sublime Text and DeaDBeeF)
 1. Back up packages and verify contents (see rsnapshot config)
 1. Download the latest Ubuntu release and check `md5sum`
 1. Copy to USB thumbdrive (not SD Card): `mkfs.fat -I -n FOO /dev/sdX && time dd bs=4M if=foo.iso of=/dev/sdX`
@@ -16,6 +16,7 @@ My Ubuntu system configuration
 ## Restore
 
 ### Miscellaneous
+- Check [stability](https://discourse.codinghorror.com/t/is-your-computer-stable)
 - Decompress backup: `time tar xf /media/stephen/disk/home-2016-01-01-00-00-00-000000000.tar.gz -I pigz`
 - Enable all proprietary drivers
 - Link system dotfiles
@@ -33,21 +34,23 @@ sudo apt update &&
 sudo apt dist-upgrade &&
 sudo apt upgrade &&
 
-sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz puredata pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
+sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz puredata pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
 
-sudo apt install dolphin-emu mess retroarch winehq-staging
+sudo apt install dolphin-emu mame retroarch winehq-staging
 ```
 
 #### Manual Downloads
+- [Aseprite](https://www.aseprite.org/)
 - [Blender](https://www.blender.org/download/)
 - [Chrome](https://www.google.com/chrome/browser/desktop/)
-- [deadbeef](https://sourceforge.net/projects/deadbeef/files/travis/linux/master/)
+- [DeaDBeeF](https://sourceforge.net/projects/deadbeef/files/travis/linux/master/)
 - [itch](https://itch.io/app)
 - [Node.js](https://nodejs.org/en/)
 - [Postman](https://www.getpostman.com/apps)
 - [ripgrep](https://github.com/BurntSushi/ripgrep/releases)
 - [Steam](http://store.steampowered.com/about/)
 - [Sublime Text](https://www.sublimetext.com/3)
+- [Tiled Map Editor](https://thorbjorn.itch.io/tiled)
 - [Vagrant](https://www.vagrantup.com/downloads.html)
 - [VirtualBox + extensions](https://www.virtualbox.org/wiki/Downloads)
 - [Visual Studio Code](https://code.visualstudio.com/download)
