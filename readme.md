@@ -44,6 +44,7 @@ sudo apt install dolphin-emu mess retroarch winehq-staging
 - [deadbeef](https://sourceforge.net/projects/deadbeef/files/travis/linux/master/)
 - [itch](https://itch.io/app)
 - [Node.js](https://nodejs.org/en/)
+- [Postman](https://www.getpostman.com/apps)
 - [ripgrep](https://github.com/BurntSushi/ripgrep/releases)
 - [Steam](http://store.steampowered.com/about/)
 - [Sublime Text](https://www.sublimetext.com/3)
@@ -157,7 +158,6 @@ Set scrollback to unlimited
 
 #### chrome://extensions
 - [uBlock](https://chrome.google.com/webstore/detail/ublock/cjpalhdlnbpafiamejdnhcphjbkeiagm)
-- [Postman - REST Client (Packaged App)](https://chrome.google.com/webstore/detail/postman-rest-client-packa/fhbjgbiflinjbdggehcddcbncdddomop)
 
 ### Git
 ```bash
