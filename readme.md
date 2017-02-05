@@ -131,17 +131,6 @@ gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshel
 gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ show-desktop-key '<Super>d'
 ```
 
-#### Replace Application Switcher with Static Application Switcher
-1. Open CompizConfig Settings Manager (this will likely crash Compiz)
-1. Disable Application Switcher (this will likely crash Compiz)
-1. Enable Static Application Switcher
-1. Set Bindings->Next and Prev window to <Alt>Tab and <Alt><Shift>Tab
-1. Set Bindings->Next and Prev window (All windows) to <Super>Tab and <Super><Shift>Tab
-1. Set Behaviour->Popup Window Delay to 0.08
-1. Set Appearance->Show icon only
-1. Set Appearance->Selected Window Highlight->Highlight Mode to Bring Selected to Front
-1. Set Appearance->Selected Window Highlight->Minimized Window Highlight Rectangle to Original Window Position
-
 ### Terminal
 Set scrollback to unlimited
 
