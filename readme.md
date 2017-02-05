@@ -91,7 +91,7 @@ gsettings get org.gnome.desktop.interface gtk-theme &&
 gsettings set org.gnome.desktop.wm.preferences theme Radiance &&
 gsettings set org.gnome.desktop.interface gtk-theme Radiance
 gsettings get org.gnome.desktop.interface icon-theme &&
-gsettings set org.gnome.desktop.interface ubuntu-mono-light
+gsettings set org.gnome.desktop.interface icon-theme ubuntu-mono-light
 
 # enable ui scaling
 gsettings get org.gnome.desktop.interface text-scaling-factor &&
