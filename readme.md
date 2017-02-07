@@ -110,6 +110,10 @@ gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshel
 # disable unity online and file searches
 # Disable Unity Tweak Tool -> Search -> Show "More Suggestions" and Enable
 # search of your files
+
+# don't pop open a window or prompt when disks are auto-mounted
+gsettings get org.gnome.desktop.media-handling automount-open &&
+gsettings set org.gnome.desktop.media-handling automount-open false
 ```
 
 ### Keybindings
