@@ -26,6 +26,7 @@ My Ubuntu system configuration
 
 #### APT
 ```bash
+sudo add-apt-repository ppa:dr-graef/pd-l2ork.yakkety &&
 sudo add-apt-repository ppa:graphics-drivers/ppa &&
 sudo add-apt-repository ppa:webupd8team/atom &&
 sudo add-apt-repository ppa:wine/wine-builds &&
@@ -34,7 +35,7 @@ sudo apt update &&
 sudo apt dist-upgrade &&
 sudo apt upgrade &&
 
-sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz puredata pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
+sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz purr-data pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
 
 sudo apt install dolphin-emu mame retroarch winehq-staging
 
