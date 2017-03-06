@@ -1,0 +1,5 @@
+*.ai -diff
+*.bmp diff=img
+*.gif diff=img
+*.jpg diff=img
+*.png diff=img
