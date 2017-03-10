@@ -36,7 +36,7 @@ sudo apt update &&
 sudo apt dist-upgrade &&
 sudo apt upgrade &&
 
-sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz purr-data pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
+sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz potrace purr-data pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
 
 sudo apt install dolphin-emu fceux mame retroarch winehq-staging winetricks
 
