@@ -7,13 +7,18 @@ My Ubuntu system configuration
 1. Empty trash; consider dumping Steam and Wine games
 1. Copy files: `cd / && tarpipe /media/stephen/disk/home home`
 1. Backup with rsnapshot too: `backup alpha`
-1. Back up browser tabs, unsaved editor files (check Sublime Text and DeaDBeeF)
+1. Back up browser tabs, unsaved editor files (check Code, Sublime Text, and
+   DeaDBeeF)
 1. Back up packages and verify contents (see rsnapshot config)
+1. Take screenshot of launcher
 1. Download the latest Ubuntu release and check `md5sum`
 1. Copy to USB thumbdrive (not SD Card): `mkfs.fat -I -n FOO /dev/sdX && time dd bs=4M if=foo.iso of=/dev/sdX`
-1. Take screenshot of launcher
 
 ## Restore
+
+The network connection keeps dropping in v17.04. Disable IPv6 as a workaround:
+  - https://askubuntu.com/questions/440649/how-to-disable-ipv6-in-ubuntu-14-04
+  - https://askubuntu.com/questions/886107/google-chrome-error-21-neterr-network-changed
 
 ### Miscellaneous
 - Check [stability](https://discourse.codinghorror.com/t/is-your-computer-stable)
@@ -26,28 +31,35 @@ My Ubuntu system configuration
 
 #### APT
 ```bash
-# todo: add hyper
-sudo add-apt-repository ppa:dr-graef/pd-l2ork.yakkety &&
+sudo add-apt-repository ppa:dr-graef/pd-l2ork.zesty &&
 sudo add-apt-repository ppa:graphics-drivers/ppa &&
-sudo add-apt-repository ppa:webupd8team/atom &&
-sudo add-apt-repository ppa:wine/wine-builds &&
+
+curl https://dl.winehq.org/wine-builds/Release.key|sudo apt-key add &&
+sudo apt-add-repository 'https://dl.winehq.org/wine-builds/ubuntu/' &&
+
+curl https://riot.im/packages/debian/repo-key.asc|sudo apt-key add &&
+sudo apt-add-repository 'https://riot.im/packages/debian/'
+
 sudo apt update &&
 
 sudo apt dist-upgrade &&
 sudo apt upgrade &&
 
-sudo apt install atom autojump chromium-browser clang cmake compizconfig-settings-manager dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz potrace purr-data pv qemu rsnapshot sg3-utils sox unity-tweak-tool vim vim-gnome vlc wmctrl xclip xdotool xvfb &&
+sudo apt install autojump blender chromium-browser clang cmake dos2unix feh ffmpeg fontforge fontforge-extras fonts-roboto gimp git-gui gitk gnome-specimen gparted htop imagemagick inkscape jq libgnome-keyring-dev libimage-exiftool-perl llvm meld mplayer nmap nvidia-settings pigz pitivi potrace purr-data pv python-dev python-pip python3-dev python3-pip qemu qemu-kvm riot-web rsnapshot ruby-dev sg3-utils sox vim vim-gnome vlc whois wmctrl xclip xdotool xvfb &&
 
 sudo apt install dolphin-emu fceux mame retroarch winehq-staging winetricks
 
-sudo apt purge rhythmbox thunderbird
+# mediawiki
+sudo apt install hhvm nfs-common nfs-kernel-server
+
+sudo apt purge rhythmbox
 ```
 
 #### Manual Downloads
 - [Aseprite](https://www.aseprite.org/)
-- [Blender](https://www.blender.org/download/)
 - [Chrome](https://www.google.com/chrome/browser/desktop/)
-- [DeaDBeeF](https://sourceforge.net/projects/deadbeef/files/travis/linux/master/)
+- [DeaDBeeF](http://deadbeef.sourceforge.net/download.html)
+- [Hyper](https://hyper.is/)
 - [itch](https://itch.io/app)
 - [Node.js](https://nodejs.org/en/)
 - [Postman](https://www.getpostman.com/apps)
@@ -68,91 +80,45 @@ meld <(strip dpkg.txt|sort) <(dpkg -l|strip|sort)
 
 ### Appearance
 ```bash
-# disable input source indicator
-gsettings get com.canonical.indicator.keyboard visible &&
-gsettings set com.canonical.indicator.keyboard visible false
-
-# don't autohide the menu bar
-gsettings get com.canonical.Unity always-show-menus &&
-gsettings set com.canonical.Unity always-show-menus true
-
-# show the menu bar in the window not in the top panel
-gsettings get com.canonical.Unity integrated-menus &&
-gsettings set com.canonical.Unity integrated-menus true
-
-# autohide the launcher
-gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode &&
-gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ launcher-hide-mode 1
-
-# move the launcher to the bottom
-gsettings get com.canonical.Unity.Launcher launcher-position &&
-gsettings set com.canonical.Unity.Launcher launcher-position Bottom
-
 # background
 gsettings get org.gnome.desktop.background picture-uri &&
-gsettings set org.gnome.desktop.background picture-uri file:///home/stephen/.bg
+gsettings set org.gnome.desktop.background picture-uri file:///usr/share/backgrounds/gnome/adwaita-timed.xml
 
-# change theme to Radiance:
-gsettings get org.gnome.desktop.wm.preferences theme &&
-gsettings get org.gnome.desktop.interface gtk-theme &&
-gsettings set org.gnome.desktop.wm.preferences theme Radiance &&
-gsettings set org.gnome.desktop.interface gtk-theme Radiance
-gsettings get org.gnome.desktop.interface icon-theme &&
-gsettings set org.gnome.desktop.interface icon-theme ubuntu-mono-light
+gsettings get org.gnome.desktop.screensaver picture-uri &&
+gsettings set org.gnome.desktop.screensaver picture-uri file:///usr/share/backgrounds/gnome/adwaita-timed.xml
 
-# todo: fix
-# enable ui scaling
-# gsettings get org.gnome.desktop.interface text-scaling-factor &&
-# gsettings set org.gnome.desktop.interface text-scaling-factor 1.75
-
-# enable lo graphics mode
-gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode &&
-gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ low-graphics-mode true
-
-# disable unity online and file searches
-# Disable Unity Tweak Tool -> Search -> Show "More Suggestions" and Enable
-# search of your files
-
-# don't pop open a window or prompt when disks are auto-mounted
-gsettings get org.gnome.desktop.media-handling automount-open &&
-gsettings set org.gnome.desktop.media-handling automount-open false
+# todo: show hidden files
+# todo: change clock to 12hr and enable automatic timezone
+# todo: disable calendar, contacts, documents, files, photos, and software from
+#       appearing in search results and disable all search locations
+# todo: enable icons on desktop
+# todo: enable minimize titlebar button
+# todo: change window action key to super
+# todo: enable extensions:
+# - Alternatetab
+# - Hide top bar (https://extensions.gnome.org/extension/545/hide-top-bar/)
+# - Openweather (https://extensions.gnome.org/extension/750/openweather/)
+# - Pixelsaver (https://extensions.gnome.org/extension/723/pixel-saver/)
+# - Topicons (https://extensions.gnome.org/extension/495/topicons/)
+# - Dash to Dock (https://extensions.gnome.org/extension/307/dash-to-dock/)
+# - Transparent Top Bar (https://extensions.gnome.org/extension/857/transparent-top-bar/)
+# turn off blutetooth
 ```
 
 ### Keybindings
 ```bash
-# screenshot
-gsettings get org.compiz.integrated command-1 &&
-gsettings set org.compiz.integrated command-1 'gnome-screenshot'
-gsettings get org.compiz.integrated run-command-1 &&
-gsettings set org.compiz.integrated run-command-1 "['<Control><Alt>p']"
-
-# alt is not a system key, super is
-# command dialog
-gsettings get org.compiz.integrated show-hud &&
-gsettings set org.compiz.integrated show-hud "['<Alt><Super>']"
-# mouse
-gsettings get org.gnome.desktop.wm.preferences mouse-button-modifier &&
-gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
-
-# long pressing super should show launcher not hint overlay
-gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ shortcut-overlay &&
-gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ shortcut-overlay false
-
-# disable tap to click
-gsettings get org.gnome.desktop.peripherals.touchpad tap-to-click &&
-gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click false
-
-# super-d toggles shows desktop
-gsettings get org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ show-desktop-key &&
-gsettings set org.compiz.unityshell:/org/compiz/profiles/unity/plugins/unityshell/ show-desktop-key '<Super>d'
-
-# invert scroll
-gsettings get org.gnome.desktop.peripherals.touchpad natural-scroll &&
-gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll false
+# todo: ctrl-alt-p screenshot
+# todo: disable mouse middle-click paste
+# todo: change trackpad click method to fingers (for right click)
+# invert function key on apple keyboard
+echo options hid_apple fnmode=2 | sudo tee -a /etc/modprobe.d/hid_apple.conf
+sudo update-initramfs -u
 ```
 
 ### Terminal
-Set scrollback to unlimited
+- Set scrollback to unlimited
+- Unset show menu bar
+- Unset terminal bell
 
 ### Chromium
 #### about://settings
