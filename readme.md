@@ -102,6 +102,7 @@ gsettings set org.gnome.desktop.screensaver picture-uri file:///usr/share/backgr
 # - Topicons (https://extensions.gnome.org/extension/495/topicons/)
 # - Dash to Dock (https://extensions.gnome.org/extension/307/dash-to-dock/)
 # - Transparent Top Bar (https://extensions.gnome.org/extension/857/transparent-top-bar/)
+# - No Topleft Hot Corner (https://extensions.gnome.org/extension/118/no-topleft-hot-corner/)
 # turn off blutetooth
 ```
 
