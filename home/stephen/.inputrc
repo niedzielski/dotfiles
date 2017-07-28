@@ -19,9 +19,9 @@ set history-size -1
 "\e[1;5C":forward-word
 "\e[1;5D":backward-word
 
-# c-del, c-] (c-bs == bs and c-\ is some kind of signal)
+# c-del, c-backspace
 "\e[3;5~": kill-word
-"\C-]": backward-kill-word
+"\C-h": backward-kill-word
 
 # http://www.ukuug.org/events/linux2003/papers/bash_tips/
 # https://news.ycombinator.com/item?id=11211344
