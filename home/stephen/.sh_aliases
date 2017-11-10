@@ -20,4 +20,4 @@ alias p=parallel
 # smart-case
 alias rg='rg -S --ignore-file ~/.rgignore'
 
-alias recycle=gvfs-trash
+alias recycle=gio\ trash
