@@ -5,6 +5,7 @@ set convert-meta off
 set bell-style none
 
 set completion-ignore-case on
+set completion-map-case on
 set show-all-if-ambiguous on
 set show-all-if-unmodified on
 
@@ -12,12 +13,12 @@ set skip-completed-text on
 
 set visible-stats on
 set colored-stats on
-
-set history-size -1
+set colored-completion-prefix on
+set blink-matching-paren on
 
 # c-left and c-right
-"\e[1;5C":forward-word
-"\e[1;5D":backward-word
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
 
 # c-del, c-backspace
 "\e[3;5~": kill-word
@@ -28,3 +29,8 @@ set history-size -1
 # incremental searching with up and down. e.g., type "ls" and press up to search all ls invocations
 "\e[A": history-search-backward
 "\e[B": history-search-forward
+
+"\e[1;3A": "pushd ..\n" # alt-up
+"\e[1;3C": "pushd -0\n" # alt-right
+"\e[1;3B": "popd\n" # alt-down
+"\e[1;3D": "pushd +1\n" # alt-left
