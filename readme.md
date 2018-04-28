@@ -76,7 +76,7 @@ sudo apt-get install --install-recommends winehq-stable
 
 sudo apt upgrade
 
-sudo apt install autojump blender calibre flac fontforge fontforge-extras fonts-roboto gimp git-gui gitk gpick htop imagemagick inkscape intel-microcode krita libgnome-keyring-dev libimage-exiftool-perl meld mplayer nmap obs-studio pitivi potrace pv python-dev qemu qemu-kvm rsnapshot sg3-utils sox tmux tree ttf-bitstream-vera ubuntu-restricted-extras vlc whois wmctrl xclip xdotool xvfb sublime-text itch purr-data vim
+sudo apt install autojump blender calibre colordiff flac fontforge fontforge-extras fonts-roboto gimp git-gui gitk gpick htop imagemagick inkscape intel-microcode krita libgnome-keyring-dev libimage-exiftool-perl meld mplayer nmap obs-studio pitivi potrace pv python-dev qemu qemu-kvm rsnapshot sg3-utils sox tmux tree ttf-bitstream-vera ubuntu-restricted-extras vlc whois wmctrl xclip xdotool xvfb sublime-text itch purr-data vim
 ```
 
 ##### Compare Previously Installed Packages
