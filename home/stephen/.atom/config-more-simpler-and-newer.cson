@@ -1,0 +1,17 @@
+"*":
+  core:
+    themes: [
+      "atom-light-ui"
+      "atom-light-syntax"
+    ]
+  "exception-reporting":
+    userId: "6c0e0dc3-a1e8-6bf4-a698-568d0b0a806c"
+  "omni-ruler":
+    columns: [
+      "50"
+      "72"
+      "80"
+      "100"
+    ]
+  welcome:
+    showOnStartup: false
