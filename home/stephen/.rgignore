@@ -2,3 +2,8 @@ license
 LICENSE
 license.txt
 LICENSE.txt
+package-lock.json
+COPYING
+i18n/
+dist/
+build/
