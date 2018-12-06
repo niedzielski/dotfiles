@@ -24,7 +24,7 @@
   showBranch = auto
   status = auto
 [color "diff"]
-  meta = yellow bold
+  meta = blue bold
   commit = green bold
   frag = magenta bold
   old = red bold
@@ -46,6 +46,7 @@
   tool = meld
   compactionHeuristic = true
   algorithm = histogram
+  colorMoved = default
 [diff "img"]
   textconv = exiftool \
     -x ExifToolVersion \
