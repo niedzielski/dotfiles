@@ -86,3 +86,9 @@
 
 [include]
   path = ~/.gitconfig_private
+[rerere]
+	enabled = true
+	autoupdate = true
+[user]
+	name = Stephen Niedzielski
+	email = stephen@niedzielski.com
