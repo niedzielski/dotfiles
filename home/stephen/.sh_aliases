@@ -3,6 +3,7 @@
 # alphabetical, do not list . & .., mark directories with a trailing slash, &
 # colored
 alias l=ls\ -Ap\ --color=auto
+#alias l=exa\ -a
 
 alias cp=cp\ -ai # prompt on overwrite, preserve all
 
@@ -15,9 +16,12 @@ alias c=cd
 
 alias rsync='rsync -aiz --partial-dir=.rsync-partial --partial'
 
-alias p=parallel
+alias para=parallel
+# also consider xargs -P or make -j
 
 # smart-case
-alias rg='rg -S --ignore-file ~/.rgignore'
+alias rg='rg -SUP --ignore-file ~/.rgignore'
 
 alias recycle=gio\ trash
+
+alias diff=colordiff
