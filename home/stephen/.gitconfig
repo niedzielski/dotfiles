@@ -43,8 +43,8 @@
   helper = /usr/share/doc/git/contrib/credential/gnome-keyring/git-credential-gnome-keyring
 [diff]
   renames = copies
-  tool = meld
-  compactionHeuristic = true
+  tool = meld # gumtree
+  indentHeuristic = true
   algorithm = histogram
   colorMoved = default
 [diff "img"]
@@ -70,7 +70,7 @@
   abbrevCommit = true
 [merge]
   tool = meld
-  #conflictstyle = diff3
+  conflictstyle = diff3
 [mergetool]
   keepBackup = false
 [mergetool "meld"]
