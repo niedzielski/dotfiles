@@ -3,4 +3,4 @@
 [ -f ~/.sh_aliases ] && . ~/.sh_aliases
 
 # ls
-if [ -f "$HOME/.dir_colors/dircolors" ]; then eval "$(dircolors "$HOME/.dir_colors/dircolors")"; fi
+if [ -f "$HOME/.dircolors" ]; then eval "$(dircolors "$HOME/.dircolors")"; fi
