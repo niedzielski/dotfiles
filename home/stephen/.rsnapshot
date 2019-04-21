@@ -32,8 +32,6 @@ backup	/usr/local/	localhost/
 
 exclude	/home/*/.local/share/Trash/
 exclude	/home/*/.local/share/Steam/
-exclude	/home/*/.local/share/lutris/
 
-backup_script	/home/stephen/Applications/bin/mk-pkg-mgr-list	pkg
-backup_script	/home/stephen/Applications/bin/mk-desktop-screenshot	screenshot
-backup_exec	/home/stephen/Music/sync
+backup_script	/home/stephen/bin/mk-pkg-mgr-list	pkg
+backup_script	/home/stephen/bin/mk-desktop-screenshot	screenshot

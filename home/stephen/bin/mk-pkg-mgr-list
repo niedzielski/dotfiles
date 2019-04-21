@@ -9,5 +9,7 @@ npm -g ls --depth=0 &> npm.txt || :
 apm list &> apm.txt || :
 cabal list --installed &> cabal.txt || :
 go list ... &> go.txt || :
-code --list-extensions > code.txt
+code --list-extensions > code.txt || :
+snap list &> snap.txt || :
+composer global show || :
 # todo: sublime

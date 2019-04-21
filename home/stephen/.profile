@@ -46,7 +46,7 @@ if [ -f "$HOME/.shrc" ]; then export ENV="$HOME/.shrc"; fi
 
 # node
 #export NODE_PATH="$node_root/lib/node_modules:$HOME/Applications/node/lib/node_modules"
-set_path_prepend_dirs "$HOME/Applications/node/bin" "node_modules/.bin"
+set_path_prepend_dirs "$HOME/opt/node/bin" # "node_modules/.bin"
 
 # The default is ~/.babel.json which confuses me.
 export BABEL_CACHE_PATH="$HOME/.babel.cache.json"
@@ -62,7 +62,7 @@ export BABEL_CACHE_PATH="$HOME/.babel.cache.json"
 #  "$EMSDK"
 
 # android
-export ANDROID="$HOME/Applications/android/sdk"
+export ANDROID="$HOME/opt/android/sdk"
 export ANDROID_SDK="$ANDROID"
 export ANDROID_HOME="$ANDROID"
 set_path_append_dirs "$ANDROID/tools" \
@@ -92,7 +92,7 @@ export AUTOJUMP_KEEP_SYMLINKS=1
 export TERM=xterm-256color
 
 # path
-set_path_prepend_dirs "$HOME/.local/bin" "$HOME/Applications/bin"
+set_path_prepend_dirs "$HOME/.local/bin" "$HOME/bin"
 
 if [ -f "$HOME/.profile_private" ]; then . "$HOME/.profile_private"; fi
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
