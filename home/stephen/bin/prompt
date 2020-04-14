@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
-# $1 status
-# $2 escape nonprinting chars
 set -euo pipefail
+
+status=$1
+escape_nonprinting_chars=$2
+columns=$3
+dir="$(cd "$PWD" && dirs +0 || echo "$PWD")"
 
 esc_tput() {
   local format=%s
@@ -12,13 +15,17 @@ esc_tput() {
   printf "$format" "$(tput "$@")"
 }
 
-case $1 in
-#  0) char=🤖 ;;
-#  *) char=💥 ;;
-  0) char=███ ;;
-  *) char=███ ;;
-esac
+repeat() {
+  [[ $2 -lt 1 ]] && return
+  printf "$1%.0s" $(eval echo {1..$2})
+}
 
-# "bin$ "
-echo "$(basename "$PWD")$(esc_tput "$2" setaf $(($1 ? 1 : 2)))$char $(esc_tput "$2" sgr0)"
+pad() {
+  [[ $1 -gt 0 ]] && repeat ─ $((($1 - 1) - ${#dir} % $1))
+}
+
+# "
+# ~ ──────────────────────────────────────────────────────────────────────────────
+# $ "
+echo -e "\n$(esc_tput "$2" setaf $(($1 ? 1 : 2)))$(esc_tput "$2" bold)$dir $(pad $columns)\n$ $(esc_tput "$2" sgr0)"
 exit "$1"

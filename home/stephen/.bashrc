@@ -71,7 +71,7 @@ shopt -s checkwinsize
 shopt -s autocd
 
 # prompt
-PS1='\[\e]0;\u@\h:\w\a\]$(prompt $? 1)'
+PS1='\[\e]0;\u@\h:\w\a\]$(prompt $? 1 $COLUMNS)'
 
 # ------------------------------------------------------------------------------
 # completion
@@ -89,13 +89,15 @@ elif [[ -f /etc/bash_completion ]]; then
   . /etc/bash_completion
 fi
 
-if [[ -d ~/Applications/fzf ]]; then
-  . ~/Applications/fzf/shell/completion.bash
-#  . ~/Applications/fzf/key-bindings.bash
+if [[ -d ~/opt/fzf/shell ]]; then
+  . ~/opt/fzf/shell/completion.bash
 fi
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-#export PATH="$PATH:$HOME/.rvm/bin"
+if [[ -d ~/opt/todo.txt-cli ]]; then
+  . ~/opt/todo.txt-cli/todo_completion
+fi
 
 alias p=pushd
 alias nvm-use='. ~/.nvm/nvm.sh && nvm use'
+
+source /home/stephen/.config/broot/launcher/bash/br
