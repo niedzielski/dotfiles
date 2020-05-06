@@ -16,9 +16,7 @@ set colored-stats on
 set colored-completion-prefix on
 set blink-matching-paren on
 
-# c-left and c-right
-"\e[1;5C": forward-word
-"\e[1;5D": backward-word
+set enable-bracketed-paste on
 
 # c-del, c-backspace
 "\e[3;5~": kill-word
@@ -30,6 +28,7 @@ set blink-matching-paren on
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 
+# todo: this is bash specific. use bash-specific mechanism
 "\e[1;3A": "pushd ..\n" # alt-up
 "\e[1;3C": "pushd -0\n" # alt-right
 "\e[1;3B": "popd\n" # alt-down
