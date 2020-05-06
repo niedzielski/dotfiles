@@ -1,9 +1,70 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Print the current time like `2020-12-31-23-59`.
+timestamp() { date +%F-%H-%M; }
+
+source_dirs=(${source_dirs:-"$HOME" /etc /usr})
+exclude_dirs=(${exclude_dirs:-"$HOME/.local/share/Trash"})
+
+# Destination starts with `archive-`.
+destination_stem="${destination_stem:-archive-}"
+
+# This directory must exist.
+destination_base_dir="${destination_base_dir:-/media/stephen/daily20200429/archive}"
+
+# The last updated directory with the matching stem in the base directory. This
+# glob must not fail.
+link_dir="${link_dir:-$(ls -td "${destination_base_dir}/${destination_stem}"*/ | head -n1 | sed 's%/$%%')}"
+
+destination_dir="${destination_dir:-${destination_base_dir}/${destination_stem}$(timestamp)}"
+
+package_dir="${package_dir:-$destination_dir/packages}"
+
+read -p "Ready to copy from (${source_dirs[*]}), excluding (${exclude_dirs[*]}), to \"${destination_dir}\" with hard links to \"$link_dir\". Additionally, a screenshot will be taken immediately and packages recorded. Execute '#rm -rf \"${destination_dir}\"' if the copy is aborted otherwise the next link directory will be incomplete. <Enter> to continue, <ctrl-c> to abort: "
+
+mkdir -p "$destination_dir"
+import -screen -window root "$destination_dir/desktop.png"
+
+mkdir -p "$package_dir"
+dpkg -l &> "$package_dir/dpkg.txt"
+snap list &> "$package_dir/snap.txt"
+code --list-extensions &> "$package_dir/code.txt"
+npm -g ls --depth=0 &> "$package_dir/npm.txt" || :
+ghc-pkg list &> "$package_dir/ghc-pkg.txt" || :
+pip freeze &> "$package_dir/pip.txt" || :
+gem list -a &> "$package_dir/gem.txt" || :
+apm list &> "$package_dir/apm.txt" || :
+cabal list --installed &> "$package_dir/cabal.txt" || :
+go list ... &> "$package_dir/go.txt" || :
+# [todo] Flatpak, Sublime Text.
+
+# This won't check for hard links on the source (`-H`). Rsync says this is a big
+# performance hit, I didn't know if there were caveats when using `--link-dest`,
+# and I don't think it will actually offer many gains given I don't consciously
+# make hard links in my source files and `--link-dest` is checking the last sync
+# anyway.
+#
+# Extended-attributes (`-X`) and ACLs (`-A`) are also not copied. These could be
+# added but I don't consciously use them in my source files and I'm unsure what
+# the implications of copying them are unfortunately.
+#
+# No compression and no partials since the transfer is local and I'm assuming
+# these have a performance cost.
+#
+# No deletion since I always copy to a new directory.
 err=0
-time {
-  rsnapshot -c ~/.rsnapshot sync || err=$?
-  [[ err -eq 0 || err -eq 2 ]] && rsnapshot -c ~/.rsnapshot "$@" || err=$?
-}
+time rsync \
+  -aR \
+  --info=progress2 \
+  --link-dest="$link_dir"  \
+  "${exclude_dirs[@]/#/--exclude=}" \
+  "${source_dirs[@]}" \
+  "$destination_dir" \
+|| err=$?
+
+sync
+
+mount_dir="$(df -P "$destination_dir" | tail -1 | cut -d\  -f 1)"
+echo "The copy is complete (exit status=$err). Execute '#udisksctl unmount -b \"$mount_dir\" && udisksctl power-off -b \"$mount_dir\"' to remove the destination device."
 exit $err
