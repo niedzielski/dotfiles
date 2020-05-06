@@ -1,9 +1,13 @@
-license
-LICENSE
-license.txt
-LICENSE.txt
+# Necessary when --hidden is on.
+.git/
+license*
+LICENSE*
+licence*
+LICENCE*
+copying*
+COPYING*
+Cargo.lock
 package-lock.json
-COPYING
 i18n/
 dist/
 build/

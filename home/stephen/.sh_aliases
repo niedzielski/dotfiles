@@ -20,7 +20,7 @@ alias para=parallel
 # also consider xargs -P or make -j
 
 # smart-case
-alias rg='rg -SUP --ignore-file ~/.rgignore'
+alias rg='rg -SUP --ignore-file ~/.rgignore --hidden'
 
 alias recycle=gio\ trash
 
