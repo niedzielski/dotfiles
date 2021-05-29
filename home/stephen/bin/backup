@@ -1,21 +1,49 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Check with (consider adding -q):
+#
+#   time diff -r /media/stephen/daily20210520/archive/archive-2021-05-26-23-08/home/stephen /home/stephen &> ~/desk/diff.txt
+
 # Print the current time like `2020-12-31-23-59`.
 timestamp() { date +%F-%H-%M; }
 
 source_dirs=(${source_dirs:-"$HOME" /etc /usr})
+for source_dir in "${source_dirs[@]}"; do
+  if ! [ -d "$source_dir" ]; then
+    >&2 echo "Source directory, \"$source_dir\", does not exist."
+    exit 1
+  fi
+done
+
 exclude_dirs=(${exclude_dirs:-"$HOME/.local/share/Trash"})
+for exclude_dir in "${exclude_dirs[@]}"; do
+  if ! [ -d "$exclude_dir" ]; then
+    >&2 echo "Exclude directory, \"$exclude_dir\", does not exist."
+    exit 1
+  fi
+done
 
 # Destination starts with `archive-`.
 destination_stem="${destination_stem:-archive-}"
 
-# This directory must exist.
-destination_base_dir="${destination_base_dir:-/media/stephen/daily20200429/archive}"
+# Update this destination as needed. I usually just make a new empty
+# archive directory when changing drives.
+destination_base_dir="${destination_base_dir:-/media/stephen/daily20210520/archive}"
+if ! [ -d "$destination_base_dir" ]; then
+  >&2 echo "Destination directory, \"$destination_base_dir\", does not exist."
+  exit 1
+fi
 
-# The last updated directory with the matching stem in the base directory. This
-# glob must not fail.
-link_dir="${link_dir:-$(ls -td "${destination_base_dir}/${destination_stem}"*/ | head -n1 | sed 's%/$%%')}"
+# The last updated directory with the matching stem in the base
+# directory. I usually just make an archive/archive-null directory when
+# changing drives. After the script runs for the first time, I delete
+# it.
+link_dir="${link_dir:-$(ls -td "${destination_base_dir}/${destination_stem}"*/ | sed '1 s%/$%%; q')}"
+if ! [ -d "$link_dir" ]; then
+  >&2 echo "Hard link source directory, \"$link_dir\", does not exist."
+  exit 1
+fi
 
 destination_dir="${destination_dir:-${destination_base_dir}/${destination_stem}$(timestamp)}"
 
@@ -37,6 +65,9 @@ gem list -a &> "$package_dir/gem.txt" || :
 apm list &> "$package_dir/apm.txt" || :
 cabal list --installed &> "$package_dir/cabal.txt" || :
 go list ... &> "$package_dir/go.txt" || :
+du -bs "${source_dirs[@]}" &> "$package_dir/du.txt" || :
+top -bn1 -w512 &> "$package_dir/top.txt" || :
+xwininfo -tree -root -all &> "$package_dir/xwininfo.txt" || :
 # [todo] Flatpak, Sublime Text.
 
 # This won't check for hard links on the source (`-H`). Rsync says this is a big
