@@ -1,9 +1,10 @@
-# aliases compatible with dash, bash3, bash4, zsh, and fish
+# aliases compatible with dash, bash3, bash4, bash5, zsh, and fish
 
 # alphabetical, do not list . & .., mark directories with a trailing slash, &
-# colored
-alias l=ls\ -Ap\ --color=auto
-#alias l=exa\ -a
+# colored, group directories first
+alias l='\ls -Ap --color=auto --group-directories-first'
+
+alias ls='exa -alFbghmu@ --changed --color-scale --group-directories-first --git --time-style iso'
 
 alias cp=cp\ -ai # prompt on overwrite, preserve all
 
@@ -24,4 +25,31 @@ alias rg='rg -SUP --ignore-file ~/.rgignore --hidden'
 
 alias recycle=gio\ trash
 
-alias diff=colordiff
+# todo: if not recursive (-r) add -s?
+alias d='colordiff --speed-large-files --suppress-common-lines -W$COLUMNS -y -p -t --tabsize=2 -d'
+
+alias cat='bat --tabs=2'
+
+alias f='fd -H'
+
+alias abspath=realpath\ -ms
+
+alias e=echo
+
+alias s=sed\ -r
+
+alias t=touch
+
+alias x='xargs -rd\\n "$@" ' # \n delimited, don't run on empty in
+# copy ex: x cp --parents -t"$dst"
+# - TODO: Figure out general case. x -i implies -L1. Use
+#   xargs --show-limits -r < /dev/null? See also ulimit builtin?
+
+alias map='x -I{} '
+
+# extended regex, skip binaries, devices, sockets, & dirs, colored, & line
+# -buffered. use a non-canonical alias instead of GREP_OPTIONS which may wreck
+# poorly written scripts
+alias g='grep -EID skip -d skip --color=auto --line-buffered'
+
+# todo: don't override standards like ls. This will backfire.
