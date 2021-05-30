@@ -6,23 +6,26 @@ My Ubuntu system configuration
 
 Back Up
 --------------------------------------------------------------------------------
-1. Empty trash; consider dumping Steam and Wine games
-1. Copy files: `cd / && tarpipe /media/stephen/disk/home home`
-1. Backup with rsnapshot too: `backup alpha`
-1. Back up browser tabs, unsaved editor files (check Code, Sublime Text, and
-   DeaDBeeF)
-1. Back up packages and verify contents (see rsnapshot config)
-1. Take screenshot of launcher
-1. Download the latest Ubuntu release and check `md5sum *.iso`
-1. Copy to USB thumbdrive (not SD Card): `mkfs.fat -I -n FOO /dev/sdX && time dd bs=4M if=foo.iso of=/dev/sdX`
+1. Empty trash; consider dumping Steam and Wine games.
+2. Export bookmarks and settings from Firefox.
+3. Copy files: `cd / && tarpipe /media/stephen/disk/home home`.
+4. Backup with rsync too: `backup`.
+5. Back up browser tabs, unsaved editor files (check Code, Sublime Text, and
+   DeaDBeeF).
+6. Back up packages and verify contents.
+7. Take screenshot of launcher.
+8. Download the latest Ubuntu release and check `md5sum *.iso`.
+9. Copy to USB thumbdrive (not SD Card): `mkfs.fat -I -n FOO /dev/sdX && time dd bs=4M if=foo.iso of=/dev/sdX`.
+10. Check Grub options.
+
 
 Restore
 --------------------------------------------------------------------------------
-1. Enable all proprietary drivers
-1. Reboot
-1. `sudo apt install mesa-utils pigz`
-1. Run `glxgears` and check the frame rate and tearing
-1. Decompress backup: `time tar xf /media/stephen/disk/home-2016-01-01-00-00-00-000000000.tar.gz -I pigz`
+1. Enable all proprietary drivers.
+2. Reboot.
+3. `sudo apt install mesa-utils pigz vim`.
+4. Run `glxgears` and check the frame rate and tearing.
+5. Decompress backup: `time tar xf /media/stephen/disk/home-2016-01-01-00-00-00-000000000.tar.gz -I pigz && echo ok`.
 
 ### Additional Packages
 #### Snap
@@ -78,7 +81,7 @@ meld <(strip dpkg.txt|sort) <(dpkg -l|strip|sort)
 gsettings get org.gnome.desktop.wm.preferences theme &&
 gsettings set org.gnome.desktop.wm.preferences theme Radiance
 gsettings get org.gnome.desktop.interface gtk-theme &&
-gsettings set org.gnome.desktop.interface gtk-theme Radiance
+gsettings set org.gnome.desktop.interface gtk-theme Yaru-light
 
 # Set the background and lock screen.
 gsettings get org.gnome.desktop.background picture-uri &&
@@ -89,10 +92,6 @@ gsettings set org.gnome.desktop.screensaver picture-uri file:///home/stephen/.bg
 # Show battery percentage.
 gsettings get org.gnome.desktop.interface show-battery-percentage &&
 gsettings set org.gnome.desktop.interface show-battery-percentage true
-
-# Enable automatic timezone.
-gsettings get org.gnome.desktop.datetime automatic-timezone &&
-gsettings set org.gnome.desktop.datetime automatic-timezone true
 
 gsettings get org.gnome.desktop.interface toolbar-icons-size &&
 gsettings set org.gnome.desktop.interface toolbar-icons-size small
@@ -156,6 +155,10 @@ gsettings get org.gnome.shell.extensions.desktop-icons show-trash &&
 gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
 gsettings get org.gnome.shell.extensions.desktop-icons show-home &&
 gsettings set org.gnome.shell.extensions.desktop-icons show-home false
+
+# Allow modals to be moved. I need the parent for reference sometimes.
+gsettings get org.gnome.shell.overrides attach-modal-dialogs &&
+gsettings set org.gnome.shell.overrides attach-modal-dialogs false
 ```
 
 #### Keybindings
