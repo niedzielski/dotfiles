@@ -9,10 +9,11 @@
 [alias]
   co = checkout
   s = status
-  # pickaxe: limit any regexs to the actual content change.
+  # --pickaxe: limit any regexs to the actual content change.
   d = diff --pickaxe-regex -C -C #--word-diff
   dc = !git d --cached
-  l = log -C -C
+  # --show-pulls: report merge commits too.
+  l = log -C -C --show-pulls
   short = rev-parse --short
   # don't use !pwd here since that works whether in a repo or not
   root = rev-parse --show-toplevel
