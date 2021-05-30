@@ -63,10 +63,6 @@ shopt -s checkjobs
 # notify of job termination immediately
 set -b
 
-# check the window size after each command and, if necessary, update the values
-# of LINES and COLUMNS
-shopt -s checkwinsize
-
 # if a command is unrecognized but matches a directory, cd into it
 shopt -s autocd
 
