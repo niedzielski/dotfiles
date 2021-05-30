@@ -9,7 +9,8 @@
 [alias]
   co = checkout
   s = status
-  d = diff -C -C #--word-diff
+  # pickaxe: limit any regexs to the actual content change.
+  d = diff --pickaxe-regex -C -C #--word-diff
   dc = !git d --cached
   l = log -C -C
   short = rev-parse --short
