@@ -17,9 +17,13 @@
   short = rev-parse --short
   # don't use !pwd here since that works whether in a repo or not
   root = rev-parse --show-toplevel
-  diff-img = difftool -x 'compare \"$LOCAL\" \"$REMOTE\" png:- | montage -mode concatenate \"$LOCAL\" png:- \"$REMOTE\" png:- | display -title \"$BASE: Local | Diff | Remote\" png:-'
+  diff-img = difftool -x 'compare -alpha copy \"$LOCAL\" \"$REMOTE\" png:- | montage -mode concatenate \"$LOCAL\" png:- \"$REMOTE\" png:- | display -title \"$BASE: Local | Diff | Remote\" png:-'
   push-gerrit = push origin HEAD:refs/for/master
   push-gerrit-draft = push origin HEAD:refs/drafts/master
+
+[protocol]
+    version = 2
+
 [color]
   grep = auto
   interactive = auto
@@ -42,7 +46,7 @@
 [column]
   ui = auto dense
 [credential]
-  helper = /usr/share/doc/git/contrib/credential/gnome-keyring/git-credential-gnome-keyring
+	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
 [diff]
   renames = copies
   tool = meld # gumtree
@@ -94,3 +98,7 @@
 [user]
 	name = Stephen Niedzielski
 	email = stephen@niedzielski.com
+[commit]
+	verbose = true
+[pull]
+	ff = only
