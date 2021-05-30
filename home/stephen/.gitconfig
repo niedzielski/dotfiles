@@ -4,11 +4,7 @@
 [core]
   attributesfile = ~/.gitattributes
   excludesfile = ~/.gitignore
-# Do NOT use npx to invoke diff-so-fancy. Invoking diff-so-fancy seems to break
-# escape sequences frequently, but not always.
-  #pager = diff-so-fancy | less -iRFXx2 '+/^(commit|added:|deleted:|modified:|renamed:|stash@\\{[0-9]+\\}:) | changed file mode from [0-9]{6} to [0-9]{6}$'
-  #pager = delta --commit-style box --tabs 2 | less -iRFXx2 '+/^─{78}|^(commit|added:|deleted:|modified:|renamed:|stash@\\{[0-9]+\\}:) | changed file mode from [0-9]{6} to [0-9]{6}$'
-  pager = delta -s --navigate --commit-style box --tabs 2 # | less -iRFXx2 '+/^(Δ|commit|added:|deleted:|modified:|renamed:|stash@\\{[0-9]+\\}:) | changed file mode from [0-9]{6} to [0-9]{6}$'
+  pager = delta -s --navigate --commit-style box --tabs 2
   whitespace = tabwidth=2
 [alias]
   co = checkout
