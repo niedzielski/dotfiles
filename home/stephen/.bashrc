@@ -41,9 +41,6 @@ shopt -s histreedit
 # don't escape variables
 shopt -s direxpand
 
-# must appear before PROMPT_COMMAND
-if [[ -f /usr/share/autojump/autojump.bash ]]; then . /usr/share/autojump/autojump.bash; fi
-
 # record each line as it is entered
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a"
 
@@ -97,3 +94,5 @@ alias p=pushd
 alias nvm-use='. ~/.nvm/nvm.sh && nvm use'
 
 source /home/stephen/.config/broot/launcher/bash/br
+
+eval "$(zoxide init bash)"

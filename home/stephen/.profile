@@ -44,9 +44,6 @@ export LESS=-iR
 
 export EDITOR=vim
 
-export AUTOJUMP_IGNORE_CASE=1
-export AUTOJUMP_KEEP_SYMLINKS=1
-
 export TERM=xterm-256color
 
 # path
