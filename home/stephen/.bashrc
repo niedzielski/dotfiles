@@ -84,15 +84,12 @@ fi
 
 if [[ -d ~/opt/fzf/shell ]]; then
   . ~/opt/fzf/shell/completion.bash
-fi
-
-if [[ -d ~/opt/todo.txt-cli ]]; then
-  . ~/opt/todo.txt-cli/todo_completion
+  . ~/opt/fzf/shell/key-bindings.bash
 fi
 
 alias p=pushd
 alias nvm-use='. ~/.nvm/nvm.sh && nvm use'
 
-source /home/stephen/.config/broot/launcher/bash/br
+[[ -f ~/.config/broot/launcher/bash/br ]] && . ~/.config/broot/launcher/bash/br
 
 eval "$(zoxide init bash)"
