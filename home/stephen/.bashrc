@@ -92,4 +92,4 @@ alias nvm-use='. ~/.nvm/nvm.sh && nvm use'
 
 [[ -f ~/.config/broot/launcher/bash/br ]] && . ~/.config/broot/launcher/bash/br
 
-eval "$(zoxide init bash)"
+eval "$(zoxide init --cmd j bash)"
