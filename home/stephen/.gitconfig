@@ -103,3 +103,6 @@
 	verbose = true
 [pull]
 	ff = only
+[init]
+	templateDir = /home/stephen/.git-template
+	defaultBranch = main
