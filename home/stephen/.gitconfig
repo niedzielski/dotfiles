@@ -7,6 +7,7 @@
   pager = delta --light -s --navigate --commit-style box --tabs 2
   whitespace = tabwidth=2
 [alias]
+  crumb = commit --allow-empty-message -nm ''
   co = checkout
   s = status
   # --pickaxe: limit any regexs to the actual content change.
