@@ -66,8 +66,10 @@ apm list &> "$package_dir/apm.txt" || :
 cabal list --installed &> "$package_dir/cabal.txt" || :
 go list ... &> "$package_dir/go.txt" || :
 du -bs "${source_dirs[@]}" &> "$package_dir/du.txt" || :
+duf --output='mountpoint, size, used, avail, usage, inodes, inodes_used, inodes_avail, inodes_usage, type, filesystem'  &> "$package_dir/duf.txt"
 top -bn1 -w512 &> "$package_dir/top.txt" || :
 xwininfo -tree -root -all &> "$package_dir/xwininfo.txt" || :
+sensors &> "$package_dir/sensors.txt" || :
 # [todo] Flatpak, Sublime Text.
 
 # This won't check for hard links on the source (`-H`). Rsync says this is a big
