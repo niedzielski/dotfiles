@@ -52,7 +52,7 @@ package_dir="${package_dir:-$destination_dir/packages}"
 read -p "Ready to copy from (${source_dirs[*]}), excluding (${exclude_dirs[*]}), to \"${destination_dir}\" with hard links to \"$link_dir\". Additionally, a screenshot will be taken immediately and packages recorded. Execute '#rm -rf \"${destination_dir}\"' if the copy is aborted otherwise the next link directory will be incomplete. <Enter> to continue, <ctrl-c> to abort: "
 
 mkdir -p "$destination_dir"
-import -screen -window root "$destination_dir/desktop.png"
+gnome-screenshot -f "$destination_dir/desktop.png"
 
 mkdir -p "$package_dir"
 dpkg -l &> "$package_dir/dpkg.txt"
