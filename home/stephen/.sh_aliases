@@ -17,9 +17,6 @@ alias c=cd
 
 alias rsync='rsync -aiz --partial-dir=.rsync-partial --partial'
 
-alias para=parallel
-# also consider xargs -P or make -j
-
 # smart-case
 alias rg='rg -SUP --ignore-file ~/.rgignore --hidden'
 
