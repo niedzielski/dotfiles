@@ -56,7 +56,7 @@ gnome-screenshot -f "$destination_dir/desktop.png"
 
 mkdir -p "$package_dir"
 dpkg -l &> "$package_dir/dpkg.txt"
-snap list &> "$package_dir/snap.txt"
+snap list &> "$package_dir/snap.txt" || :
 code --list-extensions &> "$package_dir/code.txt"
 npm -g ls --depth=0 &> "$package_dir/npm.txt" || :
 ghc-pkg list &> "$package_dir/ghc-pkg.txt" || :
