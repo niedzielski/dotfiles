@@ -4,7 +4,7 @@
 [core]
   attributesfile = ~/.gitattributes
   excludesfile = ~/.gitignore
-  pager = delta -s --navigate --commit-style box --tabs 2
+  pager = delta --light -s --navigate --commit-style box --tabs 2
   whitespace = tabwidth=2
 [alias]
   co = checkout
