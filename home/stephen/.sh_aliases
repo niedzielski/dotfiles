@@ -25,7 +25,7 @@ alias recycle=gio\ trash
 # todo: if not recursive (-r) add -s?
 alias d='colordiff --speed-large-files --suppress-common-lines -W$COLUMNS -y -p -t --tabsize=2 -d'
 
-alias cat='bat --tabs=2'
+alias cat=bat
 
 alias f='fd -H'
 
