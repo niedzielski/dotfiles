@@ -1,34 +1,14 @@
 {
 	"color_scheme": "Packages/User/Espresso Soda.tmTheme",
-	"dpi_scale": 1.75,
-	"draw_white_space": "all",
-	"folder_exclude_patterns":
-	[
-		".svn",
-		".git",
-		".hg",
-		"CVS",
-		"build",
-		".gradle",
-		".idea"
-	],
-	"font_face": "DejaVu Sans Mono",
-	"font_size": 10,
-	"ignored_packages":
-	[
-		"Vintage"
-	],
-	"rulers":
-	[
-		50,
-		72,
-		80,
-		100
-	],
+	"theme": "Default.sublime-theme",
+	// Shrink the title bar a little.
+  "gtk_client_side_window_decorations": false,
 	"soda_classic_tabs": true,
-	"soda_folder_icons": true,
-	"spell_check": true,
+	"draw_white_space": ["all_tabs", "selection", "trailing", "isolated"],
+	"font_size": 10,
+	"translate_tabs_to_spaces": true,
 	"tab_size": 2,
-	"theme": "SoDaReloaded Light.sublime-theme",
-	"translate_tabs_to_spaces": true
+	"rulers": [80],
+	"spell_check": true,
+	"line_numbers": false
 }
