@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Check with (consider adding -q):
 #
-#   time diff -r /media/stephen/daily20210520/archive/archive-2021-05-26-23-08/home/stephen /home/stephen &> ~/desk/diff.txt
+#   time diff -r /media/stephen/daily20210520/archive/archive-2021-05-26-23-08/home/stephen /home/stephen &> ~/desk/diff.text
 
 # Print the current time like `2020-12-31-23-59`.
 timestamp() { date +%F-%H-%M; }
@@ -47,29 +47,34 @@ fi
 
 destination_dir="${destination_dir:-${destination_base_dir}/${destination_stem}$(timestamp)}"
 
-package_dir="${package_dir:-$destination_dir/packages}"
+# Save locally by default for easy inspection. This directory will be backed up
+# with everything else.
+diagnostics_dir="${diagnostics_dir:-/home/stephen/tmp/system-diagnostics}"
 
-read -p "Ready to copy from (${source_dirs[*]}), excluding (${exclude_dirs[*]}), to \"${destination_dir}\" with hard links to \"$link_dir\". Additionally, a screenshot will be taken immediately and packages recorded. Execute '#rm -rf \"${destination_dir}\"' if the copy is aborted otherwise the next link directory will be incomplete. <Enter> to continue, <ctrl-c> to abort: "
+read -p "Ready to copy from (${source_dirs[*]}), excluding (${exclude_dirs[*]}), to \"${destination_dir}\" with hard links to \"$link_dir\". Additionally, a screenshot will be taken immediately and other diagnostics recorded. Execute '#rm -rf \"${destination_dir}\"' if the copy is aborted otherwise the next link directory will be incomplete. <Enter> to continue, <ctrl-c> to abort: "
 
 mkdir -p "$destination_dir"
-gnome-screenshot -f "$destination_dir/desktop.png"
 
-mkdir -p "$package_dir"
-dpkg -l &> "$package_dir/dpkg.txt"
-snap list &> "$package_dir/snap.txt" || :
-code --list-extensions &> "$package_dir/code.txt"
-npm -g ls --depth=0 &> "$package_dir/npm.txt" || :
-ghc-pkg list &> "$package_dir/ghc-pkg.txt" || :
-pip freeze &> "$package_dir/pip.txt" || :
-gem list -a &> "$package_dir/gem.txt" || :
-apm list &> "$package_dir/apm.txt" || :
-cabal list --installed &> "$package_dir/cabal.txt" || :
-go list ... &> "$package_dir/go.txt" || :
-du -bs "${source_dirs[@]}" &> "$package_dir/du.txt" || :
-duf --output='mountpoint, size, used, avail, usage, inodes, inodes_used, inodes_avail, inodes_usage, type, filesystem'  &> "$package_dir/duf.txt"
-top -bn1 -w512 &> "$package_dir/top.txt" || :
-xwininfo -tree -root -all &> "$package_dir/xwininfo.txt" || :
-sensors &> "$package_dir/sensors.txt" || :
+mkdir -p "$diagnostics_dir"
+gnome-screenshot -f "$diagnostics_dir/screenshot.png"
+dpkg -l >| "$diagnostics_dir/dpkg.text" 2>&1
+snap list >| "$diagnostics_dir/snap.text" 2>&1 || :
+code --list-extensions >| "$diagnostics_dir/code.text" 2>&1
+npm -g ls --depth=0 >| "$diagnostics_dir/npm.text" 2>&1 || :
+ghc-pkg list >| "$diagnostics_dir/ghc-pkg.text" 2>&1 || :
+pip freeze >| "$diagnostics_dir/pip.text" 2>&1 || :
+gem list -a >| "$diagnostics_dir/gem.text" 2>&1 || :
+cabal list --installed >| "$diagnostics_dir/cabal.text" 2>&1 || :
+go list ... >| "$diagnostics_dir/go.text" 2>&1 || :
+du -bs "${source_dirs[@]}" >| "$diagnostics_dir/du.text" 2>&1 || :
+duf --output='mountpoint, size, used, avail, usage, inodes, inodes_used, inodes_avail, inodes_usage, type, filesystem' >| "$diagnostics_dir/duf.text" 2>&1 || :
+top -bn1 -w512 >| "$diagnostics_dir/top.text" 2>&1 || :
+xwininfo -tree -root -all >| "$diagnostics_dir/xwininfo.text" 2>&1 || :
+sensors >| "$diagnostics_dir/sensors.text" 2>&1 || :
+lshw -numeric >| "$diagnostics_dir/lshw.text" 2>&1 || :
+glxinfo -t -l >| "$diagnostics_dir/glxinfo.text" 2>&1 || :
+lspci -vv >| "$diagnostics_dir/lspci.text" 2>&1 || :
+lsusb -tvv >| "$diagnostics_dir/lsusb.text" 2>&1 || :
 # [todo] Flatpak, Sublime Text.
 
 # This won't check for hard links on the source (`-H`). Rsync says this is a big
