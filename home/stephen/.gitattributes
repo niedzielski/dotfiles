@@ -3,3 +3,4 @@
 *.gif diff=img
 *.jpg diff=img
 *.png diff=img
+package-lock.json -diff
