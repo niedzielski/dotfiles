@@ -344,7 +344,7 @@ This required a reboot not just a logout.
 
 ### Inputs
 
-X-Box mode (2 LEDs) works well. I calibrated and remapped axes with `jstest-gtk` then persisted the state with `sudo jscal-store /dev/input/js1`.
+Xbox mode (2 LEDs) works well. I calibrated and remapped axes with `jstest-gtk` then persisted the state with `sudo jscal-store /dev/input/js1`.
 
 ### Restore
 
