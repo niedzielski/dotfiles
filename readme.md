@@ -371,10 +371,10 @@ sudo apt install \
   command-not-found csvtool curl diffpdf entr fd-find flac flameshot fontforge \
   fonts-roboto fzf gimp git gpick gthumb htop imagemagick inkscape jstest-gtk \
   libimage-exiftool-perl lm-sensors lshw meld mednafen mesa-utils moreutils mpv nmap \
-  nodejs npm obs-studio opus-tools peek picard pigz potrace powertop pv \
+  obs-studio opus-tools peek picard pigz potrace powertop pv \
   radeontop rsync scrcpy sg3-utils sox tmux tree ttf-bitstream-vera \
   vim whois wmctrl xclip xdotool zoxide &&
-sudo apt remove evolution rhythmbox &&
+sudo apt remove evolution rhythmbox unattended-upgrades &&
 sudo apt autoremove
 ```
 
@@ -455,9 +455,10 @@ sudo apt install sublime-text
 - [Disk Usage/Free Utility](https://github.com/muesli/duf)
 - [entr](https://github.com/eradman/entr/releases)
 - [Foliate](https://github.com/johnfactotum/foliate/releases)
+- [Node.js](https://nodejs.org)
 - [Radeon Driver](https://www.amd.com/en/support/graphics/amd-radeon-6000-series/amd-radeon-6900-series/amd-radeon-rx-6900-xt) (amdgpu-install, pro-install hangs system on reboot)
 - [ripgrep](https://github.com/BurntSushi/ripgrep/releases)
-- [Steam](https://store.steampowered.com/about/)
+- [Steam](https://store.steampowered.com/about)
 - [Visual Studio Code](https://code.visualstudio.com/download)
 
 ### GNOME Extensions
