@@ -547,8 +547,13 @@ gsettings set org.gnome.meld highlight-syntax true
 ```
 sudo apt install libbluray-dev libbluray2 libbluray-bdj libaacs0 libaacs-dev libbdplus0 libbdplus-dev
 ```
-3. Follow the forum directions (I couldn't get a prefix install to work).
-4. Register.
+3. Install ffmpeg dependencies:
+```
+sudo apt install nasm yasm libfdk-aac2 libfdk-aac-dev
+```
+4. Follow the directions to install ffmpeg to a temporary directory.
+5. Follow the forum directions including installing the dependencies they specify (I couldn't get a prefix install to work).
+6. Register.
 
 ### Powertop
 
