@@ -4,3 +4,5 @@
 
 # ls
 if [ -f "$HOME/.dircolors" ]; then eval "$(dircolors "$HOME/.dircolors")"; fi
+EXA_COLORS="$LS_COLORS:sn=;34"
+export EXA_COLORS
