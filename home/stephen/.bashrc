@@ -1,5 +1,8 @@
-# ------------------------------------------------------------------------------
-# util
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
 
 if [[ -f ~/.shrc ]]; then . ~/.shrc; fi
 
@@ -42,7 +45,8 @@ shopt -s histreedit
 shopt -s direxpand
 
 # record each line as it is entered
-PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a"
+# to-do: deduplicate repeated commands. `fc -ln -1` yields the last executed command but omits empties.
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a; fc -ln -1|sed -r \"s%^\s+(.*)%\1⋮\$PWD%\" >> ~/.bash_history_jog"
 
 # ------------------------------------------------------------------------------
 # misc options
