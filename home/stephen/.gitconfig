@@ -47,7 +47,7 @@
 [column]
   ui = auto dense
 [credential]
-	helper = /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret
+	helper = store
 [diff]
   renames = copies
   tool = meld # gumtree
