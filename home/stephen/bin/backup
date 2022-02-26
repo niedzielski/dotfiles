@@ -3,7 +3,8 @@ set -euo pipefail
 
 # Check with (consider adding -q):
 #
-#   time diff -r /media/stephen/daily20210520/archive/archive-2021-05-26-23-08/home/stephen /home/stephen &> ~/desk/diff.text
+#   time diff -r /media/stephen/daily20220105/archive/archive-2021-05-26-23-08/home/stephen /home/stephen &> ~/desk/diff.text
+#   time diff -qr /media/stephen/daily20220105/archive/archive-2022-01-06-21-52/home/stephen /home/stephen &> ~/desk/diff1.text
 
 # Print the current time like `2020-12-31-23-59`.
 timestamp() { date +%F-%H-%M; }
@@ -29,7 +30,7 @@ destination_stem="${destination_stem:-archive-}"
 
 # Update this destination as needed. I usually just make a new empty
 # archive directory when changing drives.
-destination_base_dir="${destination_base_dir:-/media/stephen/daily20210520/archive}"
+destination_base_dir="${destination_base_dir:-/media/stephen/daily20220105/archive}"
 if ! [ -d "$destination_base_dir" ]; then
   >&2 echo "Destination directory, \"$destination_base_dir\", does not exist."
   exit 1
