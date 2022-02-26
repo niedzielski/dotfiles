@@ -539,7 +539,7 @@ sudo apt upgrade &&
 sudo apt dist-upgrade &&
 sudo apt install \
   bash-completion blender build-essential calibre chromium code colordiff \
-  command-not-found csvtool curl diffpdf entr fd-find flac flameshot fontforge \
+  command-not-found csvtool curl diffpdf entr fd-find flac flatpak flameshot fontforge \
   fonts-roboto fzf gimp git gpick gthumb htop imagemagick inkscape jstest-gtk \
   krita libimage-exiftool-perl lm-sensors lshw meld mednafen mesa-utils moreutils mpv nmap \
   obs-studio opus-tools peek picard pigz potrace powertop pv \
@@ -570,7 +570,11 @@ sudo dpkg --add-architecture i386 &&
 sudo apt update && sudo apt install wine32
 ```
 
-I am trying to use [Bottles](https://usebottles.com) (via Flatpak) and [CrossOver](https://www.codeweavers.com/crossover) more.
+I am trying to use [Bottles](https://usebottles.com) (via Flatpak) and [CrossOver](https://www.codeweavers.com/crossover) more. 
+
+#### Bottles
+
+Fix permissions via `flatpak run com.github.tchx84.Flatseal`.
 
 #### Exact Audio Copy
 
