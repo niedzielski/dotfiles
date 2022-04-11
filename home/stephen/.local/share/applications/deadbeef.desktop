@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=DeaDBeef
+Icon=/home/stephen/dev/dotfiles/home/stephen/.local/share/icons/deadbeef.png
+Exec=deadbeef
+StartupNotify=false
+StartupWMClass=Deadbeef
