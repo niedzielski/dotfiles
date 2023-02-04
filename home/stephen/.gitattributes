@@ -2,5 +2,7 @@
 *.bmp diff=img
 *.gif diff=img
 *.jpg diff=img
+*.jpeg diff=img
 *.png diff=img
 package-lock.json -diff
+yarn.lock -diff
