@@ -47,10 +47,6 @@ if [ -d "$ANDROID/build-tools" ]; then
   set_path_append_dirs "$(glob_last_dir "$ANDROID/build-tools/"*)"
 fi
 
-# rust
-# export PATH="$HOME/.cargo/bin:$PATH"
-#. "$HOME/.cargo/env"
-
 # less
 # make less understand some binary inputs such as tar, see lesspipe(1)
 if which lesspipe > /dev/null; then eval "$(SHELL=/bin/sh lesspipe)"; fi
