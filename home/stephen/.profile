@@ -20,6 +20,20 @@ if [ -f "$HOME/.shrc" ]; then export ENV="$HOME/.shrc"; fi
 #     fi
 # fi
 
+# protobuf
+export PROTOC_DIR="$HOME/opt/protoc-21.9"
+export PROTOC="$PROTOC_DIR/bin/protoc"
+export PROTOC_INCLUDES="$PROTOC_DIR/include"
+
+# google cloud
+set_path_append_dirs "$HOME/opt/google-cloud-sdk/bin"
+
+# go
+export GOROOT="$HOME/opt/go"
+export GOBIN="$GOROOT/bin"
+export GOPATH="$HOME/.go"
+set_path_prepend_dirs "$GOBIN"
+
 # node
 set_path_prepend_dirs "$HOME/opt/node/bin" # "node_modules/.bin"
 
@@ -34,13 +48,14 @@ if [ -d "$ANDROID/build-tools" ]; then
 fi
 
 # rust
-export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
+#. "$HOME/.cargo/env"
 
 # less
-# make less understand some binary inputs such as tar
+# make less understand some binary inputs such as tar, see lesspipe(1)
 if which lesspipe > /dev/null; then eval "$(SHELL=/bin/sh lesspipe)"; fi
+# smart ignore-case + output control chars
 export LESS=-iR
-#r # smart ignore-case + output control chars
 
 export EDITOR=vim
 
