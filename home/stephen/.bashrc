@@ -92,8 +92,11 @@ if [[ -d ~/opt/fzf/shell ]]; then
 fi
 
 alias p=pushd
-alias nvm-use='. ~/.nvm/nvm.sh && nvm use'
 
 [[ -f ~/.config/broot/launcher/bash/br ]] && . ~/.config/broot/launcher/bash/br
 
 eval "$(zoxide init --cmd j bash)"
+
+eval "$(deno completions bash)"
+
+[[ -f ~/.bashrc_private ]] && . ~/.bashrc_private
