@@ -8,6 +8,8 @@ copying*
 COPYING*
 Cargo.lock
 package-lock.json
+yarn.lock
 i18n/
 dist/
 build/
+*.snap
