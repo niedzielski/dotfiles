@@ -1,0 +1,39 @@
+// Place your key bindings in this file to overwrite the defaults
+[
+  {
+    "key": "alt+left",
+    "command": "workbench.action.navigateBack"
+  },
+  {
+    "key": "alt+right",
+    "command": "workbench.action.navigateForward"
+  },
+  {
+    "key": "ctrl+e",
+    "command": "workbench.view.explorer"
+  },
+  {
+    "key": "ctrl+shift+e",
+    "command": "-workbench.view.explorer"
+  },
+  {
+    "key": "ctrl+;",
+    "command": "editor.action.insertSnippet",
+    "when": "editorTextFocus",
+    "args": {
+      "snippet": "$CURRENT_MINUTE:$CURRENT_SECOND"
+    }
+  },
+  {
+    "key": "ctrl+shift+i",
+    "command": "editor.action.sourceAction",
+    "args": {
+        "kind": "source.addMissingImports",
+        "apply": "first"
+    }
+  }
+  // { "key": "ctrl+left", "command": "cursorWordPartStartLeft" },
+  // { "key": "ctrl+right", "command": "cursorWordPartRight" },
+  // { "key": "ctrl+shift+left", "command": "cursorWordPartStartLeftSelect" },
+  // { "key": "ctrl+shift+right", "command": "cursorWordPartRightSelect" },
+]

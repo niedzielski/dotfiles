@@ -1,7 +1,6 @@
 {
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "workbench.activityBar.visible": false,
   "workbench.colorTheme": "Default Light+",
   "editor.rulers": [80],
   "workbench.colorCustomizations": {
@@ -14,13 +13,19 @@
     "buttonish",
     "Cacheable",
     "cels",
+    "esbuild",
     "lingui",
+    "middlewares",
     "niedzielski",
     "nums",
     "oidoid",
+    "proto",
+    "protobuf",
+    "protos",
     "stateful",
     "testid",
-    "unmarshal"
+    "unmarshal",
+    "vitest"
   ],
   // "explorer.confirmDelete": false,
   // "explorer.confirmDragAndDrop": false,
@@ -43,7 +48,11 @@
   "typescript.implementationsCodeLens.enabled": true,
   "[plaintext]": {
     "editor.wordBasedSuggestions": false,
-    "editor.quickSuggestions": false,
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
     "editor.wordWrap": "on"
   },
   "window.titleBarStyle": "custom",
@@ -56,12 +65,14 @@
   "editor.gotoLocation.multipleDefinitions": "goto",
   "editor.gotoLocation.multipleDeclarations": "goto",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.addMissingImports": true,
+    "source.organizeImports": true
   },
   "cSpell.logLevel": "Information",
   "workbench.editor.tabSizing": "shrink",
   "editor.unfoldOnClickAfterEndOfLine": true,
-  "eslint.format.enable": true,
+  // "eslint.format.enable": true,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -71,7 +82,6 @@
     "typescriptvue"
   ],
   "eslint.codeAction.disableRuleComment": {},
-  "editor.columnSelection": false,
   "editor.renderWhitespace": "trailing",
   "workbench.editor.pinnedTabSizing": "shrink",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -86,5 +96,47 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.bracketPairColorization.enabled": true,
-  "window.zoomLevel": 3
+  "workbench.tree.indent": 12,
+  "editor.fontFamily": "DejaVu Sans Mono",
+  "files.associations": {
+    // always allow comments
+    "*.json": "jsonc",
+    "*.glsl.ts": "glsl",
+    "*.make": "makefile"
+  },
+  //"explorer.excludeGitIgnore": true,
+  "cSpell.customDictionaries": {
+    "custom-dictionary-user": {
+      "name": "custom-dictionary-user",
+      "path": "~/.cspell/custom-dictionary-user.txt",
+      "addWords": true,
+      "scope": "user"
+    }
+  },
+  "window.commandCenter": true,
+  "go.survey.prompt": false,
+
+  "deno.codeLens.testArgs": [
+    "--allow-read"
+  ],
+  "deno.suggest.imports.hosts": {
+    "https://deno.land": true
+  },
+
+  "gopls": {
+    "ui.navigation.importShortcut": "Definition"
+  },
+  "window.zoomLevel": 2,
+  "go.coverOnTestPackage": false,
+  "go.enableCodeLens": {
+    "runtest": false
+  },
+  "workbench.activityBar.visible": false,
+  "deno.inlayHints.parameterNames.enabled": "none",
+  "deno.inlayHints.variableTypes.enabled": false,
+  "deno.inlayHints.propertyDeclarationTypes.enabled": false,
+  "deno.inlayHints.parameterTypes.enabled": false,
+  "deno.inlayHints.functionLikeReturnTypes.enabled": false,
+  "deno.inlayHints.enumMemberValues.enabled": false,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
 }
