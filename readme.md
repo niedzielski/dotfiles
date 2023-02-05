@@ -48,6 +48,7 @@ I ordered the cheapest hard drive available and replaced it with a
 "[Samsung 2TB 980 PRO PCIe 4.0 x4 M.2 Internal SSD](https://www.bhphotovideo.com/c/product/1624326-REG/samsung_mz_v8p2t0b_am_2tb_980_pro_pcie.html)"
 according to this
 [replacement guide](https://www.youtube.com/watch?v=j6zhenaLjho).
+[I upgraded the firmware on Feb, 2023 following these notes](https://news.ycombinator.com/item?id=34649376).
 
 The builtin webcam is poor. The keyboard is lovely.
 
@@ -107,11 +108,12 @@ resting high on my desk shelf.
 
 - [Dell UltraSharp 27 4K USB-C Monitor - U2720Q, 68.4cm (27") (210-AVJV)](https://www.dell.com/en-us/work/shop/ultrasharp-27-4k-usb-c-monitor-u2720q/apd/210-avjv/monitors-monitor-accessories)
 - [Cintiq 16" DTK-1660 pen display](https://101.wacom.com/UserHelp/en/TOC/DTK-1660.html) with [ExpressKey™ remote](https://estore.wacom.com/en-US/expresskey-remote-accessory-us-ack411050.html)
-- [CalDigit TS3 Plus](https://www.caldigit.com/ts3-plus)
+- [CalDigit TS4 Dock](https://www.caldigit.com/thunderbolt-station-4)
 - [8BitDo SN30 Pro+](https://www.8bitdo.com/sn30-pro-plus)
 - [CalDigit Thunderbolt 3 cable](http://shop.caldigit.com/us/TBT3-A20B-540) (I have a second Belkin cable but I failed to note the model)
-- [Drop CTRL Mechanical Keyboard](https://drop.com/buy/drop-ctrl-mechanical-keyboard)
-- [MX Master 3 mouse](https://www.logitech.com/en-us/products/mice/mx-master-3.910-005692.html)
+- Apple Wired Keyboard (A1243)
+- Mostly [3M Wired Ergonomic Mouse, Small (EM500GPS)](https://www.3m.com/3M/en_US/p/d/cbgbjw011265); sometimes [MX Vertical Advanced Ergonomic Mouse](https://www.logitech.com/en-us/products/mice/mx-vertical-ergonomic-mouse.910-005447.html)
+- LX3 Wireless Charging Stand
 
 ### Desk
 
@@ -133,7 +135,7 @@ resting high on my desk shelf.
 7. Copy files to two disks: `cd / && tarpipe /media/stephen/disk/home home`.
 8. Backup with rsync too: `backup`. To-do: checksum tally as I go.
 9. Download the latest [Debian stable release](https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/current-live/amd64/iso-hybrid/debian-live-11.2.0-amd64-gnome+nonfree.iso) and check `md5sum *.iso`.
-10. Copy to USB thumbdrive (not SD Card): `time dd if=foo.iso of=/dev/sdX`. I use `gnome-disks` to unmount any preexisting partitions.
+10. Copy to USB thumbdrive (not SD Card): `time cat foo.iso > /dev/sdX`. I use `gnome-disks` to unmount any preexisting partitions.
 
 ## Install
 
@@ -526,7 +528,7 @@ gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type not
 ```
 
 2. `sudo apt install pigz vim`.
-3. Decompress backup: `time tar xf /media/stephen/disk/home-2016-01-01-00-00-00-000000000.tar.gz -I pigz && echo ok`.
+3. Decompress backup: `time tar --extract --file=/media/stephen/disk/home-2016-01-01-00-00-00-000000000.tar.gz --use-compress-program=pigz && echo ok`.
 
 ### APT
 
@@ -539,7 +541,7 @@ sudo apt upgrade &&
 sudo apt dist-upgrade &&
 sudo apt install \
   bash-completion blender build-essential calibre chromium code colordiff \
-  command-not-found csvtool curl diffpdf entr fd-find flac flatpak flameshot fontforge \
+  command-not-found csvtool curl diffpdf docker-compose entr fd-find flac flatpak flameshot fontforge \
   fonts-roboto fzf gimp git gpick gthumb htop imagemagick inkscape jstest-gtk \
   krita libimage-exiftool-perl lm-sensors lshw meld mednafen mesa-utils moreutils mpv nmap \
   obs-studio opus-tools peek picard pigz potrace powertop pv \
@@ -553,7 +555,7 @@ sudo apt autoremove
 
 ```bash
 alias strip='sed -r "1,5 d; s%^(ii|rc)\s+([^ ]+).*%\2%"' &&
-meld <(strip dpkg.text|sort) <(dpkg -l|strip|sort)
+meld <(strip dpkg.text|sort) <(dpkg --list|strip|sort)
 ```
 
 ### NPM
@@ -592,6 +594,7 @@ specific.
 
 1. Set chrome://flags/#force-color-profile to sRGB.
 2. Disable cache in the DevTools network tab.
+3. Enable do not track.
 
 ##### about://settings
 
@@ -603,16 +606,14 @@ specific.
 #### chrome://extensions
 
 - [uBlacklist](https://chrome.google.com/webstore/detail/ublacklist/pncfbmialoiaghdehhbnbhkkgmjanfhe)
-- [uBlock](https://chrome.google.com/webstore/detail/ublock/cjpalhdlnbpafiamejdnhcphjbkeiagm)
-- [React](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
-- [Redux](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd)
+- [uBlock Origin](https://chrome.google.com/webstore/detail/ublock/cjpalhdlnbpafiamejdnhcphjbkeiagm)
 
 ### Firefox
 
 I use Firefox as a bookmark manager presently. Debian stable is ancient so I had
 to export my bookmarks as JSON and reimport them on the old version.
 
-### Sublime Text
+### Sublime Text 3
 
 ```bash
 curl https://download.sublimetext.com/sublimehq-pub.gpg |
@@ -679,18 +680,33 @@ gsettings set org.gnome.nautilus.preferences show-hidden-files true
 
 # Pin favorite programs to the dock.
 gsettings get org.gnome.shell favorite-apps &&
-gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'sublime_text.desktop', 'chromium.desktop', 'cxmenu-cxoffice-02de5bb9-54c7-4682-bad7-901cca896baf-3ii0rqp-foobar2000.desktop', 'code.desktop', 'org.gnome.Terminal.desktop', 'aseprite.desktop', 'org.gnome.gThumb.desktop', 'com.github.johnfactotum.Foliate.desktop', 'gnome-system-monitor.desktop', 'mednaffe.desktop', 'steam.desktop', 'com.usebottles.bottles.desktop', 'cxmenu-cxoffice-0-29ra4ke-CrossOver.desktop', 'org.kde.krita.desktop', 'cxmenu-cxoffice-1b9804f8-f211-477e-a57d-05ab04a912c9-3ii0rqp-Adobe Photoshop CS2.desktop', 'gimp.desktop', 'tvp-animation-11.5-pro-demo.desktop', 'trimage.desktop']"
+gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'chromium.desktop', 'deadbeef.desktop', 'sublime_text.desktop', 'codium.desktop', 'org.gnome.Terminal.desktop', 'aseprite.desktop', 'org.gnome.gThumb.desktop', 'com.github.johnfactotum.Foliate.desktop', 'gnome-system-monitor.desktop', 'mednaffe.desktop', 'steam.desktop', 'com.usebottles.bottles.desktop', 'cxmenu-cxoffice-0-29ra4ke-CrossOver.desktop', 'org.kde.krita.desktop', 'cxmenu-cxoffice-1b9804f8-f211-477e-a57d-05ab04a912c9-3ii0rqp-Adobe Photoshop CS2.desktop', 'gimp.desktop', 'tvp-animation-11.5-pro-demo.desktop', 'trimage.desktop', 'org.mapeditor.Tiled.desktop', 'artha.desktop', 'org.gnome.Characters.desktop', 'com.github.xournalpp.xournalpp.desktop', 'Write.desktop', 'com.github.tenderowl.frog.desktop', 'io.github.Qalculate.desktop', 'anki.desktop']"
 ```
+
+# Limit window switcher carousel entries to current workspace.
+gsettings get org.gnome.shell.app-switcher current-workspace-only &&
+gsettings set org.gnome.shell.app-switcher current-workspace-only true
 
 ### Keybindings
 
 ```bash
+# Press fnc + esc to invert the function keys.
+
+# Flip command and alt keys on Apple keyboards.
+echo options hid_apple fnmode=2 swap_opt_cmd=1 |
+sudo tee -a /etc/modprobe.d/hid_apple.conf
+sudo update-initramfs -u
+
 # Disable middle click to paste.
 gsettings get org.gnome.desktop.interface gtk-enable-primary-paste &&
 gsettings set org.gnome.desktop.interface gtk-enable-primary-paste false
 
 # Enable tap-to-click. The trackpad is too stiff.
 gsettings get org.gnome.desktop.peripherals.touchpad tap-to-click && gsettings set org.gnome.desktop.peripherals.touchpad tap-to-click true
+
+# Middle-clicking titlebar toggles vertical fill.
+gsettings get org.gnome.desktop.wm.preferences action-middle-click-titlebar &&
+gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar action-middle-click-titlebar
 
 # Set super-T to open terminal.
 ```
@@ -707,7 +723,7 @@ gsettings set org.gnome.meld highlight-syntax true
 
 ### MakeMKV
 
-1. Download the latest: https://www.makemkv.com/forum/viewtopic.php?f=3&t=224.
+1. [Download the latest](https://www.makemkv.com/forum/viewtopic.php?f=3&t=224).
 2. Install dependencies:
 
 ```
@@ -720,9 +736,11 @@ sudo apt install libbluray-dev libbluray2 libbluray-bdj libaacs0 libaacs-dev lib
 sudo apt install nasm yasm libfdk-aac2 libfdk-aac-dev
 ```
 
-4. Follow the directions to install ffmpeg to a temporary directory.
+4. Follow the directions to install ffmpeg with libfdk-aac support to a temporary directory.
 5. Follow the forum directions including installing the dependencies they specify (I couldn't get a prefix install to work).
-6. Register.
+6. Register via the GUI.
+
+If it doesn't work, you probably have the disc number wrong.
 
 ### Powertop
 
@@ -746,6 +764,12 @@ sensors -u
 AMDGPU SMU (i2c-12) caused a segfault in sensors-detect and scanning i2c-17 hung
 sensors-detect so I skipped them.
 
+#### Docker
+
+```sh
+sudo usermod -aG docker stephen
+```
+
 ### Terminal
 
 ```bash
@@ -764,9 +788,9 @@ gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profi
 
 # Set default size to 100x40.
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns &&
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 100
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 96
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows &&
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 40
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 32
 ```
 
 ### Image Viewer (eog)
@@ -777,6 +801,20 @@ gsettings get org.gnome.eog.view extrapolate &&
 gsettings set org.gnome.eog.view extrapolate false
 gsettings get org.gnome.eog.view interpolate &&
 gsettings set org.gnome.eog.view interpolate false
+```
+
+### Grub
+
+Set the sleep state to "Linux" / S3. I don't remember what else I changed but it
+was a number of things, including, I think, enabling secure boot.
+
+split_lock_detect=off https://github.com/ValveSoftware/steam-for-linux/issues/8003
+
+Edit /etc/default/grub with the following
+[temporary changes for keyboard lag](https://forums.lenovo.com/t5/ThinkPad-X-Series-Laptops/Lag-and-stuttering-on-X1-Carbon-Gen-9-while-running-Linux-untested-on-Windows/m-p/5082352):
+
+```grub
+GRUB_CMDLINE_LINUX_DEFAULT="i915.enable_psr=0"
 ```
 
 ### DeaDBeeF
@@ -802,6 +840,11 @@ gsettings get org.gnome.desktop.session idle-delay &&
 gsettings set org.gnome.desktop.session idle-delay 600
 
 # Allow Bluetooth sleeping.
+
+# Disable tracker-miner file indexer.
+gsettings get org.freedesktop.Tracker.Miner.Files enable-monitors && gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
+gsettings get org.freedesktop.Tracker.Miner.Files crawling-interval && gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
+echo y | LANG=en tracker reset --hard
 ```
 
 ## License (AGPLv3)
