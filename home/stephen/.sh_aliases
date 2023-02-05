@@ -27,7 +27,7 @@ alias d='colordiff --speed-large-files --suppress-common-lines -W$COLUMNS -y -p 
 
 alias cat=bat
 
-alias f='fd -H'
+alias F='fd -H'
 
 alias abspath=realpath\ -ms
 
@@ -48,5 +48,3 @@ alias map='x -I{} '
 # -buffered. use a non-canonical alias instead of GREP_OPTIONS which may wreck
 # poorly written scripts
 alias g='grep -EID skip -d skip --color=auto --line-buffered'
-
-# todo: don't override standards like ls. This will backfire.
