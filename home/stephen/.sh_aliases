@@ -18,7 +18,7 @@ alias c=cd
 alias rsync='rsync -aiz --partial-dir=.rsync-partial --partial'
 
 # smart-case
-alias rg='rg -SUP --ignore-file ~/.rgignore -.'
+alias rg='rg -SUP --ignore-file ~/.rgignore -. --max-columns=$COLUMNS --max-columns-preview'
 
 alias recycle=gio\ trash
 
