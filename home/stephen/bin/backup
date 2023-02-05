@@ -9,6 +9,8 @@ set -euo pipefail
 # Print the current time like `2020-12-31-23-59`.
 timestamp() { date +%F-%H-%M; }
 
+exclude_from_file="$(dirname "$0")/backup-excludes.rsync"
+
 source_dirs=(${source_dirs:-"$HOME" /etc /usr})
 for source_dir in "${source_dirs[@]}"; do
   if ! [ -d "$source_dir" ]; then
@@ -17,20 +19,12 @@ for source_dir in "${source_dirs[@]}"; do
   fi
 done
 
-exclude_dirs=(${exclude_dirs:-"$HOME/.local/share/Trash"})
-for exclude_dir in "${exclude_dirs[@]}"; do
-  if ! [ -d "$exclude_dir" ]; then
-    >&2 echo "Exclude directory, \"$exclude_dir\", does not exist."
-    exit 1
-  fi
-done
-
 # Destination starts with `archive-`.
 destination_stem="${destination_stem:-archive-}"
 
 # Update this destination as needed. I usually just make a new empty
-# archive directory when changing drives.
-destination_base_dir="${destination_base_dir:-/media/stephen/daily20220105/archive}"
+# archive directory when changing drives like mkdir archive/archive/-null.
+destination_base_dir="${destination_base_dir:-/media/stephen/daily-2022-09-21/archive}"
 if ! [ -d "$destination_base_dir" ]; then
   >&2 echo "Destination directory, \"$destination_base_dir\", does not exist."
   exit 1
@@ -52,22 +46,23 @@ destination_dir="${destination_dir:-${destination_base_dir}/${destination_stem}$
 # with everything else.
 diagnostics_dir="${diagnostics_dir:-/home/stephen/tmp/system-diagnostics}"
 
-read -p "Ready to copy from (${source_dirs[*]}), excluding (${exclude_dirs[*]}), to \"${destination_dir}\" with hard links to \"$link_dir\". Additionally, a screenshot will be taken immediately and other diagnostics recorded. Execute '#rm -rf \"${destination_dir}\"' if the copy is aborted otherwise the next link directory will be incomplete. <Enter> to continue, <ctrl-c> to abort: "
+read -p "Ready to copy from (${source_dirs[*]}), excluding patterns in \"$exclude_from_file\", to \"${destination_dir}\" with hard links to \"$link_dir\". Additionally, a screenshot will be taken immediately and other diagnostics recorded. Execute '#rm -rf \"${destination_dir}\"' if the copy is aborted otherwise the next link directory will be incomplete. <Enter> to continue, <ctrl-c> to abort: "
 
-mkdir -p "$destination_dir"
+mkdir --parents "$destination_dir"
 
-mkdir -p "$diagnostics_dir"
-gnome-screenshot -f "$diagnostics_dir/screenshot.png"
-dpkg -l >| "$diagnostics_dir/dpkg.text" 2>&1
+mkdir --parents "$diagnostics_dir"
+gnome-screenshot --file="$diagnostics_dir/screenshot.png"
+dpkg --list >| "$diagnostics_dir/dpkg.text" 2>&1
 snap list >| "$diagnostics_dir/snap.text" 2>&1 || :
 code --list-extensions >| "$diagnostics_dir/code.text" 2>&1
+codium --list-extensions >| "$diagnostics_dir/codium.text" 2>&1
 npm -g ls --depth=0 >| "$diagnostics_dir/npm.text" 2>&1 || :
 ghc-pkg list >| "$diagnostics_dir/ghc-pkg.text" 2>&1 || :
 pip freeze >| "$diagnostics_dir/pip.text" 2>&1 || :
 gem list -a >| "$diagnostics_dir/gem.text" 2>&1 || :
 cabal list --installed >| "$diagnostics_dir/cabal.text" 2>&1 || :
 go list ... >| "$diagnostics_dir/go.text" 2>&1 || :
-du -bs "${source_dirs[@]}" >| "$diagnostics_dir/du.text" 2>&1 || :
+du --bytes --summarize "${source_dirs[@]}" >| "$diagnostics_dir/du.text" 2>&1 || :
 duf --output='mountpoint, size, used, avail, usage, inodes, inodes_used, inodes_avail, inodes_usage, type, filesystem' >| "$diagnostics_dir/duf.text" 2>&1 || :
 top -bn1 -w512 >| "$diagnostics_dir/top.text" 2>&1 || :
 xwininfo -tree -root -all >| "$diagnostics_dir/xwininfo.text" 2>&1 || :
@@ -75,8 +70,9 @@ sensors >| "$diagnostics_dir/sensors.text" 2>&1 || :
 lshw -numeric >| "$diagnostics_dir/lshw.text" 2>&1 || :
 glxinfo -t -l >| "$diagnostics_dir/glxinfo.text" 2>&1 || :
 lspci -vv >| "$diagnostics_dir/lspci.text" 2>&1 || :
-lsusb -tvv >| "$diagnostics_dir/lsusb.text" 2>&1 || :
-# [todo] Flatpak, Sublime Text.
+lsusb --tree -vv >| "$diagnostics_dir/lsusb.text" 2>&1 || :
+flatpak list --all --columns=all >| "$diagnostics_dir/flatpak.text" 2>&1 || :
+# [todo] Sublime Text.
 
 # This won't check for hard links on the source (`-H`). Rsync says this is a big
 # performance hit, I didn't know if there were caveats when using `--link-dest`,
@@ -94,16 +90,17 @@ lsusb -tvv >| "$diagnostics_dir/lsusb.text" 2>&1 || :
 # No deletion since I always copy to a new directory.
 err=0
 time rsync \
-  -aR \
+  --archive \
+  --relative \
   --info=progress2 \
   --link-dest="$link_dir"  \
-  "${exclude_dirs[@]/#/--exclude=}" \
+  --exclude-from="$exclude_from_file" \
   "${source_dirs[@]}" \
   "$destination_dir" \
 || err=$?
 
 sync
 
-mount_dir="$(df -P "$destination_dir" | tail -1 | cut -d\  -f 1)"
+mount_dir="$(df --portability "$destination_dir" | tail -1 | cut --delimiter=\  --fields=1)"
 echo "The copy is complete (exit status=$err). Execute '#udisksctl unmount -b \"$mount_dir\" && udisksctl power-off -b \"$mount_dir\"' to remove the destination device."
 exit $err
