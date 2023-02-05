@@ -4,7 +4,7 @@ case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
 
 # ------------------------------------------------------------------------------
 # TODO: clean up
-F() {
+f() {
   # the trouble is that -regextype must appear after path but before expression
   # HACK: "-D debugopts" unsupported and -[HLPO] options assumed to before dirs
   local a=()
