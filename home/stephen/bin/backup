@@ -3,8 +3,8 @@ set -euo pipefail
 
 # Check with (consider adding -q):
 #
-#   time diff -r /media/stephen/daily20220105/archive/archive-2021-05-26-23-08/home/stephen /home/stephen &> ~/desk/diff.text
-#   time diff -qr /media/stephen/daily20220105/archive/archive-2022-01-06-21-52/home/stephen /home/stephen &> ~/desk/diff1.text
+#   time diff -r /media/user/daily20220105/archive/archive-2021-05-26-23-08/home/user /home/user &> ~/desk/diff.text
+#   time diff -qr /media/user/daily20220105/archive/archive-2022-01-06-21-52/home/user /home/user &> ~/desk/diff1.text
 
 # Print the current time like `2020-12-31-23-59`.
 timestamp() { date +%F-%H-%M; }
@@ -24,7 +24,7 @@ destination_stem="${destination_stem:-archive-}"
 
 # Update this destination as needed. I usually just make a new empty
 # archive directory when changing drives like mkdir archive/archive/-null.
-destination_base_dir="${destination_base_dir:-/media/stephen/daily-2022-09-21/archive}"
+destination_base_dir="${destination_base_dir:-/media/user/daily-2023-03-12/archive}"
 if ! [ -d "$destination_base_dir" ]; then
   >&2 echo "Destination directory, \"$destination_base_dir\", does not exist."
   exit 1
@@ -44,7 +44,7 @@ destination_dir="${destination_dir:-${destination_base_dir}/${destination_stem}$
 
 # Save locally by default for easy inspection. This directory will be backed up
 # with everything else.
-diagnostics_dir="${diagnostics_dir:-/home/stephen/tmp/system-diagnostics}"
+diagnostics_dir="${diagnostics_dir:-/home/user/tmp/system-diagnostics}"
 
 read -p "Ready to copy from (${source_dirs[*]}), excluding patterns in \"$exclude_from_file\", to \"${destination_dir}\" with hard links to \"$link_dir\". Additionally, a screenshot will be taken immediately and other diagnostics recorded. Execute '#rm -rf \"${destination_dir}\"' if the copy is aborted otherwise the next link directory will be incomplete. <Enter> to continue, <ctrl-c> to abort: "
 
@@ -62,8 +62,6 @@ pip freeze >| "$diagnostics_dir/pip.text" 2>&1 || :
 gem list -a >| "$diagnostics_dir/gem.text" 2>&1 || :
 cabal list --installed >| "$diagnostics_dir/cabal.text" 2>&1 || :
 go list ... >| "$diagnostics_dir/go.text" 2>&1 || :
-du --bytes --summarize "${source_dirs[@]}" >| "$diagnostics_dir/du.text" 2>&1 || :
-duf --output='mountpoint, size, used, avail, usage, inodes, inodes_used, inodes_avail, inodes_usage, type, filesystem' >| "$diagnostics_dir/duf.text" 2>&1 || :
 top -bn1 -w512 >| "$diagnostics_dir/top.text" 2>&1 || :
 xwininfo -tree -root -all >| "$diagnostics_dir/xwininfo.text" 2>&1 || :
 sensors >| "$diagnostics_dir/sensors.text" 2>&1 || :
