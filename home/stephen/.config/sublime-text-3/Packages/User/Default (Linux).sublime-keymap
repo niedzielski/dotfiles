@@ -1,4 +1,0 @@
-[
-  {"keys": ["ctrl+t"], "command": "new_file"},
-  {"keys": ["ctrl+alt+m"], "command": "toggle_menu"}
-]
