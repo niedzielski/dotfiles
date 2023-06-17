@@ -1,23 +1,22 @@
 #!/usr/bin/env bash
-# multithreaded backups. depends on pv, pigz, timestamp.
+# multithreaded backups. depends on pv, pigz.
 # $1 output
 # ... inputs
 # ex:
-#   cd / && tarpipe /media/stephen/garden/neptune home
+#   cd / && tarpipe /media/user/garden/neptune home
 
 case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
 
 dep_chk() {
   declare -i err=0
   dpkg-query -l pv pigz > /dev/null || err=1
-  type timestamp > /dev/null || err=1
   return $err
 }
 
 tarpipe() {
   dep_chk
 
-  declare o="$1-$(timestamp).tar.gz"
+  declare o="$1-$(date +%F-%H-%M).tar.gz"
   shift
 
   echo "output: $o"
