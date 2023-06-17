@@ -3,7 +3,7 @@
 case $- in *i*) :;; *) set -eu; set -o pipefail 2>/dev/null | :;; esac
 
 youtube-dl-audio() {
-  youtube-dl --audio-format best --audio-quality 0 -wqxo "$(youtube-dl -qe "$1").mp3" "$1"
+  yt-dlp --audio-format best --audio-quality 0 -wqxo "$(youtube-dl -qe "$1").mp3" "$1"
 }
 
 # ------------------------------------------------------------------------------
