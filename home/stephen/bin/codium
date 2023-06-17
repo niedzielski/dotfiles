@@ -1,0 +1,2 @@
+#!/usr/bin/sh
+exec flatpak run --command=codium com.vscodium.codium "$@"
