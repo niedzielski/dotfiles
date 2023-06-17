@@ -21,24 +21,24 @@ if [ -f "$HOME/.shrc" ]; then export ENV="$HOME/.shrc"; fi
 # fi
 
 # protobuf
-export PROTOC_DIR="$HOME/opt/protoc-21.9"
+export PROTOC_DIR="$HOME/bin/protoc-21.9"
 export PROTOC="$PROTOC_DIR/bin/protoc"
 export PROTOC_INCLUDES="$PROTOC_DIR/include"
 
 # google cloud
-set_path_append_dirs "$HOME/opt/google-cloud-sdk/bin"
+set_path_append_dirs "$HOME/bin/google-cloud-sdk/bin"
 
 # go
-export GOROOT="$HOME/opt/go"
+export GOROOT="$HOME/bin/go"
 export GOBIN="$GOROOT/bin"
 export GOPATH="$HOME/.go"
 set_path_prepend_dirs "$GOBIN"
 
 # node
-set_path_prepend_dirs "$HOME/opt/node/bin" # "node_modules/.bin"
+set_path_prepend_dirs "$HOME/bin/node/bin" # "node_modules/.bin"
 
 # android
-export ANDROID="$HOME/opt/android/sdk"
+export ANDROID="$HOME/bin/android/sdk"
 export ANDROID_SDK="$ANDROID"
 export ANDROID_HOME="$ANDROID"
 set_path_append_dirs "$ANDROID/tools" \
@@ -61,4 +61,3 @@ export TERM=xterm-256color
 set_path_prepend_dirs "$HOME/.local/bin" "$HOME/bin"
 
 if [ -f "$HOME/.profile_private" ]; then . "$HOME/.profile_private"; fi
-
