@@ -104,6 +104,8 @@ and having replaced the supply with such a different one, I suppose all bets are
 off. In both directions, the fans seem to pull in a lot of particulates despite
 resting high on my desk shelf.
 
+I disabled the enclosure LEDs by disconnecting the jumper cable running between the mounted circuit board and the two LED strips. I put black electrical tape over the GPU's AMD LED logo which is always lit. I can hear the side-fan to know when it's on (it turns off when the case is powered but the GPU is unused).
+
 ### Peripherals
 
 - [Dell UltraSharp 27 4K USB-C Monitor - U2720Q, 68.4cm (27") (210-AVJV)](https://www.dell.com/en-us/work/shop/ultrasharp-27-4k-usb-c-monitor-u2720q/apd/210-avjv/monitors-monitor-accessories)
@@ -112,16 +114,21 @@ resting high on my desk shelf.
 - [8BitDo SN30 Pro+](https://www.8bitdo.com/sn30-pro-plus)
 - [CalDigit Thunderbolt 3 cable](http://shop.caldigit.com/us/TBT3-A20B-540) (I have a second Belkin cable but I failed to note the model)
 - Apple Wired Keyboard (A1243)
-- Mostly [3M Wired Ergonomic Mouse, Small (EM500GPS)](https://www.3m.com/3M/en_US/p/d/cbgbjw011265); sometimes [MX Vertical Advanced Ergonomic Mouse](https://www.logitech.com/en-us/products/mice/mx-vertical-ergonomic-mouse.910-005447.html)
+- [Logitech LIFT Graphite mouse](https://www.logitech.com/en-us/products/mice/lift-vertical-ergonomic-mouse.910-006466.html)
 - LX3 Wireless Charging Stand
+- [CyberPower CP1500PFCLCD PFC Sinewave UPS](https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfclcd)
+
+I've tried many mice and keyboards. I waffle a bit due to wrist health.
 
 ### Desk
 
 - [Bamboo, curved, UPLIFT standing desk with black v2-commercial C-frame 72" x 30"](https://www.upliftdesk.com/uplift-v2-standing-desk-v2-or-v2-commercial)
-- [Big Ultra-Thin Keyboard Tray System by UPLIFT Desk](https://www.upliftdesk.com/big-ultra-thin-keyboard-tray-system-uplift-desk)
+  - I'd get the flat edge next time and maybe a larger size.
   - KBT009-BLK Quick-Adjust Mechanism
   - UPLIFT Track Spacer
 - [8-Outlet mountable surge protector](https://www.upliftdesk.com/8-outlet-mountable-surge-protector-uplift-desk)
+
+I tried the desk keyboard tray. I liked the extra dimension but ultimately it was too small and a little too bendy.
 
 ## Back Up
 
@@ -132,22 +139,20 @@ resting high on my desk shelf.
 4. Back up packages and verify contents.
 5. Check Grub options.
 6. Take screenshot of launcher.
-7. Copy files to two disks: `cd / && tarpipe /media/stephen/disk/home home`.
+7. Copy files to two disks: `cd / && tarpipe /media/user/disk/home home`.
 8. Backup with rsync too: `backup`. To-do: checksum tally as I go.
-9. Download the latest [Debian stable release](https://cdimage.debian.org/images/unofficial/non-free/images-including-firmware/current-live/amd64/iso-hybrid/debian-live-11.2.0-amd64-gnome+nonfree.iso) and check `md5sum *.iso`.
-10. Copy to USB thumbdrive (not SD Card): `time cat foo.iso > /dev/sdX`. I use `gnome-disks` to unmount any preexisting partitions.
+9. Download the latest [Debian stable release](https://cdimage.debian.org/images/release/12.0.0/amd64/iso-bd) and check `md5sum *.iso`.
+10. Copy to USB thumbdrive (not SD Card): `time sudo sh -c 'cat > /dev/sdX' < debian-live-12.0.0-amd64-gnome.iso`. I use `gnome-disks` to unmount any preexisting partitions.
+11. Review [the release notes](https://www.debian.org/releases/bookworm/amd64/release-notes).
 
 ## Install
 
 ### BIOS
 
 I don't remember what else I changed but it was a number of things, including, I
-think, enabling secure boot.
+think, enabling secure boot and enabling "Linux" / S3 sleep.
 
 ### Debian Installer
-
-I wanted to increase the swap partition size but it didn't seem easily
-customizable in itself. I haven't noticed any out-of-memory issues.
 
 ![Disk partition configuration](partman_choose_partition_0.png)
 
@@ -167,11 +172,6 @@ fwupdmgr install fixed it. I used [macOS for the SN30 Pro+](https://support.8bit
 
 ### External GPU
 
-I think radeon is for old graphics cards and amdgpu is the name of both the
-open and closed-source newer drivers. In the past, I had quite a bit of trouble
-getting the closed-source one running and given the naming collision, maybe I
-didn't, and was actually using the open-source one in a most convoluted way.
-
 The stock install will actually connect video but the framerate of `glxgears` is
 only about 25 FPS at any resolution and window animations are noticeably choppy.
 [all-ways-egpu](https://github.com/ewagner12/all-ways-egpu) (Wayland) and
@@ -179,6 +179,8 @@ only about 25 FPS at any resolution and window animations are noticeably choppy.
 it. I had some trouble with pen pressure detection under Wayland so I switched
 to Xorg temporarily. For whatever reason, the changes under all-ways-egpu seem
 to be working there.
+
+Hot-plugging works so long as nothing is actively using the GPU, I think. I don't know how to test this so before I un/plug, I close all my programs (which is also good if it crashes).
 
 #### all-ways-egpu (Wayland)
 
@@ -485,10 +487,6 @@ ATTENTION: default value of option vblank_mode overridden by environment.
 334 frames in 5.0 seconds = 66.627 FPS
 ```
 
-#### What doesn't work so far
-
-- Hotplugging. I have to power off to at/detach the cable. I need to fool with this more as the PCIE bus attaches at least the first time.
-
 #### Observations
 
 These are dated from the closed source driver:
@@ -508,8 +506,8 @@ Open-source driver:
 The input group is need for joystick access.
 
 ```bash
-su -c '/sbin/usermod -aG sudo stephen' && echo ok
-su -c '/sbin/usermod -aG input stephen' && echo ok
+su -c '/sbin/usermod -aG sudo user' && echo ok
+su -c '/sbin/usermod -aG input user' && echo ok
 ```
 
 This required a reboot not just a logout.
@@ -528,7 +526,7 @@ gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type not
 ```
 
 2. `sudo apt install pigz vim`.
-3. Decompress backup: `time tar --extract --file=/media/stephen/disk/home-2016-01-01-00-00-00-000000000.tar.gz --use-compress-program=pigz && echo ok`.
+3. Decompress backup: `time tar --extract --file=/media/user/disk/home-2016-01-01-00-00-00-000000000.tar.gz --use-compress-program=pigz && echo ok`.
 
 ### APT
 
@@ -540,15 +538,21 @@ sudo apt update &&
 sudo apt upgrade &&
 sudo apt dist-upgrade &&
 sudo apt install \
-  bash-completion blender build-essential calibre chromium code colordiff \
-  command-not-found csvtool curl diffpdf docker-compose entr fd-find flac flatpak flameshot fontforge \
-  fonts-roboto fzf gimp git gpick gthumb htop imagemagick inkscape jstest-gtk \
-  krita libimage-exiftool-perl lm-sensors lshw meld mednafen mesa-utils moreutils mpv nmap \
-  obs-studio opus-tools peek picard pigz potrace powertop pv \
-  radeontop rsync scrcpy sg3-utils sqlitebrowser sox tmux tree ttf-bitstream-vera \
-  vim whois wmctrl xclip xdotool zoxide &&
-sudo apt remove evolution rhythmbox thunderbolt unattended-upgrades &&
+  bash-completion build-essential chromium command-not-found curl diffpdf \
+  docker-compose entr flac flatpak fontforge fonts-roboto git gnome-screenshot \
+  gpick gthumbhtop imagemagick inkscape jstest-gtk libimage-exiftool-perl \
+  lm-sensors lshw meld mpv pigz potrace powertop pv radeontop rsync \
+  ttf-bitstream-vera vim whois wl-clipboard zoxide &&
+sudo apt remove thunderbird &&
 sudo apt autoremove
+```
+
+Sometimes I'll also install:
+
+```bash
+sudo apt install \
+  blender colordiff csvtool mesa-utils moreutils nmap opus-tools scrcpy \
+  sg3-utils sox tmux sqlitebrowser wmctrl xclip xdotool
 ```
 
 #### Compare Previously Installed Packages
@@ -558,13 +562,44 @@ alias strip='sed -r "1,5 d; s%^(ii|rc)\s+([^ ]+).*%\2%"' &&
 meld <(strip dpkg.text|sort) <(dpkg --list|strip|sort)
 ```
 
+### Flatpak
+
+```bash
+flatpak remote-add flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install \
+  com.calibre_ebook.calibre \
+  com.github.AmatCoder.mednaffe \
+  com.github.johnfactotum.Foliate \
+  com.github.tenderowl.frog \
+  com.obsproject.Studio \
+  com.uploadedlobster.peek \
+  com.usebottles.bottles \
+  com.vscodium.codium \
+  org.gimp.GIMP \
+  org.kde.krita \
+  org.musicbrainz.Picard
+```
+
+## Software and Update
+
+- Enable Non-DFSG-compatible for Hardware Support (non-free-firmware)
+- Enable Non-DFSG-compatible Software (non-free)
+
+## Software
+
+- Disable menu -> Update Preferences -> Automatic Updates.
+
 ### NPM
+
+Sometimes I'll install:
 
 ```bash
 npm i -g create-react-app live-server npm-check-updates source-map-explorer wscat
 ```
 
 ### Wine
+
+Sometimes I'll install:
 
 ```bash
 sudo apt install wine winetricks winbind &&
@@ -574,16 +609,12 @@ sudo apt update && sudo apt install wine32
 
 I am trying to use [Bottles](https://usebottles.com) (via Flatpak) and [CrossOver](https://www.codeweavers.com/crossover) more. 
 
-#### Bottles
-
-Fix permissions via `flatpak run com.github.tchx84.Flatseal`.
-
 #### Exact Audio Copy
 
 ```bash
 # Select the default prefix and install just dotnet20 without the service packs.
-WINEARCH=win32 WINEPREFIX="$HOME/opt/eac" winetricks
-WINEARCH=win32 WINEPREFIX="$HOME/opt/eac" wine ~/dl/eac-1.6.exe
+WINEARCH=win64 WINEPREFIX="$HOME/bin/eac" winetricks
+WINEARCH=win64 WINEPREFIX="$HOME/bin/eac" wine ~/dl/eac-1.6.exe
 ```
 
 The program settings are not easily isolated. They're smattered across the
@@ -592,18 +623,28 @@ specific.
 
 ### Chromium
 
-1. Set chrome://flags/#force-color-profile to sRGB.
-2. Disable cache in the DevTools network tab.
-3. Enable do not track.
+- Set about://flags/#force-color-profile to sRGB.
+- Disable cache in the DevTools network tab.
 
-##### about://settings
+#### about://settings/downloads
+
+- Set Location to `$HOME/desk`.
+
+#### about://settings/privacy
+
+- Enable Cookies and other site data -> Send a "do not track" request with your browsing traffic.
+
+#### about://settings/payments
+
+- Enable Payment methods -> Save and fill payment methods.
+- Enable Password Manager -> Offer to save passwords.
+
+#### about://settings
 
 - Check On startup -> Continue where you left off.
 - Make Chromium the default.
-- Change search to DuckDuckGo.
-- Enable classic theme otherwise incognito mode isn't different enough.
 
-#### chrome://extensions
+#### about://extensions
 
 - [uBlacklist](https://chrome.google.com/webstore/detail/ublacklist/pncfbmialoiaghdehhbnbhkkgmjanfhe)
 - [uBlock Origin](https://chrome.google.com/webstore/detail/ublock/cjpalhdlnbpafiamejdnhcphjbkeiagm)
@@ -613,7 +654,7 @@ specific.
 I use Firefox as a bookmark manager presently. Debian stable is ancient so I had
 to export my bookmarks as JSON and reimport them on the old version.
 
-### Sublime Text 3
+### Sublime Text 4
 
 ```bash
 curl https://download.sublimetext.com/sublimehq-pub.gpg |
@@ -629,11 +670,10 @@ sudo apt install sublime-text
 
 - [Aseprite](https://www.aseprite.org)
 - [bat](https://github.com/sharkdp/bat/releases)
+- [fd](https://github.com/sharkdp/fd)
 - [Chrome](https://www.google.com/chrome)
 - [DeaDBeeF](http://deadbeef.sourceforge.net/download.html)
 - [Delta](https://github.com/dandavison/delta/releases)
-- [Disk Usage/Free Utility](https://github.com/muesli/duf)
-- [Foliate](https://github.com/johnfactotum/foliate/releases)
 - [Node.js](https://nodejs.org)
 - [ripgrep](https://github.com/BurntSushi/ripgrep/releases)
 - [Steam](https://store.steampowered.com/about)
@@ -642,9 +682,7 @@ sudo apt install sublime-text
 
 ### GNOME Extensions
 
-Install via Firefox:
-
-- [Emoji Selector](https://extensions.gnome.org/extension/1162/emoji-selector/)
+- [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
 
 ### UI
 
@@ -661,27 +699,62 @@ gsettings set org.gnome.desktop.wm.preferences audible-bell false
 gsettings get org.gnome.nautilus.list-view use-tree-view &&
 gsettings set org.gnome.nautilus.list-view use-tree-view true
 
-# Set the default file zoom to tiny.
+# Set the default file zoom to medium.
 gsettings get org.gnome.nautilus.list-view default-zoom-level &&
-gsettings set org.gnome.nautilus.list-view default-zoom-level small
+gsettings set org.gnome.nautilus.list-view default-zoom-level medium
 
-# Set the file columns.
-# [to-do] Add crtime: https://gitlab.gnome.org/GNOME/nautilus/-/issues/1566.
+# Set the file columns. Can't seem to do this from CLI?
+gsettings get org.gnome.nautilus.list-view default-column-order &&
+gsettings set org.gnome.nautilus.list-view default-column-order "['name', 'detailed_type', 'date_created', 'date_modified_with_time', 'date_accessed', 'size']" &&
 gsettings get org.gnome.nautilus.list-view default-visible-columns &&
-gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'size', 'type', 'mime_type', 'date_modified_with_time', 'date_accessed']"
+gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'detailed_type', 'date_created', 'date_modified_with_time', 'date_accessed', 'size']"
+
+# Sort folders before files.
+
+# Don't remember recent files and hide the recent files tab in Nautilus.
+gsettings get org.gnome.desktop.privacy remember-recent-files &&
+gsettings set org.gnome.desktop.privacy remember-recent-files false
 
 # Always show the file location bar instead of the descendent GUI.
 gsettings get org.gnome.nautilus.preferences always-use-location-entry &&
 gsettings set org.gnome.nautilus.preferences always-use-location-entry true
 
-# Show hidden files.
+# Show hidden files. Can't seem to do this from CLI?
 gsettings get org.gnome.nautilus.preferences show-hidden-files &&
 gsettings set org.gnome.nautilus.preferences show-hidden-files true
 
+# Never search subfolders.
+gsettings get org.gnome.nautilus.preferences recursive-search
+gsettings set org.gnome.nautilus.preferences recursive-search never
+
+# Never search apps and other providers.
+gsettings get org.gnome.desktop.search-providers disable-external &&
+gsettings set org.gnome.desktop.search-providers disable-external true
+
+# Manually turn off all search locations.
+
+# IDK
+gsettings get com.canonical.Unity.Lenses always-search &&
+gsettings set com.canonical.Unity.Lenses always-search  "['applications.scope']" &&
+gsettings get com.canonical.Unity.Lenses home-lens-default-view &&
+gsettings set com.canonical.Unity.Lenses home-lens-default-view "['applications.scope']"  &&
+gsettings get com.canonical.Unity.Lenses home-lens-priority &&
+gsettings set com.canonical.Unity.Lenses home-lens-priority "['files.scope']"
+
+# Disable hot corner.
+gsettings get org.gnome.desktop.interface enable-hot-corners &&
+gsettings set org.gnome.desktop.interface enable-hot-corners false
+
 # Pin favorite programs to the dock.
 gsettings get org.gnome.shell favorite-apps &&
-gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'chromium.desktop', 'deadbeef.desktop', 'sublime_text.desktop', 'codium.desktop', 'org.gnome.Terminal.desktop', 'aseprite.desktop', 'org.gnome.gThumb.desktop', 'com.github.johnfactotum.Foliate.desktop', 'gnome-system-monitor.desktop', 'mednaffe.desktop', 'steam.desktop', 'com.usebottles.bottles.desktop', 'cxmenu-cxoffice-0-29ra4ke-CrossOver.desktop', 'org.kde.krita.desktop', 'cxmenu-cxoffice-1b9804f8-f211-477e-a57d-05ab04a912c9-3ii0rqp-Adobe Photoshop CS2.desktop', 'gimp.desktop', 'tvp-animation-11.5-pro-demo.desktop', 'trimage.desktop', 'org.mapeditor.Tiled.desktop', 'artha.desktop', 'org.gnome.Characters.desktop', 'com.github.xournalpp.xournalpp.desktop', 'Write.desktop', 'com.github.tenderowl.frog.desktop', 'io.github.Qalculate.desktop', 'anki.desktop']"
+gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'chromium.desktop', 'deadbeef.desktop', 'sublime_text.desktop', 'com.vscodium.codium.desktop', 'org.gnome.Terminal.desktop', 'aseprite.desktop', 'com.github.johnfactotum.Foliate.desktop']"
 ```
+
+# Disable application grouping in tab carousel.
+gsettings get org.gnome.desktop.wm.keybindings switch-windows-backward &&
+gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Super>Tab']" &&
+gsettings get org.gnome.desktop.wm.keybindings switch-windows &&
+gsettings get org.gnome.desktop.wm.keybindings switch-windows "['<Super>Tab']"
 
 # Limit window switcher carousel entries to current workspace.
 gsettings get org.gnome.shell.app-switcher current-workspace-only &&
@@ -706,7 +779,7 @@ gsettings get org.gnome.desktop.peripherals.touchpad tap-to-click && gsettings s
 
 # Middle-clicking titlebar toggles vertical fill.
 gsettings get org.gnome.desktop.wm.preferences action-middle-click-titlebar &&
-gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar action-middle-click-titlebar
+gsettings set org.gnome.desktop.wm.preferences action-middle-click-titlebar toggle-maximize-vertically
 
 # Set super-T to open terminal.
 ```
@@ -720,6 +793,11 @@ gsettings set org.gnome.meld indent-width 2
 gsettings get org.gnome.meld highlight-syntax &&
 gsettings set org.gnome.meld highlight-syntax true
 ```
+
+### Tweaks
+
+- Set monospace text to Bitstream Vera Sans Mono Roman size 13
+- Add weekday to top bar and change time format to 12h
 
 ### MakeMKV
 
@@ -761,13 +839,10 @@ sudo sensors-detect &&
 sensors -u
 ```
 
-AMDGPU SMU (i2c-12) caused a segfault in sensors-detect and scanning i2c-17 hung
-sensors-detect so I skipped them.
-
 #### Docker
 
 ```sh
-sudo usermod -aG docker stephen
+sudo usermod -aG docker user
 ```
 
 ### Terminal
@@ -786,11 +861,11 @@ gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profi
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ audible-bell &&
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ audible-bell false
 
-# Set default size to 100x40.
+# Set default size to 100x48.
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns &&
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 96
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows &&
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 32
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 48
 ```
 
 ### Image Viewer (eog)
@@ -803,24 +878,10 @@ gsettings get org.gnome.eog.view interpolate &&
 gsettings set org.gnome.eog.view interpolate false
 ```
 
-### Grub
-
-Set the sleep state to "Linux" / S3. I don't remember what else I changed but it
-was a number of things, including, I think, enabling secure boot.
-
-split_lock_detect=off https://github.com/ValveSoftware/steam-for-linux/issues/8003
-
-Edit /etc/default/grub with the following
-[temporary changes for keyboard lag](https://forums.lenovo.com/t5/ThinkPad-X-Series-Laptops/Lag-and-stuttering-on-X1-Carbon-Gen-9-while-running-Linux-untested-on-Windows/m-p/5082352):
-
-```grub
-GRUB_CMDLINE_LINUX_DEFAULT="i915.enable_psr=0"
-```
-
 ### DeaDBeeF
 
 - Enable GTK3 theme.
-- Enable file browser plugin.
+- Enable media library.
 
 ### Picard
 
@@ -839,12 +900,11 @@ gsettings set org.gnome.system.location enabled true
 gsettings get org.gnome.desktop.session idle-delay &&
 gsettings set org.gnome.desktop.session idle-delay 600
 
-# Allow Bluetooth sleeping.
-
 # Disable tracker-miner file indexer.
-gsettings get org.freedesktop.Tracker.Miner.Files enable-monitors && gsettings set org.freedesktop.Tracker.Miner.Files enable-monitors false
-gsettings get org.freedesktop.Tracker.Miner.Files crawling-interval && gsettings set org.freedesktop.Tracker.Miner.Files crawling-interval -2
-echo y | LANG=en tracker reset --hard
+systemctl --user mask tracker-extract-3.service tracker-miner-fs-3.service tracker-miner-rss-3.service tracker-writeback-3.service tracker-xdg-portal-3.service tracker-miner-fs-control-3.service
+gsettings get org.freedesktop.Tracker3.Miner.Files enable-monitors && gsettings set org.freedesktop.Tracker3.Miner.Files enable-monitors false
+gsettings get org.freedesktop.Tracker3.Miner.Files crawling-interval && gsettings set org.freedesktop.Tracker3.Miner.Files crawling-interval -2
+tracker3 reset -sr
 ```
 
 ## License (AGPLv3)
