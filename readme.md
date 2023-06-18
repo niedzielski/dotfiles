@@ -172,135 +172,7 @@ fwupdmgr install fixed it. I used [macOS for the SN30 Pro+](https://support.8bit
 
 ### External GPU
 
-The stock install will actually connect video but the framerate of `glxgears` is
-only about 25 FPS at any resolution and window animations are noticeably choppy.
-[all-ways-egpu](https://github.com/ewagner12/all-ways-egpu) (Wayland) and
-[egpu-switcher](https://github.com/hertg/egpu-switcher) (Xorg) both work to fix
-it. I had some trouble with pen pressure detection under Wayland so I switched
-to Xorg temporarily. For whatever reason, the changes under all-ways-egpu seem
-to be working there.
-
-Hot-plugging works so long as nothing is actively using the GPU, I think. I don't know how to test this so before I un/plug, I close all my programs (which is also good if it crashes).
-
-#### all-ways-egpu (Wayland)
-
-```bash
-git clone https://github.com/ewagner12/all-ways-egpu.git
-cd all-ways-egpu
-sudo make install
-```
-
-I tried method 1 but it ended up hanging my boot and I had to reenable the internal GPU from recovery mode.
-
-I am currently using method 2. I identify external GPU as primary.
-
-```
-$ sudo all-ways-egpu setup
-To force the eGPU as primary, we need to know which card is the eGPU to be used as primary.
-00:02.0 VGA compatible controller: Intel Corporation TigerLake GT2 [Iris Xe Graphics] (rev 01)
-Is this the eGPU to be used as primary? [y/N]
-
-Not using 00:02.0
-24:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT] (rev c0)
-Is this the eGPU to be used as primary? [y/N]
-y
-Using as primary 24:00.0
-00:1f.3 Audio device: Intel Corporation Tiger Lake-LP Smart Sound Technology Audio Controller (rev 20)
-Is this the eGPU to be used as primary? [y/N]
-
-Not using 00:1f.3
-24:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Device ab28
-Is this the eGPU to be used as primary? [y/N]
-
-Not using 24:00.1
-Identify all iGPU/dGPUs to be potentially disabled boot:
-00:02.0 VGA compatible controller: Intel Corporation TigerLake GT2 [Iris Xe Graphics] (rev 01)
-Would you like to disable this device during boot [y/N]
-
-Not disabling 00:02.0
-24:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT] (rev c0)
-Would you like to disable this device during boot [y/N]
-
-Not disabling 24:00.0
-00:1f.3 Audio device: Intel Corporation Tiger Lake-LP Smart Sound Technology Audio Controller (rev 20)
-Would you like to disable this device during boot [y/N]
-
-Not disabling 00:1f.3
-24:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Device ab28
-Would you like to disable this device during boot [y/N]
-
-Not disabling 24:00.1
-Manual Setup: Enter Bus IDs and drivers in the following example format or enter 'n' to skip.
-xx:xx.x driver
-n
-Recommended if using Method 1: Attempt to re-enable the iGPU/initially disabled devices after login? [y/N]
-
-Recommended if using Method 2: Attempt to set boot_vga flag at startup? [y/N]
-y
-Created symlink /etc/systemd/system/graphical.target.wants/all-ways-egpu-boot-vga.service → /etc/systemd/system/all-ways-egpu-boot-vga.service.
-Created symlink /etc/systemd/system/halt.target.wants/all-ways-egpu-shutdown.service → /etc/systemd/system/all-ways-egpu-shutdown.service.
-Created symlink /etc/systemd/system/shutdown.target.wants/all-ways-egpu-shutdown.service → /etc/systemd/system/all-ways-egpu-shutdown.service.
-Created symlink /etc/systemd/system/reboot.target.wants/all-ways-egpu-shutdown.service → /etc/systemd/system/all-ways-egpu-shutdown.service.
-Configuration files sucessfully created. See help for usage information
-```
-
-#### egpu-switcher (X11)
-
-This generates X11 display configs and then links the appropriate one (internal or egpu):
-
-```xorg
-# /etc/X11/xorg.conf.egpu
-Section "Module"
-    Load           "modesetting"
-EndSection
-
-Section "Device"
-    Identifier     "Device0"
-    Driver         "amdgpu"
-    BusID          "36:0:0"
-    Option         "AllowEmptyInitialConfiguration"
-    Option         "AllowExternalGpus" "True"
-EndSection
-```
-
-```xorg
-# /etc/X11/xorg.conf.internal
-Section "Module"
-    Load           "modesetting"
-EndSection
-
-Section "Device"
-    Identifier     "Device0"
-    Driver         "intel"
-    BusID          "0:2:0"
-    Option         "AllowEmptyInitialConfiguration"
-    Option         "AllowExternalGpus" "True"
-EndSection
-```
-
-#### Diagnostics
-
-With the AMD graphic driver loaded (amdgpu), radeontop (not to be confused with
-the older driver, radeon) has very low usage during normal desktop usage and
-high usage playing games:
-
-```bash
-sudo radeontop
-```
-
-`glxgears` at full screen stimulates it slightly with the graphics pipe bouncing
-between 0.83% and 7.5%.
-
-```
-$ glxgears
-Running synchronized to the vertical refresh.  The framerate should be
-approximately the same as the monitor refresh rate.
-304 frames in 5.0 seconds = 60.621 FPS
-300 frames in 5.0 seconds = 59.998 FPS
-301 frames in 5.0 seconds = 60.002 FPS
-300 frames in 5.0 seconds = 59.999 FPS
-301 frames in 5.0 seconds = 59.999 FPS
-```
+I test cable speed and verify authorization with:
 
 ```lines=16
 $ boltctl
@@ -350,49 +222,122 @@ $ boltctl
       └─ key:        no
 ```
 
-For the closed source driver, I had to manually insert it with
-`sudo modprobe -v amdgpu` which would either quit the current session or hang
-it. In the latter case, I had to reset it with `alt-prtsc-k`.
-
-`lspci -k | grep -EiA3 '3d|vga|video'` reports the drivers used:
+I see the `amdgpu` driver is in use:
 
 ```
-lspci -k | grep -EA3 '3D|VGA|Video'
-00:02.0 VGA compatible controller: Intel Corporation TigerLake GT2 [Iris Xe Graphics] (rev 01)
-	Subsystem: Lenovo Iris Xe Graphics
+lspci -k | grep -EiA3 '3d|vga|video'
+00:02.0 VGA compatible controller: Intel Corporation TigerLake-LP GT2 [Iris Xe Graphics] (rev 01)
+	Subsystem: Lenovo TigerLake-LP GT2 [Iris Xe Graphics]
 	Kernel driver in use: i915
 	Kernel modules: i915
 --
-24:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT] (rev c0)
-	Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT]
+54:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT] (rev c0)
+	Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Radeon RX 6900 XT
 	Kernel driver in use: amdgpu
 	Kernel modules: amdgpu
 ```
 
-System information as detected by Steam:
+#### Stock
+
+With the stock install, both internal and external GPUs seem to work. However, I got very poor actual framerate for applications, WebGL, and games. WebGL ran at about 45 FPS and everything felt sluggish and not snappy. For a heavy game, The Ascent, I could see it hitting the GPU hard in radeontop but it still felt slow. The Ascent also prompted for Vulkan shader compilation each time. Plain desktop apps also seem to use the external GPU according to radeontop.
+
+I'm unsure what's actually using the external GPU. `radeontop` only works on AMD cards (I tried to test my Intel card using the `--bus` option) and I see the pipe saturation bouncing regularly during normal desktop app usage and totally packed when playing a game. I see 16302M VRAM and 15887M GTT.
+
+```bash
+sudo radeontop
+```
+
+`glxgears` at full screen bumps the graphics pipe up to about 50-70%:
+
+```
+$ glxgears
+Running synchronized to the vertical refresh.  The framerate should be
+approximately the same as the monitor refresh rate.
+210 frames in 5.0 seconds = 41.779 FPS
+213 frames in 5.0 seconds = 42.461 FPS
+214 frames in 5.0 seconds = 42.765 FPS
+
+$ vblank_mode=0 glxgears
+ATTENTION: default value of option vblank_mode overridden by environment.
+5136 frames in 5.0 seconds = 1027.107 FPS
+5145 frames in 5.0 seconds = 1028.894 FPS
+5074 frames in 5.0 seconds = 1014.769 FPS
+```
+
+I see confusingly bad results with the AMD GPU selected:
+
+```
+$ DRI_PRIME=1 glxgears
+Running synchronized to the vertical refresh.  The framerate should be
+approximately the same as the monitor refresh rate.
+211 frames in 5.0 seconds = 42.187 FPS
+203 frames in 5.0 seconds = 40.466 FPS
+201 frames in 5.0 seconds = 39.978 FPS
+
+$ DRI_PRIME=1 vblank_mode=0 glxgears
+ATTENTION: default value of option vblank_mode overridden by environment.
+276 frames in 5.0 seconds = 55.116 FPS
+299 frames in 5.0 seconds = 59.654 FPS
+303 frames in 5.0 seconds = 60.520 FPS
+```
+
+Steam steams to detect both cards but only reports the primary GPU, whatever it is. Before all-ways-egpu, I saw the internal Intel card:
 
 ```
 …
-Video Card:
-    Driver:  AMD AMD SIENNA_CICHLID (DRM 3.40.0, 5.10.0-11-amd64, LLVM 11.0.1)
-    Driver Version:  4.6 (Compatibility Profile) Mesa 20.3.5
-    OpenGL Version: 4.6
-    Desktop Color Depth: 24 bits per pixel
-    Monitor Refresh Rate: 59 Hz
-    VendorID:  0x1002
-    DeviceID:  0x73bf
-    Revision Not Detected
-    Number of Monitors:  2
-    Number of Logical Video Cards:  2
-    Primary Display Resolution:  3840 x 2160
-    Desktop Resolution: 5760 x 2160
-    Primary Display Size: 23.62" x 13.39" (27.13" diag)
-                                            60.0cm x 34.0cm (68.9cm diag)
-    Primary VRAM: 16384 MB
+Video Card: 
+Driver: Intel Mesa Intel(R) Xe Graphics (TGL GT2)
+Driver Version: 4.6 (Compatibility Profile) Mesa 22.3.6
+OpenGL Version: 4.6
+Desktop Color Depth: 24 bits per pixel
+Monitor Refresh Rate: 59 Hz
+VendorID: 0x1002
+DeviceID: 0x73bf
+Revision Not Detected
+Number of Monitors: 2
+Number of Logical Video Cards: 2
+Primary Display Resolution: 3840 x 2160
+Desktop Resolution: 5760 x 2160
+Primary Display Size: 23.62" x 13.39" (27.13" diag), 60.0cm x 34.0cm (68.9cm diag)
+Primary VRAM Not Detected
 …
 ```
 
-`glxinfo -B` / `DRI_PRIME=0 glxinfo -B` / `DRI_PRIME=2 glxinfo -B` / `DRI_PRIME=3 glxinfo -B` reports:
+`glxinfo -B` reports the internal GPU:
+
+```
+name of display: :0
+display: :0  screen: 0
+direct rendering: Yes
+Extended renderer info (GLX_MESA_query_renderer):
+    Vendor: Intel (0x8086)
+    Device: Mesa Intel(R) Xe Graphics (TGL GT2) (0x9a49)
+    Version: 22.3.6
+    Accelerated: yes
+    Video memory: 31799MB
+    Unified memory: yes
+    Preferred profile: core (0x1)
+    Max core profile version: 4.6
+    Max compat profile version: 4.6
+    Max GLES1 profile version: 1.1
+    Max GLES[23] profile version: 3.2
+OpenGL vendor string: Intel
+OpenGL renderer string: Mesa Intel(R) Xe Graphics (TGL GT2)
+OpenGL core profile version string: 4.6 (Core Profile) Mesa 22.3.6
+OpenGL core profile shading language version string: 4.60
+OpenGL core profile context flags: (none)
+OpenGL core profile profile mask: core profile
+
+OpenGL version string: 4.6 (Compatibility Profile) Mesa 22.3.6
+OpenGL shading language version string: 4.60
+OpenGL context flags: (none)
+OpenGL profile mask: compatibility profile
+
+OpenGL ES profile version string: OpenGL ES 3.2 Mesa 22.3.6
+OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
+```
+
+`DRI_PRIME=1 glxinfo -B` reports the external GPU:
 
 ```
 name of display: :0
@@ -400,8 +345,8 @@ display: :0  screen: 0
 direct rendering: Yes
 Extended renderer info (GLX_MESA_query_renderer):
     Vendor: AMD (0x1002)
-    Device: AMD SIENNA_CICHLID (DRM 3.40.0, 5.10.0-11-amd64, LLVM 11.0.1) (0x73bf)
-    Version: 20.3.5
+    Device: AMD Radeon RX 6900 XT (navi21, LLVM 15.0.6, DRM 3.49, 6.1.0-9-amd64) (0x73bf)
+    Version: 22.3.6
     Accelerated: yes
     Video memory: 16384MB
     Unified memory: no
@@ -411,29 +356,203 @@ Extended renderer info (GLX_MESA_query_renderer):
     Max GLES1 profile version: 1.1
     Max GLES[23] profile version: 3.2
 Memory info (GL_ATI_meminfo):
-    VBO free memory - total: 15326 MB, largest block: 15326 MB
-    VBO free aux. memory - total: 16205 MB, largest block: 16205 MB
-    Texture free memory - total: 15326 MB, largest block: 15326 MB
-    Texture free aux. memory - total: 16205 MB, largest block: 16205 MB
-    Renderbuffer free memory - total: 15326 MB, largest block: 15326 MB
-    Renderbuffer free aux. memory - total: 16205 MB, largest block: 16205 MB
+    VBO free memory - total: 16178 MB, largest block: 16178 MB
+    VBO free aux. memory - total: 15847 MB, largest block: 15847 MB
+    Texture free memory - total: 16178 MB, largest block: 16178 MB
+    Texture free aux. memory - total: 15847 MB, largest block: 15847 MB
+    Renderbuffer free memory - total: 16178 MB, largest block: 16178 MB
+    Renderbuffer free aux. memory - total: 15847 MB, largest block: 15847 MB
 Memory info (GL_NVX_gpu_memory_info):
     Dedicated video memory: 16384 MB
-    Total available memory: 32752 MB
-    Currently available dedicated video memory: 15326 MB
+    Total available memory: 32283 MB
+    Currently available dedicated video memory: 16178 MB
 OpenGL vendor string: AMD
-OpenGL renderer string: AMD SIENNA_CICHLID (DRM 3.40.0, 5.10.0-11-amd64, LLVM 11.0.1)
-OpenGL core profile version string: 4.6 (Core Profile) Mesa 20.3.5
+OpenGL renderer string: AMD Radeon RX 6900 XT (navi21, LLVM 15.0.6, DRM 3.49, 6.1.0-9-amd64)
+OpenGL core profile version string: 4.6 (Core Profile) Mesa 22.3.6
 OpenGL core profile shading language version string: 4.60
 OpenGL core profile context flags: (none)
 OpenGL core profile profile mask: core profile
 
-OpenGL version string: 4.6 (Compatibility Profile) Mesa 20.3.5
+OpenGL version string: 4.6 (Compatibility Profile) Mesa 22.3.6
 OpenGL shading language version string: 4.60
 OpenGL context flags: (none)
 OpenGL profile mask: compatibility profile
 
-OpenGL ES profile version string: OpenGL ES 3.2 Mesa 20.3.5
+OpenGL ES profile version string: OpenGL ES 3.2 Mesa 22.3.6
+OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
+```
+
+Hot-plugging works so long as nothing is actively using the GPU, I think. I don't know how to test this so before I un/plug, I close all my programs (which is also good if it crashes).
+
+#### all-ways-egpu
+
+In the past, I used [egpu-switcher](https://github.com/hertg/egpu-switcher) for Xorg. I installed and set up [all-ways-egpu](https://github.com/ewagner12/all-ways-egpu) (Wayland) with method 3:
+
+```bash
+git clone https://github.com/ewagner12/all-ways-egpu.git
+cd all-ways-egpu
+sudo ./install.sh install
+
+$ sudo all-ways-egpu setup
+To force the eGPU as primary, we need to know which card is the eGPU to be used as primary.
+
+0000:00:02.0 VGA compatible controller: Intel Corporation TigerLake-LP GT2 [Iris Xe Graphics] (rev 01)
+Is this the eGPU to set as primary? [y/N]
+
+Not using 0000:00:02.0 as primary
+
+0000:54:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT] (rev c0)
+Is this the eGPU to set as primary? [y/N]
+y
+Using 0000:54:00.0 as primary
+
+0000:00:1f.3 Audio device: Intel Corporation Tiger Lake-LP Smart Sound Technology Audio Controller (rev 20)
+Is this the eGPU to set as primary? [y/N]
+
+Not using 0000:00:1f.3 as primary
+
+0000:54:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
+Is this the eGPU to set as primary? [y/N]
+
+Not using 0000:54:00.1 as primary
+
+Identify all iGPU/dGPUs to be potentially disabled at boot:
+
+0000:00:02.0 VGA compatible controller: Intel Corporation TigerLake-LP GT2 [Iris Xe Graphics] (rev 01)
+Is this the iGPU/dGPU to set as internal? [y/N]
+
+Not using 0000:00:02.0 as internal
+
+0000:00:1f.3 Audio device: Intel Corporation Tiger Lake-LP Smart Sound Technology Audio Controller (rev 20)
+Is this the iGPU/dGPU to set as internal? [y/N]
+
+Not using 0000:00:1f.3 as internal
+
+0000:54:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
+Is this the iGPU/dGPU to set as internal? [y/N]
+
+Not using 0000:54:00.1 as internal
+
+Manual Setup: Enter Bus IDs and drivers in the following example format or enter 'n' to skip.
+dddd:bb:ee.f driver
+n
+Recommended if using Method 1: Attempt to re-enable the iGPU/initially disabled devices after login? [y/N]
+
+ Recommended if using Method 2: Attempt to set boot_vga flag at startup? [y/N]
+
+Recommended if using Method 3 on GNOME, KDE or Sway: Attempt to automatically set the specific variables for wlroots, Kwin and Mutter at startup? [y/N]
+y
+Configuration files successfully created. See help for usage information
+
+# reboot
+```
+
+After rebooting, my external GPU was the primary and all games and apps felt silky smooth except my WebGL games which all performed better but still frequently drop frames and bounce around between 55-58 FPS.
+
+![devtools](devtools-perf.png)
+
+```bash
+sudo radeontop
+```
+
+`glxgears` at full screen bumps the graphics pipe up to about 5% vsync and 100% without:
+
+```
+$ glxgears
+Running synchronized to the vertical refresh.  The framerate should be
+approximately the same as the monitor refresh rate.
+299 frames in 5.0 seconds = 59.797 FPS
+298 frames in 5.0 seconds = 59.596 FPS
+296 frames in 5.0 seconds = 59.023 FPS
+
+$ vblank_mode=0 glxgears
+ATTENTION: default value of option vblank_mode overridden by environment.
+54427 frames in 5.0 seconds = 10885.239 FPS
+54280 frames in 5.0 seconds = 10855.855 FPS
+54649 frames in 5.0 seconds = 10929.763 FPS
+```
+
+On the internal GPU, I see it confusingly impacting radeontop at about 80 and 100%:
+
+```
+$ DRI_PRIME=1 glxgears
+Running synchronized to the vertical refresh.  The framerate should be
+approximately the same as the monitor refresh rate.
+289 frames in 5.0 seconds = 57.643 FPS
+295 frames in 5.0 seconds = 58.975 FPS
+294 frames in 5.0 seconds = 58.793 FPS
+
+$ DRI_PRIME=1 vblank_mode=0 glxgears
+ATTENTION: default value of option vblank_mode overridden by environment.
+369 frames in 5.0 seconds = 73.765 FPS
+373 frames in 5.0 seconds = 74.500 FPS
+372 frames in 5.0 seconds = 74.270 FPS
+```
+
+Steam reports the AMD GPU:
+
+```
+…
+Video Card:
+Driver: AMD AMD Radeon RX 6900 XT (navi21, LLVM 15.0.6, DRM 3.49, 6.1.0-9-amd64)
+Driver Version: 4.6 (Compatibility Profile) Mesa 22.3.6
+OpenGL Version: 4.6
+Desktop Color Depth: 24 bits per pixel
+Monitor Refresh Rate: 59 Hz
+VendorID: 0x1002
+DeviceID: 0x73bf
+Revision Not Detected
+Number of Monitors: 2
+Number of Logical Video Cards: 2
+Primary Display Resolution: 3840 x 2160
+Desktop Resolution: 5760 x 2160
+Primary Display Size: 23.62" x 13.39" (27.13" diag), 60.0cm x 34.0cm (68.9cm diag)
+Primary VRAM: 16384 MB
+…
+```
+
+`glxinfo -B` reports the external GPU:
+
+```
+name of display: :0
+display: :0  screen: 0
+direct rendering: Yes
+Extended renderer info (GLX_MESA_query_renderer):
+    Vendor: AMD (0x1002)
+    Device: AMD Radeon RX 6900 XT (navi21, LLVM 15.0.6, DRM 3.49, 6.1.0-9-amd64) (0x73bf)
+    Version: 22.3.6
+    Accelerated: yes
+    Video memory: 16384MB
+    Unified memory: no
+    Preferred profile: core (0x1)
+    Max core profile version: 4.6
+    Max compat profile version: 4.6
+    Max GLES1 profile version: 1.1
+    Max GLES[23] profile version: 3.2
+Memory info (GL_ATI_meminfo):
+    VBO free memory - total: 14906 MB, largest block: 14906 MB
+    VBO free aux. memory - total: 15683 MB, largest block: 15683 MB
+    Texture free memory - total: 14906 MB, largest block: 14906 MB
+    Texture free aux. memory - total: 15683 MB, largest block: 15683 MB
+    Renderbuffer free memory - total: 14906 MB, largest block: 14906 MB
+    Renderbuffer free aux. memory - total: 15683 MB, largest block: 15683 MB
+Memory info (GL_NVX_gpu_memory_info):
+    Dedicated video memory: 16384 MB
+    Total available memory: 32283 MB
+    Currently available dedicated video memory: 14906 MB
+OpenGL vendor string: AMD
+OpenGL renderer string: AMD Radeon RX 6900 XT (navi21, LLVM 15.0.6, DRM 3.49, 6.1.0-9-amd64)
+OpenGL core profile version string: 4.6 (Core Profile) Mesa 22.3.6
+OpenGL core profile shading language version string: 4.60
+OpenGL core profile context flags: (none)
+OpenGL core profile profile mask: core profile
+
+OpenGL version string: 4.6 (Compatibility Profile) Mesa 22.3.6
+OpenGL shading language version string: 4.60
+OpenGL context flags: (none)
+OpenGL profile mask: compatibility profile
+
+OpenGL ES profile version string: OpenGL ES 3.2 Mesa 22.3.6
 OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
 ```
 
@@ -446,9 +565,9 @@ direct rendering: Yes
 Extended renderer info (GLX_MESA_query_renderer):
     Vendor: Intel (0x8086)
     Device: Mesa Intel(R) Xe Graphics (TGL GT2) (0x9a49)
-    Version: 20.3.5
+    Version: 22.3.6
     Accelerated: yes
-    Video memory: 3072MB
+    Video memory: 31799MB
     Unified memory: yes
     Preferred profile: core (0x1)
     Max core profile version: 4.6
@@ -457,34 +576,18 @@ Extended renderer info (GLX_MESA_query_renderer):
     Max GLES[23] profile version: 3.2
 OpenGL vendor string: Intel
 OpenGL renderer string: Mesa Intel(R) Xe Graphics (TGL GT2)
-OpenGL core profile version string: 4.6 (Core Profile) Mesa 20.3.5
+OpenGL core profile version string: 4.6 (Core Profile) Mesa 22.3.6
 OpenGL core profile shading language version string: 4.60
 OpenGL core profile context flags: (none)
 OpenGL core profile profile mask: core profile
 
-OpenGL version string: 4.6 (Compatibility Profile) Mesa 20.3.5
+OpenGL version string: 4.6 (Compatibility Profile) Mesa 22.3.6
 OpenGL shading language version string: 4.60
 OpenGL context flags: (none)
 OpenGL profile mask: compatibility profile
 
-OpenGL ES profile version string: OpenGL ES 3.2 Mesa 20.3.5
+OpenGL ES profile version string: OpenGL ES 3.2 Mesa 22.3.6
 OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
-```
-
-Maximizing `glxgears` and turning off vsync enables higher frame rates:
-
-```
-$ vblank_mode=0 glxgears
-ATTENTION: default value of option vblank_mode overridden by environment.
-72519 frames in 5.0 seconds = 14503.789 FPS
-61577 frames in 5.0 seconds = 12315.346 FPS
-61253 frames in 5.0 seconds = 12250.429 FPS
-
-$ DRI_PRIME=1 vblank_mode=0 glxgears
-ATTENTION: default value of option vblank_mode overridden by environment.
-1798 frames in 5.0 seconds = 358.478 FPS
-333 frames in 5.0 seconds = 66.414 FPS
-334 frames in 5.0 seconds = 66.627 FPS
 ```
 
 #### Observations
@@ -499,7 +602,10 @@ These are dated from the closed source driver:
 
 Open-source driver:
 
-- Nature Elsewhere runs between 55-57 FPS in Chromium. Probably an issue with the game :]
+- The Ascent runs well on the ultra preset. It's playable but feels laggy and I don't know if that's the game or my system or both. Pipe is fully saturated most of the time and I see the memory at 30% ish or so.
+- [Super Patience](https://superpatience.com) runs between 55-58 FPS.
+
+![radeontop while playing The Ascent](radeontop-the-ascent.png)
 
 ### Groups
 
