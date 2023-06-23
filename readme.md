@@ -57,6 +57,8 @@ I haven't made much use of its convertible functionality yet.
 There seemed to be able to be a perpetual sale of some sort and I was also able
 to use a partner discount.
 
+I don't use the builtin display when at my desk. I usually have my two monitors connected but leave the drawing tablet off except when illustrating.
+
 ### External GPU
 
 - [AMD Radeon RX 6900 XT Graphics processing unit](https://www.amd.com/en/direct-buy/5458372200/us)
@@ -401,20 +403,20 @@ Is this the eGPU to set as primary? [y/N]
 
 Not using 0000:00:02.0 as primary
 
-0000:57:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT] (rev c0)
+0000:24:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21 [Radeon RX 6800/6800 XT / 6900 XT] (rev c0)
 Is this the eGPU to set as primary? [y/N]
 y
-Using 0000:57:00.0 as primary
+Using 0000:24:00.0 as primary
 
 0000:00:1f.3 Audio device: Intel Corporation Tiger Lake-LP Smart Sound Technology Audio Controller (rev 20)
 Is this the eGPU to set as primary? [y/N]
 
 Not using 0000:00:1f.3 as primary
 
-0000:57:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
+0000:24:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
 Is this the eGPU to set as primary? [y/N]
 
-Not using 0000:57:00.1 as primary
+Not using 0000:24:00.1 as primary
 
 Identify all iGPU/dGPUs to be potentially disabled at boot:
 
@@ -428,22 +430,17 @@ Is this the iGPU/dGPU to set as internal? [y/N]
 
 Not using 0000:00:1f.3 as internal
 
-0000:57:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
+0000:24:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Navi 21/23 HDMI/DP Audio Controller
 Is this the iGPU/dGPU to set as internal? [y/N]
 
-Not using 0000:57:00.1 as internal
+Not using 0000:24:00.1 as internal
 
 Recommended if using Method 1: Attempt to re-enable the iGPU/initially disabled devices after login? [y/N]
- 
+
  Recommended if using Method 2: Attempt to set boot_vga flag at startup? [y/N]
 y
 Recommended if using Method 3 on GNOME, KDE or Sway: Attempt to automatically set the specific variables for wlroots, Kwin and Mutter at startup? [y/N]
 
-Created symlink /etc/systemd/system/graphical.target.wants/all-ways-egpu-boot-vga.service → /etc/systemd/system/all-ways-egpu-boot-vga.service.
-Created symlink /etc/systemd/system/halt.target.wants/all-ways-egpu-shutdown.service → /etc/systemd/system/all-ways-egpu-shutdown.service.
-Created symlink /etc/systemd/system/shutdown.target.wants/all-ways-egpu-shutdown.service → /etc/systemd/system/all-ways-egpu-shutdown.service.
-Created symlink /etc/systemd/system/reboot.target.wants/all-ways-egpu-shutdown.service → /etc/systemd/system/all-ways-egpu-shutdown.service.
-Removed "/etc/systemd/system/graphical.target.wants/all-ways-egpu-set-compositor.service".
 Configuration files successfully created. See help for usage information
 
 # reboot
@@ -594,7 +591,23 @@ OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
 
 Hotplugging no longer works. When I disconnect the cable, it often hangs the OS. When I insert the cable, it often hangs the OS and doesn't use the external GPU when it doesn't. I verified the GPU by measuring the throughput drop with `vblank_mode=0 glxgears`. I really trust the glxgears output now.
 
-When I use the Thunderbolt cables in parallel (one for GPU, one for everything else), I get a 10% idle performance increase with `vblank_mode=0 glxgears` and the system seems to run more smoothly on the whole (no audio or other flickers). Once, with the cables in serial, I had a second or two hiccup.
+When I use the Thunderbolt cables in parallel (one for GPU, one for everything else), I get an idle performance increase with `vblank_mode=0 glxgears` and the system seems to run more smoothly on the whole (no audio or other flickers). Once, with the cables in serial, I had a second or two hiccup.
+
+Two cables:
+
+```
+54956 frames in 5.0 seconds = 10991.028 FPS
+54754 frames in 5.0 seconds = 10950.684 FPS
+54907 frames in 5.0 seconds = 10981.390 FPS
+```
+
+One cable:
+
+```
+48414 frames in 5.0 seconds = 9682.680 FPS
+48839 frames in 5.0 seconds = 9767.657 FPS
+48515 frames in 5.0 seconds = 9702.884 FPS
+```
 
 #### Observations
 
