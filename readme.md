@@ -590,6 +590,10 @@ OpenGL ES profile version string: OpenGL ES 3.2 Mesa 22.3.6
 OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
 ```
 
+Hotplugging no longer works. When I disconnect the cable, it often hangs the OS. When I insert the cable, it often hangs the OS and doesn't use the external GPU when it doesn't. I verified the GPU by measuring the throughput drop with `vblank_mode=0 glxgears`. I really trust the glxgears output now.
+
+When I use the Thunderbolt cables in parallel (one for GPU, one for everything else), I get a 10% performance increase with `vblank_mode=0 glxgears` and the system seems to run more smoothly on the whole. Once, with the cables in serial, I had a second or two hiccup.
+
 #### Observations
 
 These are dated from the closed source driver:
@@ -680,7 +684,6 @@ flatpak install \
   com.obsproject.Studio \
   com.uploadedlobster.peek \
   com.usebottles.bottles \
-  com.vscodium.codium \
   org.gimp.GIMP \
   org.kde.krita \
   org.musicbrainz.Picard
@@ -731,6 +734,7 @@ specific.
 
 - Set about://flags/#force-color-profile to sRGB.
 - Disable cache in the DevTools network tab.
+- Enable Search message content on Proton.
 
 #### about://settings/downloads
 
@@ -785,6 +789,7 @@ sudo apt install sublime-text
 - [Steam](https://store.steampowered.com/about)
 - [TVPaint](https://www.tvpaint.com)
 - [Visual Studio Code](https://code.visualstudio.com/download)
+- [VSCodium](https://github.com/vscodium/vscodium/releases)
 
 ### GNOME Extensions
 
@@ -932,7 +937,12 @@ To-do: How can I run configure mode non-interactively until it has enough
 samples?
 
 ```bash
-sudo powertop -c
+# Disable screensaver.
+
+su -c 'let i=0; while [ $i -lt 20 ]; do echo $i; echo q|/usr/sbin/powertop -c; let i+=1; done'
+
+# Enable screensaver.
+
 sudo powertop --auto-tune
 ```
 
