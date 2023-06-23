@@ -86,9 +86,9 @@ elif [[ -f /etc/bash_completion ]]; then
   . /etc/bash_completion
 fi
 
-if [[ -d ~/opt/fzf/shell ]]; then
-  . ~/opt/fzf/shell/completion.bash
-  . ~/opt/fzf/shell/key-bindings.bash
+if [[ -d ~/bin/.fzf/shell ]]; then
+  . ~/bin/.fzf/shell/completion.bash
+  . ~/bin/.fzf/shell/key-bindings.bash
 fi
 
 alias p=pushd
