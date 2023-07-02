@@ -589,7 +589,7 @@ OpenGL ES profile version string: OpenGL ES 3.2 Mesa 22.3.6
 OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
 ```
 
-Hotplugging no longer works. When I disconnect the cable, it often hangs the OS. When I insert the cable, it often hangs the OS and doesn't use the external GPU when it doesn't. I verified the GPU by measuring the throughput drop with `vblank_mode=0 glxgears`. I really trust the glxgears output now.
+Hot-plugging sort of works. When I disconnect the cable, it often hangs the OS. When I insert the cable, it often hangs the OS and doesn't use the external GPU when it doesn't. Sometimes I have to restart the display with alt-printscreen-k. I verified the GPU by measuring the throughput drop with `vblank_mode=0 glxgears`. I really trust the glxgears output now.
 
 When I use the Thunderbolt cables in parallel (one for GPU, one for everything else), I get an idle performance increase with `vblank_mode=0 glxgears` and the system seems to run more smoothly on the whole (no audio or other flickers). Once, with the cables in serial, I had a second or two hiccup.
 
@@ -639,7 +639,7 @@ This required a reboot not just a logout.
 
 ### Inputs
 
-Xbox mode (2 LEDs) works well. I remapped axes and then calibrated with `jstest-gtk` then persisted the state with `sudo jscal-store /dev/input/js1`.
+PS mode (MSB LED) works well. I remapped axes and then calibrated with `jstest-gtk` then persisted the state with `sudo jscal-store /dev/input/js1`.
 
 ### Restore
 
@@ -664,10 +664,10 @@ sudo apt upgrade &&
 sudo apt dist-upgrade &&
 sudo apt install \
   bash-completion build-essential chromium command-not-found curl diffpdf \
-  docker-compose entr flac flatpak fontforge fonts-roboto git gnome-screenshot \
-  gpick gthumbhtop imagemagick inkscape jstest-gtk libimage-exiftool-perl \
-  lm-sensors lshw meld mpv pigz potrace powertop pv radeontop rsync \
-  ttf-bitstream-vera vim whois wl-clipboard zoxide &&
+  docker-compose entr flac flatpak fontforge fonts-roboto git \
+  gnome-power-manager gnome-screenshot gpick gthumbhtop imagemagick inkscape \
+  jstest-gtk libimage-exiftool-perl lm-sensors lshw meld mpv pigz potrace \
+  powertop pv radeontop rsync ttf-bitstream-vera vim whois wl-clipboard zoxide &&
 sudo apt remove thunderbird &&
 sudo apt autoremove
 ```
