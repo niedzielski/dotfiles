@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-exec adb "$@" exec-out screencap -p > ~/desk/screenshot-$(timestamp).png
+exec adb "$@" exec-out screencap -p > ~/desk/screenshot-$(date +%F-%H-%M-%S-%N).png
