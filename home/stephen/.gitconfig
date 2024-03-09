@@ -9,10 +9,12 @@
 [alias]
   crumb = commit --allow-empty-message -nm ''
   co = checkout
-  s = status
+  s = status --find-renames
   # --pickaxe: limit any regexs to the actual content change.
-  d = diff --pickaxe-regex -C -C #--word-diff
+  d = diff --pickaxe-regex --find-copies-harder --word-diff
   dc = !git d --cached
+  dt = !git difftool
+  dtc = !git difftool --cached
   # --show-pulls: report merge commits too.
   l = log -C -C --show-pulls
   short = rev-parse --short
@@ -23,7 +25,10 @@
   push-gerrit-draft = push origin HEAD:refs/drafts/master
 
 [protocol]
-    version = 2
+  version = 2
+
+[stash]
+  showIncludeUntracked = true
 
 [color]
   grep = auto
@@ -87,6 +92,7 @@
   branch = true
 [submodule]
   fetchJobs = 0
+  recurse = true
 
 [diff-so-fancy]
   markEmptyLines = false
@@ -98,11 +104,23 @@
 	autoupdate = true
 [user]
 	name = Stephen Niedzielski
-	email = stephen@niedzielski.com
+	email = stephen@oidoid.com
 [commit]
 	verbose = true
 [pull]
 	ff = only
 [init]
-	templateDir = /home/stephen/.git-template
+	templateDir = /home/user/.git-template
 	defaultBranch = main
+
+[branch]
+  # always set up tracking branch based on the branched-from branch
+  autosetupmerge = always
+  # on pull, always do a rebase instead of a merge
+  autosetuprebase = always
+
+[includeIf "gitdir:~/work/reddit/"]
+  path = ~/work/reddit/.gitconfig
+
+[push]
+	autoSetupRemote = true
