@@ -8,5 +8,6 @@
    "keys": ["ctrl+shift+c"],
    "command": "toggle_setting",
    "args": {"setting": "draw_centered"}
-}
+  },
+  { "keys": ["ctrl+i", "ctrl+s"], "command": "invert_selection" }
 ]
