@@ -24,7 +24,7 @@ destination_stem="${destination_stem:-archive-}"
 
 # Update this destination as needed. I usually just make a new empty
 # archive directory when changing drives like mkdir archive/archive/-null.
-destination_base_dir="${destination_base_dir:-/media/user/daily-2023-03-12/archive}"
+destination_base_dir="${destination_base_dir:-/media/user/daily-2024-02-22/archive}"
 if ! [ -d "$destination_base_dir" ]; then
   >&2 echo "Destination directory, \"$destination_base_dir\", does not exist."
   exit 1
