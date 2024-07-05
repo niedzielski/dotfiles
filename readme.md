@@ -388,7 +388,7 @@ Hot-plugging works so long as nothing is actively using the GPU, I think. I don'
 
 #### all-ways-egpu
 
-In the past, I used [egpu-switcher](https://github.com/hertg/egpu-switcher) for Xorg. I installed and set up [all-ways-egpu](https://github.com/ewagner12/all-ways-egpu) (Wayland) with method 3:
+In the past, I used [egpu-switcher](https://github.com/hertg/egpu-switcher) for Xorg. I installed and set up [all-ways-egpu](https://github.com/ewagner12/all-ways-egpu) (Wayland) with method 2:
 
 ```bash
 git clone https://github.com/ewagner12/all-ways-egpu.git
@@ -665,10 +665,10 @@ sudo apt dist-upgrade &&
 sudo apt install \
   bash-completion build-essential chromium command-not-found curl diffpdf \
   docker-compose entr flac flatpak fontforge fonts-roboto git \
-  gnome-power-manager gnome-screenshot gpick gthumbhtop imagemagick inkscape \
-  jstest-gtk libimage-exiftool-perl lm-sensors lshw meld mpv pigz potrace \
+  gnome-power-manager gnome-screenshot gpick gthumb htop imagemagick inkscape \
+  jstest-gtk libimage-exiftool-perl lm-sensors lshw meld mpv picard pigz potrace \
   powertop pv radeontop rsync ttf-bitstream-vera vim whois wl-clipboard zoxide &&
-sudo apt remove thunderbird &&
+sudo apt remove evolution rhythmbox thunderbird unattended-upgrades &&
 sudo apt autoremove
 ```
 
@@ -676,7 +676,7 @@ Sometimes I'll also install:
 
 ```bash
 sudo apt install \
-  blender colordiff csvtool mesa-utils moreutils nmap opus-tools scrcpy \
+  blender colordiff csvtool dvdbackup mesa-utils moreutils nmap opus-tools scrcpy \
   sg3-utils sox tmux sqlitebrowser wmctrl xclip xdotool
 ```
 
@@ -695,13 +695,11 @@ flatpak install \
   com.calibre_ebook.calibre \
   com.github.AmatCoder.mednaffe \
   com.github.johnfactotum.Foliate \
-  com.github.tenderowl.frog \
   com.obsproject.Studio \
   com.uploadedlobster.peek \
   com.usebottles.bottles \
   org.gimp.GIMP \
-  org.kde.krita \
-  org.musicbrainz.Picard
+  org.kde.krita
 ```
 
 ## Software and Update
@@ -751,6 +749,10 @@ specific.
 - Disable cache in the DevTools network tab.
 - Enable Search message content on Proton.
 
+#### chrome://settings/appearance
+
+- Disable Show home button.
+
 #### about://settings/downloads
 
 - Set Location to `$HOME/desk`.
@@ -795,7 +797,7 @@ sudo apt install sublime-text
 
 - [Aseprite](https://www.aseprite.org)
 - [bat](https://github.com/sharkdp/bat/releases)
-- [fd](https://github.com/sharkdp/fd)
+- [fd](https://github.com/sharkdp/fd/releases)
 - [Chrome](https://www.google.com/chrome)
 - [DeaDBeeF](http://deadbeef.sourceforge.net/download.html)
 - [Delta](https://github.com/dandavison/delta/releases)
@@ -829,7 +831,7 @@ gsettings set org.gnome.nautilus.list-view use-tree-view true
 gsettings get org.gnome.nautilus.list-view default-zoom-level &&
 gsettings set org.gnome.nautilus.list-view default-zoom-level medium
 
-# Set the file columns. Can't seem to do this from CLI?
+# Set the file columns.
 gsettings get org.gnome.nautilus.list-view default-column-order &&
 gsettings set org.gnome.nautilus.list-view default-column-order "['name', 'detailed_type', 'date_created', 'date_modified_with_time', 'date_accessed', 'size']" &&
 gsettings get org.gnome.nautilus.list-view default-visible-columns &&
@@ -845,7 +847,7 @@ gsettings set org.gnome.desktop.privacy remember-recent-files false
 gsettings get org.gnome.nautilus.preferences always-use-location-entry &&
 gsettings set org.gnome.nautilus.preferences always-use-location-entry true
 
-# Show hidden files. Can't seem to do this from CLI?
+# Show hidden files.
 gsettings get org.gnome.nautilus.preferences show-hidden-files &&
 gsettings set org.gnome.nautilus.preferences show-hidden-files true
 
@@ -873,14 +875,14 @@ gsettings set org.gnome.desktop.interface enable-hot-corners false
 
 # Pin favorite programs to the dock.
 gsettings get org.gnome.shell favorite-apps &&
-gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'chromium.desktop', 'deadbeef.desktop', 'sublime_text.desktop', 'com.vscodium.codium.desktop', 'org.gnome.Terminal.desktop', 'aseprite.desktop', 'com.github.johnfactotum.Foliate.desktop']"
+gsettings set org.gnome.shell favorite-apps "['org.gnome.Nautilus.desktop', 'chromium.desktop', 'deadbeef.desktop', 'sublime_text.desktop', 'codium.desktop', 'org.gnome.Terminal.desktop', 'aseprite.desktop', 'com.github.johnfactotum.Foliate.desktop']"
 ```
 
 # Disable application grouping in tab carousel.
 gsettings get org.gnome.desktop.wm.keybindings switch-windows-backward &&
 gsettings set org.gnome.desktop.wm.keybindings switch-windows-backward "['<Shift><Super>Tab']" &&
 gsettings get org.gnome.desktop.wm.keybindings switch-windows &&
-gsettings get org.gnome.desktop.wm.keybindings switch-windows "['<Super>Tab']"
+gsettings set org.gnome.desktop.wm.keybindings switch-windows "['<Super>Tab']"
 
 # Limit window switcher carousel entries to current workspace.
 gsettings get org.gnome.shell.app-switcher current-workspace-only &&
@@ -992,11 +994,14 @@ gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profi
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ audible-bell &&
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ audible-bell false
 
-# Set default size to 100x48.
+# Set default size to 96x48.
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns &&
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-columns 96
 gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows &&
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ default-size-rows 48
+
+gsettings get org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font &&
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$profile/ font 'Bitstream Vera Sans Mono 10'
 ```
 
 ### Image Viewer (eog)
