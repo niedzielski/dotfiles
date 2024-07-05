@@ -24,7 +24,7 @@ destination_stem="${destination_stem:-archive-}"
 
 # Update this destination as needed. I usually just make a new empty
 # archive directory when changing drives like mkdir archive/archive/-null.
-destination_base_dir="${destination_base_dir:-/media/user/daily-2024-02-22/archive}"
+destination_base_dir="${destination_base_dir:-/media/user/daily-2024-05-26/archive}"
 if ! [ -d "$destination_base_dir" ]; then
   >&2 echo "Destination directory, \"$destination_base_dir\", does not exist."
   exit 1
@@ -76,11 +76,13 @@ flatpak list --all --columns=all >| "$diagnostics_dir/flatpak.text" 2>&1 || :
 # performance hit, I didn't know if there were caveats when using `--link-dest`,
 # and I don't think it will actually offer many gains given I don't consciously
 # make hard links in my source files and `--link-dest` is checking the last sync
-# anyway.
+# anyway. Since hard links can't cross filesystem boundaries, maybe it doesn't
+# matter.
 #
 # Extended-attributes (`-X`) and ACLs (`-A`) are also not copied. These could be
 # added but I don't consciously use them in my source files and I'm unsure what
-# the implications of copying them are unfortunately.
+# the implications of copying them are unfortunately. The manual makes these
+# sound complex.
 #
 # No compression and no partials since the transfer is local and I'm assuming
 # these have a performance cost.
