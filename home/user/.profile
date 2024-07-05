@@ -21,7 +21,7 @@ if [ -f "$HOME/.shrc" ]; then export ENV="$HOME/.shrc"; fi
 # fi
 
 # protobuf
-export PROTOC_DIR="$HOME/bin/protoc-21.9"
+export PROTOC_DIR="$HOME/bin/protoc"
 export PROTOC="$PROTOC_DIR/bin/protoc"
 export PROTOC_INCLUDES="$PROTOC_DIR/include"
 
