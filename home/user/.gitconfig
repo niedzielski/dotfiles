@@ -119,8 +119,7 @@
   # on pull, always do a rebase instead of a merge
   autosetuprebase = always
 
-#[includeIf "gitdir:~/work/reddit/"]
-[includeIf "hasconfig:remote.*.url:github.snooguts.net**"]
+[includeIf "hasconfig:remote.*.url:git@github.snooguts.net:*/**"]
   path = ~/work/reddit/.gitconfig
 
 [push]
