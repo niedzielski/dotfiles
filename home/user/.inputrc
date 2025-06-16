@@ -1,3 +1,5 @@
+# ctrl-_ is undo.
+
 set input-meta on
 set output-meta on
 set convert-meta off
@@ -24,12 +26,7 @@ set enable-bracketed-paste on
 
 # http://www.ukuug.org/events/linux2003/papers/bash_tips/
 # https://news.ycombinator.com/item?id=11211344
-# incremental searching with up and down. e.g., type "ls" and press up to search all ls invocations
+# incremental searching with up and down. e.g., type "ls" and press up to search
+# all ls invocations.
 "\e[A": history-search-backward
 "\e[B": history-search-forward
-
-# todo: this is bash specific. use bash-specific mechanism
-"\e[1;3A": "pushd ..\n" # alt-up
-"\e[1;3C": "pushd -0\n" # alt-right
-"\e[1;3B": "popd\n" # alt-down
-"\e[1;3D": "pushd +1\n" # alt-left

@@ -67,8 +67,16 @@ set -b
 # if a command is unrecognized but matches a directory, cd into it
 shopt -s autocd
 
-# prompt
+# prompt.
 PS1='\[\e]0;\u@\h:\w\a\]$(prompt $? 1 $COLUMNS)'
+
+
+# input.
+bind '"\e[1;3A":"pushd ..\n"' # alt+up
+bind '"\e[1;3C":"pushd -0\n"' # alt+right
+bind '"\e[1;3B":"popd\n"'     # alt+down
+bind '"\e[1;3D":"pushd +1\n"' # alt+left
+
 
 # ------------------------------------------------------------------------------
 # completion
