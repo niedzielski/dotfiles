@@ -5,11 +5,17 @@
   "gtk_client_side_window_decorations": false,
 	"soda_classic_tabs": true,
 	"draw_white_space": ["all_tabs", "selection", "trailing", "isolated"],
-	"font_size": 15,
+	"font_size": 10,
 	"translate_tabs_to_spaces": true,
 	"tab_size": 2,
 	"rulers": [80],
 	"spell_check": true,
 	"line_numbers": false,
 	"fade_fold_buttons": false,
+	"added_words":
+	[
+		"oidoid",
+		"niedzielski",
+		"stephen",
+	]
 }
