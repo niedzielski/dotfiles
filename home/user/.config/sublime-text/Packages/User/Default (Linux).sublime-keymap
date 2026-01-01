@@ -1,7 +1,7 @@
 [
   {"keys": ["ctrl+t"], "command": "new_file"},
   {"keys": ["ctrl+alt+m"], "command": "toggle_menu"},
-  {"keys": ["ctrl+e"], "command": "toggle_side_bar"},
+  {"keys": ["ctrl+b"], "command": "toggle_side_bar"},
   { "keys": ["alt+up"], "command": "swap_line_up" },
   { "keys": ["alt+down"], "command": "swap_line_down" },
   {
