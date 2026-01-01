@@ -2,9 +2,13 @@
 
 # alphabetical, do not list . & .., mark directories with a trailing slash, &
 # colored, group directories first
-alias l='\ls -Ap --color=auto --group-directories-first'
+alias l='\ls -Apv --color=auto --group-directories-first'
 
-alias ls='exa -alFbghmu@ --changed --color-scale --group-directories-first --time-style iso'
+#alias ls='exa -alFbghmu@ --changed --color-scale --group-directories-first --time-style iso'
+alias ls='eza --accessed --all --long --classify --binary --extended --group --header --modified  --changed --color-scale --group-directories-first --time-style=iso'
+
+# espeak done, notify
+alias doot='play "|sox -np synth .35 sine 440"'
 
 alias cp=cp\ -ai # prompt on overwrite, preserve all
 
@@ -18,20 +22,22 @@ alias c=cd
 alias rsync='rsync -aiz --partial-dir=.rsync-partial --partial'
 
 # smart-case
-alias rg='rg -SUP --ignore-file ~/.rgignore -. --max-columns=$COLUMNS --max-columns-preview'
+alias rg='rg -SUP --hyperlink-format=default --ignore-file ~/.rgignore -. --max-columns=$COLUMNS --max-columns-preview --threads=8'
 
 alias recycle=gio\ trash
 
 # todo: if not recursive (-r) add -s?
 alias d='colordiff --speed-large-files --suppress-common-lines -W$COLUMNS -y -p -t --tabsize=2 -d'
 
-alias cat=bat
+alias cat=batcat
 
-alias F='fd -H'
+alias F='fd --exclude=.git/ --hidden --no-require-git'
 
 alias abspath=realpath\ -ms
 
 alias e=echo
+
+alias ip=ip\ --color=auto
 
 alias s=sed\ -r
 
@@ -46,5 +52,8 @@ alias map='x -I{} '
 
 # extended regex, skip binaries, devices, sockets, & dirs, colored, & line
 # -buffered. use a non-canonical alias instead of GREP_OPTIONS which may wreck
-# poorly written scripts
+# poorly written scripts.
 alias g='grep -EID skip -d skip --color=auto --line-buffered'
+
+alias zed='flatpak run dev.zed.Zed'
+alias zep='flatpak run dev.zed.Zed-Preview'

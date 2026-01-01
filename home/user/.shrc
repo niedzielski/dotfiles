@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
+
+# consider the present directory and ~/.cd when changing directories
+CDPATH="${CDPATH:-.}:$HOME/bookmarks"
+
 [ -f ~/.sh_util ] && . ~/.sh_util
 [ -f ~/.sh_aliases ] && . ~/.sh_aliases
 
@@ -6,3 +10,25 @@
 if [ -f "$HOME/.dircolors" ]; then eval "$(dircolors "$HOME/.dircolors")"; fi
 EXA_COLORS="$LS_COLORS:sn=;34"
 export EXA_COLORS
+
+bookmark() { ln -sr "$PWD" "$HOME/.bookmarks/@$1"; }
+
+nvm() {
+  IFS= read -r v < .nvmrc || { echo "no .nvmrc" >&2; return 1; }
+
+  node_dir="/home/user/bin/node-v${v}-linux-x64/bin"
+  [ -d "$node_dir" ] || { echo "no v${v}" >&2; return 2; }
+
+  old_IFS="$IFS"
+  IFS=:
+  path=""
+  for dir in $PATH; do
+    case "$dir" in
+      /home/user/bin/node-v*-linux-x64/bin) continue ;;
+    esac
+    path="${path:+$path:}$dir"
+  done
+  IFS="$old_IFS"
+
+  export PATH="$node_dir${path:+:$path}"
+}
