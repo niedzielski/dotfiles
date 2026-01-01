@@ -14,10 +14,16 @@ export EXA_COLORS
 bookmark() { ln -sr "$PWD" "$HOME/.bookmarks/@$1"; }
 
 nvm() {
-  IFS= read -r v < .nvmrc || { echo "no .nvmrc" >&2; return 1; }
+  if [ -n "$1" ]; then
+    v="$1"
+  else
+    IFS= read -r v < .nvmrc
+  fi
+
+  [ -n "$v" ] || { echo "no version" >&2; return 2; }
 
   node_dir="/home/user/bin/node-v${v}-linux-x64/bin"
-  [ -d "$node_dir" ] || { echo "no v${v}" >&2; return 2; }
+  [ -d "$node_dir" ] || { echo "no v${v}" >&2; return 3; }
 
   old_IFS="$IFS"
   IFS=:
