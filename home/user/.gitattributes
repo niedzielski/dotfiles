@@ -1,8 +1,8 @@
-*.ai -diff
+*.ai -diff linguist-generated=true
 *.bmp diff=img
 *.gif diff=img
 *.jpg diff=img
 *.jpeg diff=img
 *.png diff=img
-package-lock.json -diff
-yarn.lock -diff
+package-lock.json -diff linguist-generated=true
+yarn.lock -diff linguist-generated=true
