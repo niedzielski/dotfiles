@@ -9,13 +9,13 @@ if [[ -f ~/.shrc ]]; then . ~/.shrc; fi
 # ------------------------------------------------------------------------------
 # globbing
 
-# enabled extended globbing
+# enabled extended globbing.
 shopt -s extglob
 
-# enable recursive globbing using **
+# enable recursive globbing using **.
 shopt -s globstar
 
-# ignore case
+# ignore case.
 shopt -s nocaseglob
 
 # ------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ shopt -s nocaseglob
 # preserve the past as completely as possible
 
 # don't record adjacent duplicates or lines starting with a space
-HISTCONTROL=ignoredups:ignorespace
+HISTCONTROL=ignoreboth
 
 # unlimited history
 HISTSIZE=
@@ -41,9 +41,6 @@ shopt -s histappend
 # allow failed history substitution reedits
 shopt -s histreedit
 
-# don't escape variables
-shopt -s direxpand
-
 # record each line as it is entered
 # to-do: deduplicate repeated commands. `fc -ln -1` yields the last executed command but omits empties.
 PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a; fc -ln -1|sed -r \"s%^\s+(.*)%\1⋮\$PWD%\" >> ~/.bash_history_jog"
@@ -57,6 +54,9 @@ set -C
 # the return value of a pipeline is that of the rightmost command to exit with a
 # non-zero status, or zero if all commands exit successfully
 set -o pipefail
+
+# check the window size after each command update LINES and COLUMNS.
+shopt -s checkwinsize
 
 # check for active jobs before exiting
 shopt -s checkjobs
@@ -94,6 +94,7 @@ elif [[ -f /etc/bash_completion ]]; then
   . /etc/bash_completion
 fi
 
+export FZF_DEFAULT_OPTS='--height=30'
 if [[ -d ~/bin/.fzf/shell ]]; then
   . ~/bin/.fzf/shell/completion.bash
   . ~/bin/.fzf/shell/key-bindings.bash
