@@ -1,53 +1,99 @@
 {
+  // "typescript.disableAutomaticTypeAcquisition": true,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
-  "workbench.colorTheme": "Default Light+",
-  "editor.rulers": [80],
-  "workbench.colorCustomizations": {
-    "statusBar.background": "#999999"
-  },
+  "editor.fontSize": 12,
+  "window.zoomLevel": 2,
+  "workbench.colorTheme": "Default Light Modern",
   "editor.minimap.enabled": false,
-  "typescript.referencesCodeLens.enabled": true,
-  "cSpell.userWords": [
-    "Brotli",
-    "buttonish",
-    "Cacheable",
-    "cels",
-    "esbuild",
-    "lingui",
-    "middlewares",
-    "niedzielski",
-    "nums",
-    "oidoid",
-    "proto",
-    "protobuf",
-    "protos",
-    "stateful",
-    "testid",
-    "unmarshal",
-    "vitest"
+  "editor.formatOnSave": true,
+  "workbench.activityBar.location": "top",
+  "editor.rulers": [
+    80
   ],
-  // "explorer.confirmDelete": false,
-  // "explorer.confirmDragAndDrop": false,
-  "typescript.reportStyleChecksAsWarnings": false,
-  "search.smartCase": true,
-  "js/ts.implicitProjectConfig.checkJs": true,
-  "files.exclude": {
-    ".eslintcache": true,
-    "package-lock.json": true
-  },
+  "references.preferredLocation": "view",
+    // no snippets in completion menu like `#region`.
+  "editor.snippetSuggestions": "none",
+  // "editor.suggest.showKeywords": false, this breaks completion. causes `this` to complete `thiRANDOMTHINGINWITHTHATPREFIX` even though I don't tab.
+  "window.titleBarStyle": "custom",
+  "workbench.editor.tabSizing": "shrink",
+  // no middle click paste.
+  "editor.selectionClipboard": false,
+  // "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.requireConfig": true,
+  // Don't show abc suggestions in autocomplete. These are extremely noisy,
+  // often misleading, 99.9% of the time useless.
+  "editor.suggest.showWords": false,
+  "editor.wordBasedSuggestions": "off",
+  "javascript.suggest.names": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "javascript.suggest.autoImports": true,
   "typescript.suggest.autoImports": true,
-  "prettier.requireConfig": true,
-  "editor.formatOnSave": true,
-  "debug.openDebug": "neverOpen",
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "javascript.referencesCodeLens.enabled": true,
-  "search.useGlobalIgnoreFiles": true,
-  "typescript.implementationsCodeLens.enabled": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.fixAll.biome": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit",
+    "source.fixAll.ts": "explicit",
+    // "source.removeUnused.ts": "explicit", this can delete code
+    "source.addMissingImports.ts": "always",
+    "source.addMissingImports": "always",
+    "source.removeUnusedImports": "explicit",
+    // "source.organizeImports": "explicit",
+    "quickfix.biome": "explicit",
+    // "source.organizeImports.biome": "explicit"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+
+  // Never peek.
+  "editor.gotoLocation.multipleTypeDefinitions": "goto",
+  "editor.gotoLocation.multipleReferences": "goto",
+  "editor.gotoLocation.multipleImplementations": "goto",
+  "editor.gotoLocation.multipleDefinitions": "goto",
+  "editor.gotoLocation.multipleDeclarations": "goto",
+  "testing.automaticallyOpenPeekView": "never",
+  "gopls": {
+    "ui.navigation.importShortcut": "Definition"
+  },
+  // Don't show typos in the problem pane.
+  "cSpell.diagnosticLevel": "Hint",
+  "files.associations": {
+    "*.glsl.ts": "glsl",
+    "*.make": "makefile",
+    // always allow comments
+    "*.json": "jsonc"
+  },
+  "workbench.startupEditor": "none",
+  "svelte.enable-ts-plugin": true,
+  // Always restore prior state.
+  "window.restoreWindows": "preserve",
+  "go.toolsManagement.autoUpdate": true,
+  "cSpell.userWords": [
+    "Devvit",
+    "Hitbox",
+    "hitboxes",
+    "Millis",
+    "Niedzielski",
+    "nonsquare",
+    "oidoid",
+    "spritesheet",
+    "tileset",
+    "tilesheet",
+    "Voronoi"
+  ],
+  // "typescript.reportStyleChecksAsWarnings": false,
+  // "search.smartCase": true,
+  // "js/ts.implicitProjectConfig.checkJs": true,
+  // "debug.openDebug": "neverOpen",
+  // "search.useGlobalIgnoreFiles": true,
+  // "typescript.implementationsCodeLens.enabled": true,
+  "[markdown]": {
+    "cSpell.diagnosticLevel": "Error"
+  },
   "[plaintext]": {
-    "editor.wordBasedSuggestions": false,
+    "cSpell.diagnosticLevel": "Error",
+    "editor.wordBasedSuggestions": "off",
     "editor.quickSuggestions": {
       "comments": "off",
       "strings": "off",
@@ -55,88 +101,88 @@
     },
     "editor.wordWrap": "on"
   },
-  "window.titleBarStyle": "custom",
-  "editor.renderFinalNewline": true,
-  "references.preferredLocation": "view",
-  "files.autoSave": "off",
-  "editor.gotoLocation.multipleTypeDefinitions": "goto",
-  "editor.gotoLocation.multipleReferences": "goto",
-  "editor.gotoLocation.multipleImplementations": "goto",
-  "editor.gotoLocation.multipleDefinitions": "goto",
-  "editor.gotoLocation.multipleDeclarations": "goto",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.addMissingImports": true,
-    "source.organizeImports": true
-  },
-  "cSpell.logLevel": "Information",
-  "workbench.editor.tabSizing": "shrink",
-  "editor.unfoldOnClickAfterEndOfLine": true,
-  // "eslint.format.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "javascriptvue",
-    "typescript",
-    "typescriptreact",
-    "typescriptvue"
-  ],
-  "eslint.codeAction.disableRuleComment": {},
-  "editor.renderWhitespace": "trailing",
-  "workbench.editor.pinnedTabSizing": "shrink",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "window.restoreWindows": "preserve",
+  "lit-plugin.strict": true,
+  "lit-plugin.rules.no-missing-element-type-definition": "error",
+  "lit-plugin.rules.no-unknown-event": "error",
+  "lit-plugin.rules.no-boolean-in-attribute-binding": "error",
+  "lit-plugin.rules.no-complex-attribute-binding": "error",
+  "lit-plugin.rules.no-incompatible-property-type": "error",
+  "lit-plugin.rules.no-invalid-attribute-name": "error",
+  "lit-plugin.rules.no-incompatible-type-binding": "error",
+  "lit-plugin.rules.no-invalid-boolean-binding": "error",
+  "lit-plugin.rules.no-invalid-directive-binding": "error",
+  "lit-plugin.rules.no-unclosed-tag": "error",
+  "lit-plugin.rules.no-unknown-attribute": "error",
+  "lit-plugin.rules.no-unknown-property": "error",
+  "lit-plugin.rules.no-unknown-slot": "error",
+  "lit-plugin.rules.no-unknown-tag-name": "error",
+  "typescript.referencesCodeLens.enabled": true,
   "typescript.referencesCodeLens.showOnAllFunctions": true,
-  "javascript.referencesCodeLens.showOnAllFunctions": true,
-  "editor.codeLensFontSize": 5,
-  "editor.stickyTabStops": true,
-  "js/ts.implicitProjectConfig.strictNullChecks": true,
-  "editor.lineNumbers": "off",
-  "editor.selectionClipboard": false,
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.bracketPairColorization.enabled": true,
-  "workbench.tree.indent": 12,
-  "editor.fontFamily": "DejaVu Sans Mono",
-  "files.associations": {
-    // always allow comments
-    "*.json": "jsonc",
-    "*.glsl.ts": "glsl",
-    "*.make": "makefile"
-  },
-  //"explorer.excludeGitIgnore": true,
-  "cSpell.customDictionaries": {
-    "custom-dictionary-user": {
-      "name": "custom-dictionary-user",
-      "path": "~/.cspell/custom-dictionary-user.txt",
-      "addWords": true,
-      "scope": "user"
-    }
-  },
-  "window.commandCenter": true,
-  "go.survey.prompt": false,
-
+  "deno.codeLens.references": true,
+  "deno.codeLens.referencesAllFunctions": true,
+  "terminal.integrated.enableFileLinks": "on"
+  // "lit-plugin.logging": "verbose",
+  // "editor.unfoldOnClickAfterEndOfLine": true,
+  // // "eslint.format.enable": true,
+  // "eslint.validate": [
+  //   "javascript",
+  //   "javascriptreact",
+  //   "javascriptvue",
+  //   "typescript",
+  //   "typescriptreact",
+  //   "typescriptvue"
+  // ],
+  // "eslint.codeAction.disableRuleComment": {},
+  // "editor.renderWhitespace": "trailing",
+  // "workbench.editor.pinnedTabSizing": "shrink",
+  //
+  // "typescript.referencesCodeLens.showOnAllFunctions": true,
+  // "javascript.referencesCodeLens.showOnAllFunctions": true,
+  // "editor.codeLensFontSize": 5,
+  // "editor.stickyTabStops": true,
+  // "js/ts.implicitProjectConfig.strictNullChecks": true,
+  // "editor.lineNumbers": "off",
+  // "editor.selectionClipboard": false,
+  // "typescript.enablePromptUseWorkspaceTsdk": true,
+  // "typescript.tsdk": "node_modules/typescript/lib",
+  // "editor.bracketPairColorization.enabled": true,
+  // "workbench.tree.indent": 12,
+  // "editor.fontFamily": "DejaVu Sans Mono",
+  // //"explorer.excludeGitIgnore": true,
+  // "cSpell.customDictionaries": {
+  //   "custom-dictionary-user": {
+  //     "name": "custom-dictionary-user",
+  //     "path": "~/.cspell/custom-dictionary-user.txt",
+  //     "addWords": true,
+  //     "scope": "user"
+  //   }
+  // },
+  // "window.commandCenter": true,
+  // "go.survey.prompt": false,
   "deno.codeLens.testArgs": [
     "--allow-read"
   ],
-  "deno.suggest.imports.hosts": {
-    "https://deno.land": true
-  },
-
-  "gopls": {
-    "ui.navigation.importShortcut": "Definition"
-  },
-  "window.zoomLevel": 2,
-  "go.coverOnTestPackage": false,
-  "go.enableCodeLens": {
-    "runtest": false
-  },
-  "workbench.activityBar.visible": false,
-  "deno.inlayHints.parameterNames.enabled": "none",
-  "deno.inlayHints.variableTypes.enabled": false,
-  "deno.inlayHints.propertyDeclarationTypes.enabled": false,
-  "deno.inlayHints.parameterTypes.enabled": false,
-  "deno.inlayHints.functionLikeReturnTypes.enabled": false,
-  "deno.inlayHints.enumMemberValues.enabled": false,
-  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "typescript.tsserver.maxTsServerMemory": 4096,
+  "workbench.tree.enableStickyScroll": true,
+  "prisma.showPrismaDataPlatformNotification": false,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "continue.telemetryEnabled": false,
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "chat.commandCenter.enabled": false,
+  "cursor.composer.shouldChimeAfterChatFinishes": true,
+  // "deno.suggest.imports.hosts": {
+  //   "https://deno.land": true
+  // },
+  // "go.coverOnTestPackage": false,
+  // "go.enableCodeLens": {
+  //   "runtest": false
+  // },
+  // "javascript.suggest.completeFunctionCalls": true,
+  // "deno.suggest.completeFunctionCalls": true,
+  // "terminal.integrated.shellIntegration.suggestEnabled": true,
+  // "typescript.suggest.completeFunctionCalls": true,
+  "window.commandCenter": true,
+  "biome.suggestInstallingGlobally": false,
+  "biome.requireConfiguration":true
 }
